@@ -441,13 +441,67 @@ Modify the `app.component.html` file to
 ## Associating Data with the App.
 
 Now when you visit the dashboard, we are not seeing what we said earlier about the dashboard.
-So let's work on the dashboard now. 
-In the `dashboard.component.ts` file, 
+So let's work on the dashboard now. Let's have a look at the kind of data we want to store in our app data store. Since it is about blog post we 
+can define an `interface ` of a blog post as; 
+```ts
+export interface Post {
+  title: string;
+  category: string;
+  date_posted: Date;
+  position: number,
+  body: string
+}
+```
+Create a file as `srs/app/models/Post.ts` and add the interface code to it.  We can now use this blog post interface to build a data service that will help 
+perform certain operations on our blog post data. To do so, we can make use of the `CLI`. Run `ng g s data --module app.module` command. Once the file is created, 
+add to the `data.service.ts` file the code below;
+```ts 
+import { Injectable } from '@angular/core';
+import { Post } from '../models/Post';
+import { Observable }   from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+@Injectable()
+export class DataService {
+
+  ELEMENT_DATA: Post[] = [
+    { position: 0, title: "Post One", category: "Web Development", date_posted: new Date() ,body: "Body 1"},
+    { position: 1, title: "Post Two", category: "Android Development", date_posted: new Date() ,body: "Body 2"},
+    { position: 2, title: "Post Three", category: "IOS Development", date_posted: new Date() ,body: "Body 3" },
+    { position: 3, title: "Post Four", category: "Android Development", date_posted: new Date() ,body: "Body 4"},
+    { position: 4, title: "Post Five", category: "IOS Development", date_posted: new Date() ,body: "Body 5"},
+    { position: 5, title: "Post Six", category: "Web Development", date_posted: new Date() ,body: "Body 6"},
+  ];
+  categories = [
+    { value: 'Web-Development', viewValue: 'Web Development' },
+    { value: 'Android-Development', viewValue: 'Android Development' },
+    { value: 'IOS-Development', viewValue: 'IOS Development' }
+  ];
+  constructor() { }
+
+  getData(): Observable<Post[]> {
+    return  Observable.of<Post[]>(this.ELEMENT_DATA);
+  }
+
+  getCategories() {
+    return this.categories;
+  }
+
+  addPost(data){
+    this.ELEMENT_DATA.push(data);
+    
+  }
+  deletePost(index){
+    this.ELEMENT_DATA = [...this.ELEMENT_DATA.slice(0, index), ...this.ELEMENT_DATA.slice(index +1)]
+  }
+  dataLength(){
+    return this.ELEMENT_DATA.length;
+  }
+}
+```
+We can now create our dashboard to make use of the data service to render the data to our databoard page. 
+In the `dashboard.component.ts` file, add the the following code;
 ```ts
 import { Component, EventEmitter } from '@angular/core';
-import { AuthService } from '../auth/auth.service';
-import { PostDialogComponent } from '../post-dialog/post-dialog.component';
-import { MatDialog } from '@angular/material';
 import { DataService } from '../data/data.service';
 import { Post } from '../models/Post';
 import { DataSource } from '@angular/cdk/table';
@@ -458,21 +512,10 @@ import {Observable} from 'rxjs/Observable';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
-  constructor(public auth: AuthService, public dialog: MatDialog, private dataService: DataService) {
-    auth.handleAuthentication();
+  constructor(private dataService: DataService) {
   }
   displayedColumns = ['date_posted', 'title', 'category', 'delete'];
   dataSource = new PostDataSource(this.dataService);
-  openDialog(): void {
-    let dialogRef = this.dialog.open(PostDialogComponent, {
-      width: '600px',
-      data: 'Add Post'
-    });
-    dialogRef.componentInstance.event.subscribe((result)=> {
-      this.dataService.addPost(result.data)
-      this.dataSource = new PostDataSource(this.dataService);
-    })
-  }
   deletePost(id){
     if(this.auth.isAuthenticated()){
     this.dataService.deletePost(id)
