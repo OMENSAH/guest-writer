@@ -318,13 +318,251 @@ But still the navigation is still not look nice, let's add the following stylesh
     
   }
 ```
+### Adding More Components.
+We just have one component that only renders the navigation. We can add extra components to this application by using the `CLI`
+We will create the following components:
+* Welcome - provides little details about the app
+* dashboard - displays table of blog posts
+* post-dialog - Modal to add new post
+You can create these with the command `ng g c name_of_component`. Since we have two modules in the src folder, the command will not be 
+able to identify which module it should import these created components.We can solve this by add `--module app.module` flag to our command.
+Open  the html file of the `welcome component` and add the following content:
+```html
+<div style="text-align:center">
+  <h1>Angular Content Management System</h1>
+  <p>
+    This is a platform for technical writers to manage their blog post contents related to angular.
+    <br> Click on Login to get Start
+  </p>
+</div>
+```
+### Creating Routes for our App
+Now we have multiple components but we cannot access them in the browser. To do so, we need to create pages for our app using Routes.
+To do so create  TypeScript file named `src/app/app.routes`  and add the following content to that file.
+```ts
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
-## Securing App  with Auth0
+import { WelcomeComponent } from './welcome/welcome.component'
+import {DashboardComponent} from './dashboard/dashboard.component'
+const routes: Routes = [
+  {path: '', component: WelcomeComponent },
+  {path: "dashboard", component: DashboardComponent}
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRouters {}
+```
+Creating routes is basically about making use of angular router which will help you to create 
+urls that corresponds to  specific components. This file will help create two routes for our app
+which will be `http://localhost:4200 and http://localhost:4200/dashboard` 
+We can now add links to our navigation bar items. For example, the dashboard item can be linked to `dashboard` route.
+Modify the `app.component.html` file to 
+```html
+  <mat-sidenav-container>
+  <mat-sidenav  #sidenav role="navigation">
+   <mat-nav-list>
+    <a mat-list-item>
+      <mat-icon class="icon">input</mat-icon>
+      <span class="label">Login</span>
+    </a>
+    <a mat-list-item
+        routerLink="/">
+      <mat-icon class="icon">home</mat-icon>  
+        <span class="label">Home</span>
+    </a>
+    <a mat-list-item
+      routerLink="/dashboard">
+      <mat-icon class="icon">dashboard</mat-icon>  
+      <span class="label">Dashboard</span>
+    </a>
+    <a  mat-list-item 
+        type="button">
+      <mat-icon class="icon">input</mat-icon>
+      <span class="label">LogOut</span>
+    </a>  
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+     <div fxHide.gt-xs>
+       <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+     <div>
+       <a routerLink="/">
+          Material Blog
+       </a>
+       
+     </div>
+     <div fxFlex fxLayout fxLayoutAlign="flex-end"  fxHide.xs>
+        <ul fxLayout fxLayoutGap="20px" class="navigation-items">
+            <li>
+                <a>
+                  <mat-icon class="icon">input</mat-icon>
+                  <span  class="label">Login</span>
+                 </a>
+            </li>
+            <li>
+              <a
+                routerLink="/"
+              >
+                  <mat-icon class="icon">home</mat-icon>
+                  <span class="label">Home</span>
+              </a>
+            </li>
+            <li>
+                <a
+                  routerLink="/dashboard"
+                >
+                    <mat-icon class="icon">dashboard</mat-icon>
+                    <span class="label">Dashboard</span>
+                </a>
+              </li>
+            <li>
+                <a
+                      >
+                  <mat-icon class="icon">input</mat-icon>
+                  <span class="label">LogOut</span>
+                 </a>
+            </li>
+        </ul>
+     </div>
+    </mat-toolbar>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+```
+## Associating Data with the App
+Now when you visit the dashboard, we are not seeing what we said earlier about the dashboard.
+So let's work on the dashboard now. 
+In the `dashboard.component.ts` file, 
+```ts
+import { Component, EventEmitter } from '@angular/core';
+import { AuthService } from '../auth/auth.service';
+import { PostDialogComponent } from '../post-dialog/post-dialog.component';
+import { MatDialog } from '@angular/material';
+import { DataService } from '../data/data.service';
+import { Post } from '../models/Post';
+import { DataSource } from '@angular/cdk/table';
+import {Observable} from 'rxjs/Observable';
+
+@Component({
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
+})
+
+export class DashboardComponent {
+  constructor(public auth: AuthService, public dialog: MatDialog, private dataService: DataService) {
+    auth.handleAuthentication();
+  }
+
+  displayedColumns = ['date_posted', 'title', 'category', 'delete'];
+  dataSource = new PostDataSource(this.dataService);
+
+  openDialog(): void {
+    let dialogRef = this.dialog.open(PostDialogComponent, {
+      width: '600px',
+      data: 'Add Post'
+    });
+    dialogRef.componentInstance.event.subscribe((result)=> {
+      this.dataService.addPost(result.data)
+      this.dataSource = new PostDataSource(this.dataService);
+    })
+  }
+
+  deletePost(id){
+    if(this.auth.isAuthenticated()){
+    this.dataService.deletePost(id)
+    this.dataSource = new PostDataSource(this.dataService);
+    }else{
+      alert("Login in Before")
+    }
+  }
+}
+
+export class PostDataSource extends DataSource<any>{
+  constructor(private dataService: DataService){
+    super();
+  }
+  connect(): Observable<Post[]>{
+    return this.dataService.getData();
+  }
+  disconnect(){}
+}
+```
 
 
-### Registering the App at Auth0
+In the `dashboard.component.html` replace everything with the following content
+```html
+<div>
+    <br>
+      <div class="container">
+          <div class="container">
+            <div  fxLayout="column" fxLayout="column" fxLayoutGap="20px" fxLayout.gt-md="row"  fxLayoutAlign="space-around center" class="content">
+                <div class="blocks" >
+                    <button button="submit" mat-raised-button color="primary">
+                        <mat-icon>add</mat-icon> Add Post
+                    </button>
+                </div>
+          </div>
+      </div>
+      <br>
+      <div class="container">
+        <div fxLayout="row" fxLayoutAlign="center center" class="content">
+          <mat-card class="card" >
+            <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">
+             <h3>Recent Posts</h3>
+            </mat-card-title>
+            <mat-card-content>
+                <div class="example-container mat-elevation-z8">
+                    <mat-table #table [dataSource]="dataSource">
+                  
+                    <ng-container matColumnDef="date_posted">
+                      <mat-header-cell *matHeaderCellDef> Date Posted </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.date_posted  | date: 'd/M/y'}} </mat-cell>
+                    </ng-container>
 
-## Adding Data to App 
+                      <ng-container matColumnDef="title">
+                        <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.title}} </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="category">
+                        <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.category}} </mat-cell>
+                      </ng-container>
+                      
+                      <ng-container matColumnDef="delete">
+                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                          <a
+                             type="button">
+                            <mat-icon class="icon">delete</mat-icon>
+                          </a> 
+                        </mat-cell>
+                      </ng-container>     
+                                   
+                      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                  </div> 
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+   </div>
+   </div>
+```
+
+
 
 ### Creating Data Interface
 
@@ -332,6 +570,8 @@ But still the navigation is still not look nice, let's add the following stylesh
 
 ### Dynamic Data Control with Observables
 
+## Securing App  with Auth0
 
+### Registering the App at Auth0
 ## Conclusion
 
