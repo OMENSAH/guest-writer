@@ -264,14 +264,60 @@ We can now work with this imported module in our app. Let's work with that in ou
 </mat-sidenav-container>
 ```
 While creating the navigation you, we are making use of other modules like `mat-icon`, `mat-toolbar` and some directives 
-like `fxLayout`. All the modules from `Angular Material` begins with `mat` and you need to import them as we did earlier. 
+like `fxLayout`. All the modules from `Angular Material` are prefixed with `mat` and you need to import them as we did earlier. 
 ### Controlling Layout of Angular Material Applications
 Grid system is not part of the Angular Material, we can use Flex Layout package to control that. This is where the directive `fxLayout` we made mentioned off
 comes from.
 It uses css flexbox. It positions these html elements nicely by passing the flexbox components as directives. 
 Install it with `npm install @angular/flex-layout` and import into `src/app.module.ts` 
-as `import {FlexLayoutModule} from '@angular/flex-layout';`  and as always add the imported module to the imports array in `@NgModule`.
+as `import {FlexLayoutModule} from '@angular/flex-layout';`  and as  we always do, add the imported module to the imports array in `@NgModule`. 
+In our navigation bar we made use of some directives like alligning some elements to the its right end as well as hiding those element on 
+smaller screen size. You can explore more on the package later.
 
+But still the navigation is still not look nice, let's add the following stylesheets to your `app.component.css` file 
+```css
+  mat-sidenav-container, mat-sidenav-content, mat-sidenav {
+    height: 100%;
+  }
+  
+  mat-sidenav {
+    width: 250px;
+  }
+  
+  a {
+    text-decoration: none;
+    color: white;
+  }
+  
+  a:hover,
+  a:active {
+    color: lightgray;
+  }
+  
+  .navigation-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+  
+  .icon{
+    display: inline-block;
+    height: 30px;
+    margin: 0 auto;
+    padding-right: 5px;
+    text-align: center;
+    vertical-align: middle;
+    width: 15%;
+  }
+  .label{
+    display: inline-block;
+    line-height: 30px;
+    margin: 0;
+    width: 85%; 
+    
+  }
+```
 
 ## Securing App  with Auth0
 
