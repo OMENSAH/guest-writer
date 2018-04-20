@@ -88,7 +88,7 @@ export class AppModule { }
 ```
 Now, we are good to go; to make use of the angular material module we need in our project. 
 I personally like to create a file where I import all the angular material components I will need in my project. 
-So let's do that by creating `src/app/material.module.ts` and add the following to it;
+So let's do that by creating `src/app/material.module.ts` file and add the following to it;
 ```ts
 import {NgModule} from '@angular/core'
 @NgModule({
@@ -132,7 +132,7 @@ To add that to angular project, just include the following in the in the `src/in
  ```html
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 ```
-## What App We Will Build With Angular Material.
+## What App  Will We Build With Angular Material?
 
 We will be focusing on building a sample application that makes us of the default theme that comes with Angular Material.
 We will build an an that serves like a content management system for blog posts. It will not use permanent data storage so will
@@ -191,7 +191,7 @@ import { MaterialModule } from './material.module';
 })
 export class AppModule { }
 ```
-We can now work with this imported module in our app. Let's work with that in our AppComponent where will be creating our Navigation bar
+We can now work with this imported module in our app. Let's work with that in our AppComponent where will be creating our Navigation bar.
 ### Working with Angular Material Components
 ```html
 <mat-sidenav-container>
@@ -276,7 +276,7 @@ as `import {FlexLayoutModule} from '@angular/flex-layout';`  and as  we always d
 In our navigation bar we made use of some directives like alligning some elements to the its right end as well as hiding those element on 
 smaller screen size. You can explore more on the package later.
 
-But still the navigation is still not look nice, let's add the following stylesheets to your `app.component.css` file 
+But still the navigation is still not look nice, let's add the following stylesheets to your `app.component.css` file;
 ```css
 mat-sidenav-container, mat-sidenav-content, mat-sidenav {
    height: 100%;
@@ -337,7 +337,7 @@ Open  the html file of the `welcome component` and add the following content:
 ### Creating Routes for our App.
 
 Now we have multiple components but we cannot access them in the browser. To do so, we need to create pages for our app using Routes.
-To do so create  TypeScript file named `src/app/app.routes`  and add the following content to that file.
+To do so create  TypeScript file named `src/app/app.routes`  and add the following content to that file;
 ```ts
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -492,7 +492,7 @@ export class PostDataSource extends DataSource<any>{
   disconnect(){}
 }
 ```
-In the `dashboard.component.html` replace everything with the following content
+In the `dashboard.component.html` replace everything with the following content;
 ```html
 <div>
     <br>
