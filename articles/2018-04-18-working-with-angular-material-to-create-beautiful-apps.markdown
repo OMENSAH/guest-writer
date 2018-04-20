@@ -263,8 +263,8 @@ We can now work with this imported module in our app. Let's work with that in ou
   </mat-sidenav-content>
 </mat-sidenav-container>
 ```
-While creating the navigation you, we are making use of other modules like `mat-icon`, `mat-toolbar` and some directives 
-like `fxLayout`. All the modules from `Angular Material` are prefixed with `mat` and you need to import them as we did earlier. 
+While creating the navigation you, we are making use of other modules like `mat-icon`, `mat-toolbar`, `mat-list` and some directives 
+like `fxLayout`. All the modules from `Angular Material` are prefixed with `mat` and you need to import them as we did earlier in our `material.module.ts` file.
 
 ### Controlling Layout of Angular Material Applications.
 
@@ -358,7 +358,7 @@ export class AppRouters {}
 Creating routes is basically about making use of angular router which will help you to create 
 urls that corresponds to  specific components. This file will help create two routes for our app
 which will be `http://localhost:4200 and http://localhost:4200/dashboard` 
-We can now add links to our navigation bar items. For example, the dashboard item can be linked to `dashboard` route.
+We can now add links to our navigation bar items and also add `router-outlet` to let us navigate between pages. For example, the dashboard item can be linked to `dashboard` route.
 Modify the `app.component.html` file to 
 ```html
   <mat-sidenav-container>
@@ -517,12 +517,8 @@ export class DashboardComponent {
   displayedColumns = ['date_posted', 'title', 'category', 'delete'];
   dataSource = new PostDataSource(this.dataService);
   deletePost(id){
-    if(this.auth.isAuthenticated()){
     this.dataService.deletePost(id)
     this.dataSource = new PostDataSource(this.dataService);
-    }else{
-      alert("Login in Before")
-    }
   }
 }
 export class PostDataSource extends DataSource<any>{
@@ -596,10 +592,317 @@ In the `dashboard.component.html` replace everything with the following content;
    </div>
    </div>
 ```
-### Dynamic Data Control with Observables
+### Adding Data to our App.
 
-## Securing App  with Auth0
+We are almost there to have a complete working application. In our data service, we added the functionality to add and delete data but we have not done that 
+yet. In order to add data, we will utilize material components to create a form. We also don't want to just know who added a blog post to our application so 
+we will have to secure the app in a certain we. Let's make use of Auth0 authentication service. 
 
-### Registering the App at Auth0
+## Securing App  with Auth0.
+
+Using Auth0 authentication service is easy, you just have to create an account at [Auth0.com](https://auth0.com). Once you have an account, we following the following procedure to 
+provide authentication to our application;
+* Create  a new application by clickin on `New Application` button in your dashboard page.
+* Give a name to your App and select `Single Page Web Applications`. Then click on create. This will create a new application for you. 
+* You will be asked to choose What technology are you using for your web app? Select `Angular2+`. Great we can now follow the instructions on the page 
+to authenticate our app by 
+ * installing the `auth0.js` library with `npm install --save auth0-js`
+ * Under the settings section of the page, add `http://localhost:4200/callback` as the Allowed Callback URLs.
+ * We will create an authentication service with `ng g s auth --module app.module` command. 
+ * Once the auth.service file is created, add the following content to the file;
+ ```ts
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
+import * as auth0 from 'auth0-js';
+
+@Injectable()
+export class AuthService {
+
+  auth0 = new auth0.WebAuth({
+    clientID: 'REPLACE WITH WHAT YOU HAVE IN YOUR APP DASHBOARD ',
+    domain: 'REPLACE WITH WHAT YOU HAVE IN YOUR APP DASHBOARD',
+    responseType: 'REPLACE WITH WHAT YOU HAVE IN YOUR APP DASHBOARD',
+    audience: 'REPLACE WITH WHAT YOU HAVE IN YOUR APP DASHBOARD',
+    redirectUri: 'http://localhost:4200/callback',
+    scope: 'openid'
+  });
+
+  constructor(public router: Router) { }
+
+  public login(): void {
+    this.auth0.authorize();
+  }
+
+  public handleAuthentication(): void {
+    this.auth0.parseHash((err, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        window.location.hash = '';
+        this.setSession(authResult);
+        this.router.navigate(['/dashboard']);
+      } else if (err) {
+        this.router.navigate(['/']);
+        console.log(err);
+      }
+    });
+  }
+
+  private setSession(authResult): void {
+    // Set the time that the Access Token will expire at
+    const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
+    localStorage.setItem('access_token', authResult.accessToken);
+    localStorage.setItem('id_token', authResult.idToken);
+    localStorage.setItem('expires_at', expiresAt);
+  }
+
+  public logout(): void {
+    // Remove tokens and expiry time from localStorage
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('id_token');
+    localStorage.removeItem('expires_at');
+    // Go back to the home route
+    this.router.navigate(['/']);
+  }
+
+  public isAuthenticated(): boolean {
+    // Check whether the current time is past the
+    // Access Token's expiry time
+    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+    return new Date().getTime() < expiresAt;
+  }
+}
+```
+We can now make use of the this auth.service in our app. We can now allow users to sign up and login in with this service. Let's modify our navigation to 
+```html
+<mat-sidenav-container>
+  <mat-sidenav  #sidenav role="navigation">
+   <mat-nav-list>
+    <a mat-list-item 
+        *ngIf="!auth.isAuthenticated()"
+        (click)="auth.login()">
+      <mat-icon class="icon">input</mat-icon>
+      <span class="label">Login</span>
+    </a>
+    <a mat-list-item
+        *ngIf="auth.isAuthenticated()"
+        routerLink="/">
+      <mat-icon class="icon">home</mat-icon>  
+        <span class="label">Home</span>
+    </a>
+    <a mat-list-item
+      routerLink="/dashboard">
+      <mat-icon class="icon">dashboard</mat-icon>  
+      <span class="label">Dashboard</span>
+    </a>
+    <a  mat-list-item 
+      *ngIf="auth.isAuthenticated()"
+      (click)="auth.logout()" type="button">
+      <mat-icon class="icon">input</mat-icon>
+      <span class="label">LogOut</span>
+    </a>  
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+     <div fxHide.gt-xs>
+       <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+     <div>
+       <a routerLink="/">
+          Material Blog
+       </a>
+       
+     </div>
+     <div fxFlex fxLayout fxLayoutAlign="flex-end"  fxHide.xs>
+        <ul fxLayout fxLayoutGap="20px" class="navigation-items">
+            <li>
+                <a
+                  *ngIf="!auth.isAuthenticated()"
+                  (click)="auth.login()"
+                >
+                  <mat-icon class="icon">input</mat-icon>
+                  <span  class="label">Login</span>
+                 </a>
+            </li>
+            <li>
+              <a
+                *ngIf="auth.isAuthenticated()"
+                routerLink="/"
+              >
+                  <mat-icon class="icon">home</mat-icon>
+                  <span class="label">Home</span>
+              </a>
+            </li>
+            <li>
+                <a
+                  routerLink="/dashboard"
+                >
+                    <mat-icon class="icon">dashboard</mat-icon>
+                    <span class="label">Dashboard</span>
+                </a>
+              </li>
+            <li>
+                <a
+                *ngIf="auth.isAuthenticated()"
+                (click)="auth.logout()" type="button"
+                >
+                  <mat-icon class="icon">input</mat-icon>
+                  <span class="label">LogOut</span>
+                 </a>
+            </li>
+        </ul>
+     </div>
+    </mat-toolbar>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+```
+On the login item, we are showing it only if the user is not authenticated.  Some other navigation items are otherwise.
+When the user clicks on that login button, we can use the Auth0 service to handle allow the user to register and be authaurized to use the app. 
+
+Also, anyone can delete items in our dashboard, let's allow deletion if the user is authenticated. 
+import the AuthService into the dashboard component as ;
+```ts
+import { AuthService } from '../auth/auth.service';
+```
+Inject it into the Dashboard class constructor as;
+```ts 
+constructor(public auth: AuthService, private dataService: DataService) {
+    auth.handleAuthentication();
+  }
+```
+Now  we can make use of the auth service innstance to check is the user is authenticated before deleting a post as;
+```ts 
+deletePost(id){
+  if(this.auth.isAuthenticated()){
+    this.dataService.deletePost(id)
+    this.dataSource = new PostDataSource(this.dataService);
+  }else{
+      alert("Login in Before")
+  }
+}
+```
+As we mentioned earlier, we wanted to be able to add blog post to our data but we don't want anyone to add data just like that so we will have to 
+also make sure the user can only add once authenticated. We can achieve this by adding `*ngIf="auth.isAuthenticated()"` directive to wrapping div of `Add Post`
+button as;
+```ts
+<div class="blocks" *ngIf="auth.isAuthenticated()">
+  <button button="submit" mat-raised-button color="primary">
+    <mat-icon>add</mat-icon> Add Post
+  </button>
+</div>
+```
+### Completing the Adding Data Functionality.
+
+We will  make of `Angular Material Dialog` to create a modal that contains a form to add data to our data store. Let's create that with a component for this with 
+`ng g c post-dialog --module app.module` command. 
+Add the following to the `post-dialog-component.html` file;
+```html
+<h1 mat-dialog-title>{{data}}</h1>
+<div mat-dialog-content>
+  <form class="example-form" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input matInput placeholder="Post Title" type="text" required [(ngModel)]="blogPost.title" name="name">
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput placeholder="Post Body" required [(ngModel)]="blogPost.body" name="body"></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select matInput placeholder="Post Category" required [(ngModel)]="blogPost.category" name="category">
+        <mat-option *ngFor="let cat of categories" [value]="cat.value">
+          {{ cat.viewValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button type="submit" color="primary">Save</button>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button class="close" (click)="onNoClick()" color="warn">Cancel</button>
+</div>
+```
+In the html file, you can see we are making use of `mat-dialog, mat-input, mat-select` from the `Angular Material`. You need to import them as we did earlier in our `material.module.ts` file.
+In the component TypeScript file, `post-dialog-component.ts` add the following; 
+```ts 
+import { Component, Inject, EventEmitter, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { DataService } from '../data/data.service';
+
+@Component({
+  selector: 'app-post-dialog',
+  templateUrl: './post-dialog.component.html',
+  styleUrls: ['./post-dialog.component.css']
+})
+export class PostDialogComponent {
+  blogPost = {
+    title: "",
+    body: "",
+    category: "",
+    position: 0, 
+    date_posted: new Date()
+  };
+
+  public event: EventEmitter<any> = new EventEmitter();
+  constructor(
+    public dialogRef: MatDialogRef<PostDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dataService: DataService
+  ) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  onSubmit(): void {
+    this.blogPost.position = this.dataService.dataLength();
+    this.event.emit({data: this.blogPost});
+    this.dialogRef.close();
+  }
+  
+  categories = this.dataService.getCategories();
+
+}
+```
+Our `PostDialogComponent` component has a method to submit the data to our data service as well as a method to close the dialog. 
+To make our button open up this dialog box, we need to tell it to do so by binding a click event to the button. Open the `dashboard.component.html` and 
+modify the button we created before to;
+```ts
+<div class="blocks" *ngIf="auth.isAuthenticated()">
+  <button button="submit" mat-raised-button color="primary" (click)="openDialog()">
+    <mat-icon>add</mat-icon> Add Post
+  </button>
+</div>
+```
+In the TypeScript file of the `dashboard.component`, we can create the `openDialog` method as;
+```ts 
+openDialog(): void {
+    let dialogRef = this.dialog.open(PostDialogComponent, {
+      width: '600px',
+      data: 'Add Post'
+    });
+    dialogRef.componentInstance.event.subscribe((result)=> {
+      this.dataService.addPost(result.data)
+      this.dataSource = new PostDataSource(this.dataService);
+    })
+}
+```
+We can infere the method makes use of `this.dialog` which is an instance of `MatDialog`. We can import and inject that into our constructor. Also, the method 
+is making use of `PostDialogComponent` which we need to import.  Let's do so; 
+```ts 
+...
+import { PostDialogComponent } from '../post-dialog/post-dialog.component';
+import { MatDialog } from '@angular/material';
+...
+  constructor(public auth: AuthService, public dialog: MatDialog, private dataService: DataService) {
+    auth.handleAuthentication();
+  }
+```
+Now, we have a working adding blog post functionality. 
+
+
 ## Conclusion
 
