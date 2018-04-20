@@ -596,10 +596,6 @@ In the `dashboard.component.html` replace everything with the following content;
    </div>
    </div>
 ```
-### Creating Data Interface
-
-### Working with Services
-
 ### Dynamic Data Control with Observables
 
 ## Securing App  with Auth0
