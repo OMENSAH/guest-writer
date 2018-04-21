@@ -92,7 +92,7 @@ So let's do that by creating `src/app/material.module.ts` file and add the follo
 ```ts
 import {NgModule} from '@angular/core'
 @NgModule({
-	imports: [],
+  imports: [],
   exports: []
 })
 export class MaterialModule {}
