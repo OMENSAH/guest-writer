@@ -63,11 +63,14 @@ If not then go ahead to install that with ` npm install --save @angular/animatio
 In order to use the animation after installing it, we need to explicitly add it to our project. 
 In angular we have to explicitly add what you what you want to use so your code can be optimize. Having said that , let’s add to our `src/app/app.module.ts `file
 the code below;
+
 ```js
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'; 
 ```
+
 And we simply need to add the BrowserAnimationsModule to our imports property of `@NgModule`. 
-This is what your appModule needs to look like at the end. 
+This is what your appModule needs to look like at the end.
+
 ```ts
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -86,9 +89,11 @@ import { AppComponent } from './app.component';
 })
 export class AppModule { }  
 ```
+
 Now, we are good to go; to make use of the `Angular Material Modules ` we will need in our project. 
 I personally like to create a file where I import all the angular material components I will need in my project. 
 So let's do that by creating `src/app/material.module.ts` file and add the following to it;
+
 ```ts
 import {NgModule} from '@angular/core'
 @NgModule({
@@ -97,12 +102,15 @@ import {NgModule} from '@angular/core'
 })
 export class MaterialModule {}
 ```
+
 `@NgModule` will turn this file into angular module. It has `imports` property to import all the modules needed from `Angular Material` and 
 also `exports` property as well to outsource these modules.
 We can now import this created module in the root definition file(` app.module.ts `) as;
+
 ```ts
 import {MaterialModule} from './material.module.ts';
 ```
+
 This helps to access to all those material components anywhere in our project. 
   
 ### Angular Material Theme.
@@ -113,29 +121,31 @@ We have to include a theme. Angular material use a theme which by default is jus
 * background - grey
 * primary - indigo
 Just copy and paste into the `src/styles.css` file the following content.
+
 ```css
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 ```
+
 ### Angular Material Gesture for Some components.
 
-Some components (mat-slide-toggle, mat-slider, matTooltip) rely on HammerJS for gestures.  
-So we need to install HammerJS  and load it into our application.  
-From the command line/terminal in the root of your project, run `npm install --save hammerjs`. After installing,   
+Some components (mat-slide-toggle, mat-slider, matTooltip) rely on HammerJS for gestures.So we need to install HammerJS  and load it into our application.  From the command line/terminal in the root of your project, run `npm install --save hammerjs`. After installing,   
 add to the project's entry point (`src/main.ts`) as
+
 ```js
 import 'hammerjs'; 
 ``` 
+
 ### Making use of Material Icons.
 
-With the angular material, we can also make use of the awesome icons that comes with it. 
-To add that to angular project, just include the following in the in the `src/index.html` file. 
- ```html
+With the angular material, we can also make use of the awesome icons that comes with it. To add that to angular project, just include the following in the in the `src/index.html` file. 
+
+```html
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 ```
+
 ## What App  Will We Build With Angular Material?
 
-We will be focusing on building a sample application that makes us of the default theme that comes with Angular Material.
-We will build an an that serves like a content management system for blog posts. It will not use permanent data storage so will
+We will be focusing on building a sample application that makes us of the default theme that comes with Angular Material.We will build an an that serves like a content management system for blog posts. It will not use permanent data storage so will
 make use of JavaScript arrays. 
 
 Enough of the talking, let's get started!!!
@@ -150,6 +160,7 @@ To make Angular Material components available in our application, we need to imp
 
 We already have a `material.module.ts` in the `src/app folder` where we will import all the modules from `Angular Material` we are going to make use of in our application.
 Import the `MatSidenavModule` into created file.  The content of of `material.module.ts` must be like:
+
 ```ts 
 import {NgModule} from '@angular/core'
 import {
@@ -166,9 +177,11 @@ import {
 })
 export class MaterialModule {}
 ```
+
 Afterwards, we to make this module created available in our project, so we will import this file into `AppModule`
 which is like a root definition file that defines all the pieces our angular app is made up off.
 You can import the MaterialModule we created as
+
 ```ts
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -191,9 +204,11 @@ import { MaterialModule } from './material.module';
 })
 export class AppModule { }
 ```
+
 We can now work with this imported modules in our app. 
 ### Working with Angular Material Components
 We will first create a navigation bar in Let's work with that in our AppComponent. In `src/app/app.component.html` file, replace everything with the code below;
+
 ```html
 <mat-sidenav-container>
   <mat-sidenav  #sidenav role="navigation">
@@ -264,10 +279,12 @@ We will first create a navigation bar in Let's work with that in our AppComponen
   </mat-sidenav-content>
 </mat-sidenav-container>
 ```
+
 Here, we are making use of `Angular Material Modules like like mat-icon, mat-toolbar, mat-list` and some directives 
 like `fxLayout`. 
 Basically, all the modules from `Angular Material` are prefixed with `mat`. And to use any of these modules in our app, we just have to import such modules 
 into `material.module.ts` file as we did earlier.  After adding the modules, `material.module.ts` should look like this;
+
 ```ts 
 import {NgModule} from '@angular/core'
 import {
@@ -307,6 +324,7 @@ Let's test our app by running `ng serve` command. This will compile the app for 
 with `http://localhost:4200`.
 
 But still the navigation is still not look nice, let's add the following stylesheets to your `app.component.css` file;
+
 ```css
 mat-sidenav-container, mat-sidenav-content, mat-sidenav {
    height: 100%;
@@ -344,6 +362,7 @@ a:active {
   width: 85%; 
 }
 ```
+
 ### Adding More Components.
 
 We just have one component that only renders the navigation. We can add extra components to this application by using the `CLI`
@@ -354,6 +373,7 @@ We will create the following components:
 You can create these with the command `ng g c name_of_component`. I will name my component `welcome`. Since we have two modules in the src folder, the command will not be 
 able to identify which module it should import these created components.We can solve this by add `--module app.module` flag to our command. 
 In all the command will be `ng g c welcome --module app.module`. Open  the html file of the `welcome component` and add the following content:
+
 ```html
 <div style="text-align:center">
   <h1>Angular Content Management System</h1>
@@ -363,12 +383,14 @@ In all the command will be `ng g c welcome --module app.module`. Open  the html 
   </p>
 </div>
 ```
+
 Create another component named `dashboard`. This will be the dashboard page for our app.
 
 ### Creating Routes for our App.
 
 Now we have multiple components but we cannot access them in the browser. To do so, we need to create pages for our app using Routes.
 Create  TypeScript file named `src/app/app.routes`  and add the following content to that file;
+
 ```ts
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -386,11 +408,13 @@ const routes: Routes = [
 })
 export class AppRouters {}
 ```
+
 Creating routes is basically about making use of angular router which will help you to create 
 urls that corresponds to  specific components. This file will help create two routes for our app
 which will be `http://localhost:4200 and http://localhost:4200/dashboard` 
 We can now add links to our navigation bar items and also add `router-outlet` to let us navigate between pages. For example, the dashboard item can be linked to `dashboard` route.
 Modify the `app.component.html` file to 
+
 ```html
   <mat-sidenav-container>
   <mat-sidenav  #sidenav role="navigation">
@@ -469,10 +493,13 @@ Modify the `app.component.html` file to
   </mat-sidenav-content>
 </mat-sidenav-container>
 ```
+
 We will need to import  our routes into the `app.component.ts` file as;
+
 ```ts
 import { AppRouters } from './app.routes';
 ``` 
+
 Afterwards, add `AppRouters` to the import property of `@NgModule`.
 
 ## Associating Data with the App -- Part 1.
@@ -480,6 +507,7 @@ Afterwards, add `AppRouters` to the import property of `@NgModule`.
 Now when you visit the dashboard, we are not seeing what we said earlier about the dashboard.
 So let's work on the dashboard now. Let's have a look at the kind of data we want to store in our app data store. Since it is about blog post we 
 can define an `interface ` of a blog post as; 
+
 ```ts
 export interface Post {
   title: string;
@@ -489,9 +517,11 @@ export interface Post {
   body: string
 }
 ```
+
 Create a file as `srs/app/models/Post.ts` and add the interface code to it.  We can now use this blog post interface to build a data service that will help 
 perform certain operations on our blog post data. To do so, we can make use of the `CLI`. Run `ng g s data/data --module app.module` command. Once the file is created, 
 add to the `data.service.ts` file the code below;
+
 ```ts 
 import { Injectable } from '@angular/core';
 import { Post } from '../models/Post';
@@ -535,8 +565,10 @@ export class DataService {
   }
 }
 ```
+
 We can now create our dashboard to make use of the data service to render the data to our databoard page. 
 In the `dashboard.component.ts` file, add the the following code;
+
 ```ts
 import { Component, EventEmitter } from '@angular/core';
 import { DataService } from '../data/data.service';
@@ -564,7 +596,9 @@ export class PostDataSource extends DataSource<any>{
   disconnect(){}
 }
 ```
+
 In the `dashboard.component.html` replace everything with the following content;
+
 ```html
 <div>
     <br>
@@ -625,9 +659,11 @@ In the `dashboard.component.html` replace everything with the following content;
    </div>
    </div>
 ```
+
 Here, we are making of some `Angular Material Components like mat-card, mat-button and mat-table`. Import them as modules into the `material.module.ts` file we have been working with 
 over time.
 Let's add stylesheets to our dashboard component to make it look better. In our `dashboard.component.css` file, add the following content;
+
 ```css 
 .card {
   min-width: 80%;
@@ -648,6 +684,7 @@ a {
   cursor: pointer;
 }
 ``` 
+
 ### Adding Data to our App.
 
 We are almost there to have a complete working application. In our data service, we added the functionality to add and delete data but we have not done that 
@@ -666,7 +703,8 @@ to authenticate our app by
  * Under the settings section of the page, add `http://localhost:4200/callback` as the Allowed Callback URLs.
  * We will create an authentication service with `ng g s auth/auth --module app.module` command. 
  * Once the auth.service file is created, add the following content to the file;
- ```ts
+
+```ts
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -728,7 +766,9 @@ export class AuthService {
   }
 }
 ```
+
 We can now make use of the this auth.service in our app. We can now allow users to sign up and login in with this service. Let's modify our navigation to 
+
 ```html
 <mat-sidenav-container>
   <mat-sidenav  #sidenav role="navigation">
@@ -817,26 +857,33 @@ We can now make use of the this auth.service in our app. We can now allow users 
   </mat-sidenav-content>
 </mat-sidenav-container>
 ```
+
 On the login item, we are showing it only if the user is not authenticated.  Some other navigation items are otherwise.
 When the user clicks on that login button, we can use the Auth0 service to handle allow the user to register and be authaurized to use the app. 
 
 import the AuthService into the `App component` TypeScript file as ;
+
 ```ts
 import { AuthService } from '../auth/auth.service';
 ```
+
 Inject it into the `AppComponent class constructor as;
+
 ```ts 
   constructor(public auth: AuthService) {
     auth.handleAuthentication();
   }
 ```
+
 Now, users can login to our application user Auth0 services. One problem we have now is that when setting up our application on Auth0 platform, we 
 specified a route for a `callback` but we have not created that yet. Let's do that in our `app.routes.ts` file as 
+
 ```ts
 ...
  {path: "callback", component:WelcomeComponent},
 ...
 ```
+
 
 ## Associating Data with the App -- Part 2.
 
@@ -847,15 +894,19 @@ We have delete and add blog post functionalities but they are not working now. L
 We want to delete items in our dashboard, let's allow deletion if the user is authenticated. 
 Now  we can make use of the auth service innstance to check is the user is authenticated before deleting a post. 
 We will need to import the `AuthService` in our `Dashboard Component`  TypeScript file as ;
+
 ```ts
 import { AuthService } from '../auth/auth.service';
 ```
+
 Inject it into the `Dashboard` class constructor as;
+
 ```ts 
  constructor(public auth: AuthService, private dataService: DataService) {
 
   }
 ```
+
 
 
 ```ts 
@@ -868,16 +919,20 @@ deletePost(id){
   }
 }
 ```
+
 To implement our delete functionality we need to modify the `dashboard.component.html` file by binding a click event to our delete element which will 
 invoke the `deletePost(index)` method in our `data service`.  
+
 ```html
 <a   
   (click)="deletePost(element.position)" type="button">
   <mat-icon class="icon">delete</mat-icon>
 </a> 
 ```
+
 In the `DashboardComponent` class, we have to implement `deletePost(element.position)` method that will call the  `deletePost(index)` method in our `data service` to be invoked
 when a user click on the delete button.
+
 ```ts
   deletePost(id){
     if(this.auth.isAuthenticated()){
@@ -894,6 +949,7 @@ when a user click on the delete button.
 As we mentioned earlier, we wanted to be able to add blog post to our data but we don't want anyone to add data just like that so we will have to 
 also make sure the user can only add once authenticated. We can achieve this by adding `*ngIf="auth.isAuthenticated()"` directive to wrapping div of `Add Post`
 button as;
+
 ```html
 <div class="blocks" *ngIf="auth.isAuthenticated()">
   <button button="submit" mat-raised-button color="primary">
@@ -901,8 +957,10 @@ button as;
   </button>
 </div>
 ```
+
 Once we are not logged in, there is no indication on how to add a blog post to our app. Let's tell the user to login to add post; 
 Right after the closing div of the Add Post `code block` add the following piece of code;
+
 ```html
 <div class="blocks">
   <a button mat-raised-button color="primary" (click)="auth.login()" *ngIf="!auth.isAuthenticated()">
@@ -914,6 +972,7 @@ Right after the closing div of the Add Post `code block` add the following piece
 We will  make of `Angular Material Dialog` to create a modal that contains a form to add data to our data store. Let's create that with a component for this with 
 `ng g c post-dialog --module app.module` command. 
 Add the following to the `post-dialog-component.html` file;
+
 ```html
 <h1 mat-dialog-title>{{data}}</h1>
 <div mat-dialog-content>
@@ -938,12 +997,14 @@ Add the following to the `post-dialog-component.html` file;
   <button mat-raised-button class="close" (click)="onNoClick()" color="warn">Cancel</button>
 </div>
 ```
+
 In the html file, you can see we are making use of `mat-dialog, mat-input, mat-select` from the `Angular Material`.
 You need to import them as we did earlier in our `material.module.ts` file.
 We will need the `FormsModule ` from `@angular/forms` in order to operate on our form. Import that into the `src/app/app.module.ts` file 
 and add it to  the `imports` property of `@NgModule` as usual.
 
 Add some stylesheet to the `post-dialog-component.css` as;
+
 ```css 
 .example-form {
     display: flex;
@@ -958,7 +1019,9 @@ Add some stylesheet to the `post-dialog-component.css` as;
     width: 100%;
 }
 ```
+
 In the component TypeScript file, `post-dialog-component.ts` add the following; 
+
 ```ts 
 import { Component, Inject, EventEmitter, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -999,10 +1062,12 @@ export class PostDialogComponent {
 
 }
 ```
+
 Our `PostDialogComponent` component has a method to submit the data to our data service as well as a method to close the dialog. 
 To make our button open up this dialog box, we need to tell it to do so by binding a click event to the button as well as 
 add to the  `@NgModule` an `entryComponents` with `[PostDialogComponent]` as value. Open the `dashboard.component.html` and 
 modify the button we created before to;
+
 ```ts
 <div class="blocks" *ngIf="auth.isAuthenticated()">
   <button button="submit" mat-raised-button color="primary" (click)="openDialog()">
@@ -1010,7 +1075,9 @@ modify the button we created before to;
   </button>
 </div>
 ```
+
 In the TypeScript file of the `dashboard.component`, we can create the `openDialog` method to the `DashboardComponent` class as;
+
 ```ts 
 openDialog(): void {
     let dialogRef = this.dialog.open(PostDialogComponent, {
@@ -1023,8 +1090,10 @@ openDialog(): void {
     })
 }
 ```
+
 We can infere the method makes use of `this.dialog` which is an instance of `MatDialog`. We can import and inject that into our constructor. Also, the method 
 is making use of `PostDialogComponent` which we need to import.  Let's do so; 
+
 ```ts 
 ...
 import { PostDialogComponent } from '../post-dialog/post-dialog.component';
@@ -1034,6 +1103,7 @@ import { MatDialog } from '@angular/material';
   
   }
 ```
+
 Now, we have a working adding blog post functionality. 
 
 ## Conclusion
