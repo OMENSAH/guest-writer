@@ -186,10 +186,8 @@ You can import the MaterialModule we created as
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -242,7 +240,6 @@ We will first create a navigation bar in Let's work with that in our AppComponen
        <a>
           Material Blog
        </a>
-       
      </div>
      <div fxFlex fxLayout fxLayoutAlign="flex-end"  fxHide.xs>
         <ul fxLayout fxLayoutGap="20px" class="navigation-items">
@@ -265,8 +262,7 @@ We will first create a navigation bar in Let's work with that in our AppComponen
                 </a>
               </li>
             <li>
-                <a
-                >
+                <a>
                   <mat-icon class="icon">input</mat-icon>
                   <span class="label">LogOut</span>
                  </a>
@@ -293,7 +289,6 @@ import {
     MatIconModule,
     MatListModule,
 } from '@angular/material';
-
 @NgModule({
 	imports: [
     MatSidenavModule,
@@ -394,14 +389,12 @@ Create  TypeScript file named `src/app/app.routes`  and add the following conten
 ```ts
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
 import { WelcomeComponent } from './welcome/welcome.component'
 import {DashboardComponent} from './dashboard/dashboard.component'
 const routes: Routes = [
   {path: '', component: WelcomeComponent },
   {path: "dashboard", component: DashboardComponent}
 ];
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
@@ -451,7 +444,6 @@ Modify the `app.component.html` file to
        <a routerLink="/">
           Material Blog
        </a>
-       
      </div>
      <div fxFlex fxLayout fxLayoutAlign="flex-end"  fxHide.xs>
         <ul fxLayout fxLayoutGap="20px" class="navigation-items">
@@ -463,23 +455,20 @@ Modify the `app.component.html` file to
             </li>
             <li>
               <a
-                routerLink="/"
-              >
+                routerLink="/">
                   <mat-icon class="icon">home</mat-icon>
                   <span class="label">Home</span>
               </a>
             </li>
             <li>
                 <a
-                  routerLink="/dashboard"
-                >
+                  routerLink="/dashboard">
                     <mat-icon class="icon">dashboard</mat-icon>
                     <span class="label">Dashboard</span>
                 </a>
               </li>
             <li>
-                <a
-                      >
+                <a>
                   <mat-icon class="icon">input</mat-icon>
                   <span class="label">LogOut</span>
                  </a>
@@ -544,18 +533,14 @@ export class DataService {
     { value: 'IOS-Development', viewValue: 'IOS Development' }
   ];
   constructor() { }
-
   getData(): Observable<Post[]> {
     return  Observable.of<Post[]>(this.ELEMENT_DATA);
   }
-
   getCategories() {
     return this.categories;
   }
-
   addPost(data){
     this.ELEMENT_DATA.push(data);
-    
   }
   deletePost(index){
     this.ELEMENT_DATA = [...this.ELEMENT_DATA.slice(0, index), ...this.ELEMENT_DATA.slice(index +1)]
@@ -622,22 +607,18 @@ In the `dashboard.component.html` replace everything with the following content;
             <mat-card-content>
                 <div class="example-container mat-elevation-z8">
                     <mat-table #table [dataSource]="dataSource">
-                  
                     <ng-container matColumnDef="date_posted">
                       <mat-header-cell *matHeaderCellDef> Date Posted </mat-header-cell>
                       <mat-cell *matCellDef="let element"> {{element.date_posted  | date: 'd/M/y'}} </mat-cell>
                     </ng-container>
-
                       <ng-container matColumnDef="title">
                         <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
                         <mat-cell *matCellDef="let element"> {{element.title}} </mat-cell>
                       </ng-container>
-
                       <ng-container matColumnDef="category">
                         <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
                         <mat-ell *matCellDef="let element"> {{element.category}} </mat-cell>
                       </ng-container>
-                      
                       <ng-container matColumnDef="delete">
                         <mat-header-cell *matHeaderCellDef></mat-header-cell>
                         <mat-cell *matCellDef="let element">
@@ -646,8 +627,7 @@ In the `dashboard.component.html` replace everything with the following content;
                             <mat-icon class="icon">delete</mat-icon>
                           </a> 
                         </mat-cell>
-                      </ng-container>     
-                                   
+                      </ng-container>   
                       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
                     </mat-table>
@@ -709,7 +689,6 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import * as auth0 from 'auth0-js';
-
 @Injectable()
 export class AuthService {
 
@@ -721,13 +700,10 @@ export class AuthService {
     redirectUri: 'http://localhost:4200/callback',
     scope: 'openid'
   });
-
   constructor(public router: Router) { }
-
   public login(): void {
     this.auth0.authorize();
   }
-
   public handleAuthentication(): void {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
@@ -740,7 +716,6 @@ export class AuthService {
       }
     });
   }
-
   private setSession(authResult): void {
     // Set the time that the Access Token will expire at
     const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
@@ -748,7 +723,6 @@ export class AuthService {
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
   }
-
   public logout(): void {
     // Remove tokens and expiry time from localStorage
     localStorage.removeItem('access_token');
@@ -757,7 +731,6 @@ export class AuthService {
     // Go back to the home route
     this.router.navigate(['/']);
   }
-
   public isAuthenticated(): boolean {
     // Check whether the current time is past the
     // Access Token's expiry time
@@ -809,15 +782,13 @@ We can now make use of the this auth.service in our app. We can now allow users 
        <a routerLink="/">
           Material Blog
        </a>
-       
      </div>
      <div fxFlex fxLayout fxLayoutAlign="flex-end"  fxHide.xs>
         <ul fxLayout fxLayoutGap="20px" class="navigation-items">
             <li>
                 <a
                   *ngIf="!auth.isAuthenticated()"
-                  (click)="auth.login()"
-                >
+                  (click)="auth.login()">
                   <mat-icon class="icon">input</mat-icon>
                   <span  class="label">Login</span>
                  </a>
@@ -825,16 +796,14 @@ We can now make use of the this auth.service in our app. We can now allow users 
             <li>
               <a
                 *ngIf="auth.isAuthenticated()"
-                routerLink="/"
-              >
+                routerLink="/">
                   <mat-icon class="icon">home</mat-icon>
                   <span class="label">Home</span>
               </a>
             </li>
             <li>
                 <a
-                  routerLink="/dashboard"
-                >
+                  routerLink="/dashboard">
                     <mat-icon class="icon">dashboard</mat-icon>
                     <span class="label">Dashboard</span>
                 </a>
@@ -1026,7 +995,6 @@ In the component TypeScript file, `post-dialog-component.ts` add the following;
 import { Component, Inject, EventEmitter, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DataService } from '../data/data.service';
-
 @Component({
   selector: 'app-post-dialog',
   templateUrl: './post-dialog.component.html',
@@ -1040,26 +1008,21 @@ export class PostDialogComponent {
     position: 0, 
     date_posted: new Date()
   };
-
   public event: EventEmitter<any> = new EventEmitter();
   constructor(
     public dialogRef: MatDialogRef<PostDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dataService: DataService
   ) { }
-
   onNoClick(): void {
     this.dialogRef.close();
   }
-
   onSubmit(): void {
     this.blogPost.position = this.dataService.dataLength();
     this.event.emit({data: this.blogPost});
     this.dialogRef.close();
   }
-  
   categories = this.dataService.getCategories();
-
 }
 ```
 
