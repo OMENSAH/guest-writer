@@ -47,13 +47,13 @@ Depending on the setup of your commputer, you might need to install as an admin,
 
 ### Create a project.
 
-Once installation is finish, lets create angular project with `ng new  name _of_poject`. Open the project with your favourite IDE or editor.  
-The folder structure has a lot of config files and you dont need to touch often. Where we will touch most is the src folder. 
+Once installation is finish, lets create angular project with `ng new  name_of_poject`.  Open the project with your favourite IDE or editor.  
+The folder structure has a lot of files. But where will be working with a lot is the src folder. 
 
 ### Install Angular Material and Angular CDK.
 
-Navigate to your root of the project in your terminal or command line and run 
-`npm install --save @angular/material @angular/cdk`. 
+Navigate to the root of the project in your terminal or command line with `cd name_of_poject` and run 
+`npm install --save @angular/material @angular/cdk` commad. 
 
 ### Install Animations Module.
 
@@ -438,7 +438,7 @@ Modify the `app.component.html` file to
   </mat-sidenav-content>
 </mat-sidenav-container>
 ```
-## Associating Data with the App.
+## Associating Data with the App -- Part 1.
 
 Now when you visit the dashboard, we are not seeing what we said earlier about the dashboard.
 So let's work on the dashboard now. Let's have a look at the kind of data we want to store in our app data store. Since it is about blog post we 
@@ -796,6 +796,7 @@ button as;
   </button>
 </div>
 ```
+## Associating Data with the App -- Part 2.
 ### Completing the Adding Data Functionality.
 
 We will  make of `Angular Material Dialog` to create a modal that contains a form to add data to our data store. Let's create that with a component for this with 
