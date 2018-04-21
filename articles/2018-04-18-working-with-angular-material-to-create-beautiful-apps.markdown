@@ -112,7 +112,7 @@ We have to include a theme. Angular material use a theme which by default is jus
 * warn - red
 * background - grey
 * primary - indigo
-Just copy and paste into the style.css file the following content.
+Just copy and paste into the `src/styles.css` file the following content.
 ```css
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 ```
@@ -148,7 +148,7 @@ To make Angular Material components available in our application, we need to imp
 
 #### Importing Material Components.
 
-We will create a `material.module.ts` in the `src/app folder` where we will import all the modules from `Angular Material` we are going to make use of in our application.
+We already have a `material.module.ts` in the `src/app folder` where we will import all the modules from `Angular Material` we are going to make use of in our application.
 Import the `MatSidenavModule` into created file.  The content of of `material.module.ts` must be like:
 ```ts 
 import {NgModule} from '@angular/core'
@@ -157,9 +157,9 @@ import {
 } from '@angular/material';
 
 @NgModule({
-	imports: [
+  imports: [
     MatSidenavModule,
-   ],
+  ],
   exports: [
     MatSidenavModule,
   ]
