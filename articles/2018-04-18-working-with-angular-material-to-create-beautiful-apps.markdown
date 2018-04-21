@@ -53,7 +53,7 @@ The folder structure has a lot of files. But where will be working with a lot is
 ### Install Angular Material and Angular CDK.
 
 Navigate to the root of the project in your terminal or command line with `cd name_of_poject` and run 
-`npm install --save @angular/material @angular/cdk` commad. 
+`npm install --save @angular/material @angular/cdk` command. 
 
 ### Install Animations Module.
 
@@ -61,10 +61,10 @@ Next step is to install the angular animation package which is used by the some 
 **NB** : Before installing this package, check in `package.json` file. Sometimes, install angular material adds this package by default. 
 If not then go ahead to install that with ` npm install --save @angular/animations`
 In order to use the animation after installing it, we need to explicitly add it to our project. 
-In angular we have to explicitly add what you what you want to use so your code can be optimize. Having said that , let’s add to our ` app.module.ts `file
+In angular we have to explicitly add what you what you want to use so your code can be optimize. Having said that , let’s add to our `src/app/app.module.ts `file
 the code below;
 ```js
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations' 
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations'; 
 ```
 And we simply need to add the BrowserAnimationsModule to our imports property of `@NgModule`. 
 This is what your appModule needs to look like at the end. 
@@ -86,7 +86,7 @@ import { AppComponent } from './app.component';
 })
 export class AppModule { }  
 ```
-Now, we are good to go; to make use of the angular material module we need in our project. 
+Now, we are good to go; to make use of the `Angular Material Modules ` we will need in our project. 
 I personally like to create a file where I import all the angular material components I will need in my project. 
 So let's do that by creating `src/app/material.module.ts` file and add the following to it;
 ```ts
