@@ -14,41 +14,28 @@ related:
 
 # Working With Angular Material to Create Beautiful Apps.
 
-Angular is an amazing frontend framework with which you can build powerful web applications. 
-In this article, we will explore Angular Material and use it to build an entire, fast, realistic app 
-which looks absolutely beautiful. 
-By then end of the article, you will have a brief refresher on Angular, detailed introduction into Angular Material, 
-its docs and its usage as well as building a realistic app that uses many Angular Material components. 
-What are you waiting for? Let's get started.
+Angular is an amazing frontend framework with which you can build powerful web applications. In this article, we will explore Angular Material and use it to build an entire, fast, realistic app which looks absolutely beautiful. By the end of the article, you will have a brief refresher on Angular, detailed introduction into Angular Material, its docs and its usage as well as building a realistic app that uses many Angular Material components. What are you waiting for? Let's get started.
 
 ## So Exactly is Angular Material?
 
-A is a third party package used in Angular project. 
+A is a third party package used in an Angular project. 
 At its core is an Angular Component Suite which is made pre-built styled angular components.
-With angular the entire app is composition of components and instead of building and styling components from group up, 
-you can leverage with Angular Material which provide out of the box styled components 
-that follow the Material Design Spec. 
-This is the Spec used by Google in the android operating system and also very popular on web due to it beautiful UI utilities.
+With angular, the entire app is a composition of components and instead of building and styling components from the group up, you can leverage with Angular Material which provides out of the box styled components that follow the Material Design Spec. This is the Spec used by Google in the Android operating system and also very popular on the web due to it beautiful UI utilities.
 
 ## Get Setup.
 
-Lets start building a prototype app with Angular and Angular Material. We need to make sure we have the following in place.
+Let's start building a prototype app with Angular and Angular Material. We need to make sure we have the following in place.
 
 ### Setting up our project environment.
 
-For that we need `Node.js` and `Angular CLI` installed. `Node.js` will help to provide the packages needed by the `CLI` to work. 
-For example the development server package.  
-`Angular Command Line Interface (CLI)` is a tool that create  a new angular project for us. We need it because angular project is more than `js html and script` files.
-Angular project uses `TypeScript` which needs to be optimized and run on some server, so we need a setup with more complex build workflow 
-that uses third party packages for optimisation and build stuff, the `CLI` just give us the workflow out of the box. 
-
-After installing nodejs, you can now install the cli with `npm install -g @angular/cli `.  
-Depending on the setup of your commputer, you might need to install as an admin, unix users should start with `sudo`. 
+For that we need `Node.js` and `Angular CLI` installed. `Node.js` will help to provide the packages needed by the `CLI` to work. For example the development server package.  
+`Angular Command Line Interface (CLI)` is a tool that creates a new angular project for us. We need it because an angular project is more than `js HTML and script` files. An angular project uses `TypeScript` which needs to be optimized and run on some server, so we need a setup with more complex build workflow that uses third-party packages for optimization and builds stuff, the `CLI` just give us the workflow out of the box.
+After installing Node.js, you can now install the CLI with `npm install -g @angular/cli `.  
+Depending on the setup of your computer, you might need to install as an admin, UNIX users should start with `sudo`. 
 
 ### Create a project.
 
-Once installation is finish, lets create angular project with `ng new  name_of_poject`.  Open the project with your favourite IDE or editor.  
-The folder structure has a lot of files. But where will be working with a lot is the src folder. 
+Once the installation is finished, let us create an angular project with `ng new  name_of_poject`.  Open the project with your favorite IDE or editor.  The folder structure has a lot of files. But where will be working with a lot is the src folder. 
 
 ### Install Angular Material and Angular CDK.
 
@@ -57,12 +44,13 @@ Navigate to the root of the project in your terminal or command line with `cd na
 
 ### Install Animations Module.
 
-Next step is to install the angular animation package which is used by the some Material components to do more advanced transitions. 
+Next step is to install the angular animation package which is used by some Material components to do more advanced transitions. 
 **NB** : Before installing this package, check in `package.json` file. Sometimes, install angular material adds this package by default. 
 If not then go ahead to install that with ` npm install --save @angular/animations`
 In order to use the animation after installing it, we need to explicitly add it to our project. 
-In angular we have to explicitly add what you what you want to use so your code can be optimize. Having said that , let’s add to our `src/app/app.module.ts `file
+In angular, we have to explicitly add what you what you want to use so your code can be optimized. Having said that, let’s add to our `src/app/app.module.ts `file
 the code below;
+
 
 ```js
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'; 
@@ -103,7 +91,7 @@ import {NgModule} from '@angular/core'
 export class MaterialModule {}
 ```
 
-`@NgModule` will turn this file into angular module. It has `imports` property to import all the modules needed from `Angular Material` and 
+`@NgModule` will turn this file into an angular module. It has `imports` property to import all the modules needed from `Angular Material` and 
 also `exports` property as well to outsource these modules.
 We can now import this created module in the root definition file(` app.module.ts `) as;
 
@@ -137,7 +125,7 @@ import 'hammerjs';
 
 ### Making use of Material Icons.
 
-With the angular material, we can also make use of the awesome icons that comes with it. To add that to angular project, just include the following in the in the `src/index.html` file. 
+With the angular material, we can also make use of the awesome icons that comes with it. To add that to the angular project, just include the following in the in the `src/index.html` file. 
 
 ```html
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -145,21 +133,19 @@ With the angular material, we can also make use of the awesome icons that comes 
 
 ## What App  Will We Build With Angular Material?
 
-We will be focusing on building a sample application that makes us of the default theme that comes with Angular Material.We will build an an that serves like a content management system for blog posts. It will not use permanent data storage so will
-make use of JavaScript arrays. 
-
+We will be focusing on building a sample application that makes use of the default theme that comes with Angular Material.We will build an that serves as a content management system for blog posts. It will not use permanent data storage so will make use of JavaScript arrays. 
 Enough of the talking, let's get started!!!
 
 ### Creating Navigation bar of Our App.
 
 We will make use of Angular Material Components to create our navigation bar. When you visit the [website]("https://material.angular.io"), you can have a look at the 
-available components that we can make use of. For our navigation we will use `mat-sidenav` module. 
+available components that we can make use of. For our navigation, we will use `mat-sidenav` module. 
 To make Angular Material components available in our application, we need to import that module.
 
 #### Importing Material Components.
 
 We already have a `material.module.ts` in the `src/app folder` where we will import all the modules from `Angular Material` we are going to make use of in our application.
-Import the `MatSidenavModule` into created file.  The content of of `material.module.ts` must be like:
+Import the `MatSidenavModule` into created file.  The content of `material.module.ts` must be like:
 
 ```ts 
 import {NgModule} from '@angular/core'
@@ -178,7 +164,7 @@ import {
 export class MaterialModule {}
 ```
 
-Afterwards, we to make this module created available in our project, so we will import this file into `AppModule`
+Afterward, we to make this module created available in our project, so we will import this file into `AppModule`
 which is like a root definition file that defines all the pieces our angular app is made up off.
 You can import the MaterialModule we created as
 
@@ -308,17 +294,15 @@ export class MaterialModule {}
 
 ### Controlling Layout of Angular Material Applications.
 
-Grid system is not part of the Angular Material, we can use Flex Layout package to control the layout of our application. 
-This is where the  `fxLayout` directive in our navigation bar comes from.
-It uses css flexbox to position these html elements nicely by passing the flexbox components as directives. 
+The grid system is not part of the Angular Material, we can use Flex Layout package to control the layout of our application. This is where the  `fxLayout` directive in our navigation bar comes from.
+It uses CSS flexbox to position these HTML elements nicely by passing the flexbox components as directives. 
 Install it with `npm install @angular/flex-layout` and import into `src/app.module.ts` 
 as `import {FlexLayoutModule} from '@angular/flex-layout';`  and as  we always do, add the imported module to the imports array in `@NgModule`. 
-In our navigation bar we made use of some directives like alligning some elements to the its right end as well as hiding those element on 
-smaller screen size. You can explore more on the package later.
+In our navigation bar, we made use of some directives like aligning some elements to its right end as well as hiding that element on smaller screen size. You can explore more of the package later.
 Let's test our app by running `ng serve` command. This will compile the app for us. Once compilation is successful, we can test that in our browser 
 with `http://localhost:4200`.
+But still the navigation still not looks nice, let's add the following stylesheets to your `app.component.css` file;
 
-But still the navigation is still not look nice, let's add the following stylesheets to your `app.component.css` file;
 
 ```css
 mat-sidenav-container, mat-sidenav-content, mat-sidenav {
@@ -363,11 +347,11 @@ a:active {
 We just have one component that only renders the navigation. We can add extra components to this application by using the `CLI`
 We will create the following components:
 * Welcome - provides little details about the app
-* dashboard - displays table of blog posts
-* post-dialog - Modal to add new post
+* dashboard - displays a table of blog posts
+* post-dialog - Modal to add a new post
 You can create these with the command `ng g c name_of_component`. I will name my component `welcome`. Since we have two modules in the src folder, the command will not be 
 able to identify which module it should import these created components.We can solve this by add `--module app.module` flag to our command. 
-In all the command will be `ng g c welcome --module app.module`. Open  the html file of the `welcome component` and add the following content:
+In all the command will be `ng g c welcome --module app.module`. Open  the HTML file of the `welcome component` and add the following content:
 
 ```html
 <div style="text-align:center">
@@ -403,7 +387,7 @@ export class AppRouters {}
 ```
 
 Creating routes is basically about making use of angular router which will help you to create 
-urls that corresponds to  specific components. This file will help create two routes for our app
+URLs that correspond to specific components. This file will help create two routes for our app
 which will be `http://localhost:4200 and http://localhost:4200/dashboard` 
 We can now add links to our navigation bar items and also add `router-outlet` to let us navigate between pages. For example, the dashboard item can be linked to `dashboard` route.
 Modify the `app.component.html` file to 
@@ -507,8 +491,7 @@ export interface Post {
 }
 ```
 
-Create a file as `srs/app/models/Post.ts` and add the interface code to it.  We can now use this blog post interface to build a data service that will help 
-perform certain operations on our blog post data. To do so, we can make use of the `CLI`. Run `ng g s data/data --module app.module` command. Once the file is created, 
+Create a file as `src/app/models/Post.ts` and add the interface code to it.  We can now use this blog post interface to build a data service that will help perform certain operations on our blog post data. To do so, we can make use of the `CLI`. Run `ng g s data/data --module app.module` command. Once the file is created, 
 add to the `data.service.ts` file the code below;
 
 ```ts 
@@ -640,7 +623,7 @@ In the `dashboard.component.html` replace everything with the following content;
    </div>
 ```
 
-Here, we are making of some `Angular Material Components like mat-card, mat-button and mat-table`. Import them as modules into the `material.module.ts` file we have been working with 
+Here, we are making some `Angular Material Components like mat-card, mat-button, and mat-table`. Import them as modules into the `material.module.ts` the file we have been working with 
 over time.
 Let's add stylesheets to our dashboard component to make it look better. In our `dashboard.component.css` file, add the following content;
 
@@ -667,15 +650,13 @@ a {
 
 ### Adding Data to our App.
 
-We are almost there to have a complete working application. In our data service, we added the functionality to add and delete data but we have not done that 
-yet. In order to add data, we will utilize material components to create a form. We also don't want to just know who added a blog post to our application so 
-we will have to secure the app in a certain we. Let's make use of Auth0 authentication service. 
+We are almost there to have a complete working application. In our data service, we added the functionality to add and delete data but we have not done that yet. In order to add data, we will utilize material components to create a form. We also don't want to just know who added a blog post to our application so we will have to secure the app to a certain we. Let's make use of Auth0 authentication service. 
 
 ## Securing App  with Auth0.
 
 Using Auth0 authentication service is easy, you just have to create an account at [Auth0.com](https://auth0.com). Once you have an account, we following the following procedure to 
 provide authentication to our application;
-* Create  a new application by clickin on `New Application` button in your dashboard page.
+* Create a new application by clicking on `New Application` button on your dashboard page.
 * Give a name to your App and select `Single Page Web Applications`. Then click on create. This will create a new application for you. 
 * You will be asked to choose What technology are you using for your web app? Select `Angular2+`. Great we can now follow the instructions on the page 
 to authenticate our app by 
@@ -740,7 +721,7 @@ export class AuthService {
 }
 ```
 
-We can now make use of the this auth.service in our app. We can now allow users to sign up and login in with this service. Let's modify our navigation to 
+We can now make use of this auth.service in our app. We can now allow users to sign up and log in to this service. Let's modify our navigation to; 
 
 ```html
 <mat-sidenav-container>
@@ -828,9 +809,8 @@ We can now make use of the this auth.service in our app. We can now allow users 
 ```
 
 On the login item, we are showing it only if the user is not authenticated.  Some other navigation items are otherwise.
-When the user clicks on that login button, we can use the Auth0 service to handle allow the user to register and be authaurized to use the app. 
-
-import the AuthService into the `App component` TypeScript file as ;
+When the user clicks on that login button, we can use the Auth0 service to handle allow the user to register and be authorized to use the app. 
+Import the AuthService into the `App component` TypeScript file as ;
 
 ```ts
 import { AuthService } from '../auth/auth.service';
@@ -844,8 +824,7 @@ Inject it into the `AppComponent class constructor as;
   }
 ```
 
-Now, users can login to our application user Auth0 services. One problem we have now is that when setting up our application on Auth0 platform, we 
-specified a route for a `callback` but we have not created that yet. Let's do that in our `app.routes.ts` file as 
+Now, users can log in to our application user Auth0 services. One problem we have now is that when setting up our application on Auth0 platform, we specified a route for a `callback` but we have not created that yet. Let's do that in our `app.routes.ts` file as 
 
 ```ts
 ...
@@ -856,12 +835,12 @@ specified a route for a `callback` but we have not created that yet. Let's do th
 
 ## Associating Data with the App -- Part 2.
 
-We have delete and add blog post functionalities but they are not working now. Let's work on those functionalities.
+We have a delete and add blog post functionalities but they are not working now. Let's work on those functionalities.
 
 ### Completing the Deleting Data Functionaliy.
 
 We want to delete items in our dashboard, let's allow deletion if the user is authenticated. 
-Now  we can make use of the auth service innstance to check is the user is authenticated before deleting a post. 
+Now we can make use of the auth service instance to check if the user is authenticated before deleting a post. 
 We will need to import the `AuthService` in our `Dashboard Component`  TypeScript file as ;
 
 ```ts
@@ -900,7 +879,7 @@ invoke the `deletePost(index)` method in our `data service`.
 ```
 
 In the `DashboardComponent` class, we have to implement `deletePost(element.position)` method that will call the  `deletePost(index)` method in our `data service` to be invoked
-when a user click on the delete button.
+when a user clicks on the delete button.
 
 ```ts
   deletePost(id){
@@ -915,8 +894,7 @@ when a user click on the delete button.
 
 ### Completing the Adding Data Functionality.
 
-As we mentioned earlier, we wanted to be able to add blog post to our data but we don't want anyone to add data just like that so we will have to 
-also make sure the user can only add once authenticated. We can achieve this by adding `*ngIf="auth.isAuthenticated()"` directive to wrapping div of `Add Post`
+As we mentioned earlier, we wanted to be able to add a blog post to our data but we don't want anyone to add data just like that so we will have to also make sure the user can only add once authenticated. We can achieve this by adding `*ngIf="auth.isAuthenticated()"` directive to wrapping div of `Add Post`
 button as;
 
 ```html
@@ -938,7 +916,7 @@ Right after the closing div of the Add Post `code block` add the following piece
 </div>
 ```
 
-We will  make of `Angular Material Dialog` to create a modal that contains a form to add data to our data store. Let's create that with a component for this with 
+We will make of `Angular Material Dialog` to create a modal that contains a form to add data to our data store. Let's create that with a component for this with 
 `ng g c post-dialog --module app.module` command. 
 Add the following to the `post-dialog-component.html` file;
 
@@ -967,10 +945,10 @@ Add the following to the `post-dialog-component.html` file;
 </div>
 ```
 
-In the html file, you can see we are making use of `mat-dialog, mat-input, mat-select` from the `Angular Material`.
+In the HTML file, you can see we are making use of `mat-dialog, mat-input, mat-select` from the `Angular Material`.
 You need to import them as we did earlier in our `material.module.ts` file.
 We will need the `FormsModule ` from `@angular/forms` in order to operate on our form. Import that into the `src/app/app.module.ts` file 
-and add it to  the `imports` property of `@NgModule` as usual.
+and add it to the `imports` property of `@NgModule` as usual.
 
 Add some stylesheet to the `post-dialog-component.css` as;
 
@@ -1027,9 +1005,8 @@ export class PostDialogComponent {
 ```
 
 Our `PostDialogComponent` component has a method to submit the data to our data service as well as a method to close the dialog. 
-To make our button open up this dialog box, we need to tell it to do so by binding a click event to the button as well as 
-add to the  `@NgModule` an `entryComponents` with `[PostDialogComponent]` as value. Open the `dashboard.component.html` and 
-modify the button we created before to;
+To make our button open up this dialog box, we need to tell it to do so by binding a click event to the button as well as add to the  `@NgModule` an `entryComponents` with `[PostDialogComponent]` as value. Open the `dashboard.component.html` and 
+modify the button we created before too;
 
 ```ts
 <div class="blocks" *ngIf="auth.isAuthenticated()">
@@ -1054,8 +1031,7 @@ openDialog(): void {
 }
 ```
 
-We can infere the method makes use of `this.dialog` which is an instance of `MatDialog`. We can import and inject that into our constructor. Also, the method 
-is making use of `PostDialogComponent` which we need to import.  Let's do so; 
+We can infer the method makes use of `this.dialog` which is an instance of `MatDialog`. We can import and inject that into our constructor. Also, the method is making use of `PostDialogComponent` which we need to import.  Let's do so; 
 
 ```ts 
 ...
