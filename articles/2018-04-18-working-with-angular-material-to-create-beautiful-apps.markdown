@@ -131,7 +131,7 @@ With the angular material, we can also make use of the awesome icons that comes 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 ```
 
-## What App  Will We Build With Angular Material?
+## The kind of Appliction we will be Build With Angular Material?
 
 We will be focusing on building a sample application that makes use of the default theme that comes with Angular Material.We will build an that serves as a content management system for blog posts. It will not use permanent data storage so will make use of JavaScript arrays. 
 Enough of the talking, let's get started!!!
