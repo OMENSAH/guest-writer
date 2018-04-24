@@ -1046,7 +1046,7 @@ import { MatDialog } from '@angular/material';
 Now, we have a working adding blog post functionality. 
 
 ## Conclusion
-Great, we come a long way to get this done. So far we have been able to learn how we can make use of `Angular Material Components`. 
+Great, we come a long way to get this done. So far we have been able to learn how we can make use of `Angular Material Components`. Aside the Angular Material, the article made use of various Angular concepts like EventEmitter , Service, Interface, Dependency Injection, Observables, which are not discussed here but you can later explore these concepts.
 You can find the full source code [here](https://github.com/OMENSAH/project).
 
 
