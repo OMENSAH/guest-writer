@@ -1002,7 +1002,8 @@ export class PostDialogComponent {
 ```
 
 Our `PostDialogComponent` component has a method to submit the data to our data service as well as a method to close the dialog. 
-To make our button open up this dialog box, we need to tell it to do so by binding a click event to the button as well as add to the  `@NgModule` an `entryComponents` with `[PostDialogComponent]` as value. Open the `dashboard.component.html` and 
+To make our button open up this dialog box, we need to tell it to do so by binding a click event to the button as well as add   an `entryComponents` property with `[PostDialogComponent]` as value to `@NgModule` in `app.module.ts` file. 
+Open the `dashboard.component.html` and 
 modify the button we created before too;
 
 ```ts
@@ -1040,10 +1041,8 @@ import { MatDialog } from '@angular/material';
   }
 ```
 
-Now, we have a working adding blog post functionality. 
-
 ## Conclusion
-Great, we come a long way to get this done. So far we have been able to learn how we can make use of `Angular Material Components`. Aside the Angular Material, the article made use of various Angular concepts like EventEmitter , Service, Interface, Dependency Injection, Observables, which are not discussed here but you can later explore these concepts.
+Great, we come a long way. So far we have been able to learn how we can make use of `Angular Material Components`. Aside the Angular Material, the article made use of various Angular concepts like EventEmitter , Service, Interface, Dependency Injection, Observables, which are not discussed here but you can later explore these concepts.
 You can find the full source code [here](https://github.com/OMENSAH/project).
 
 
