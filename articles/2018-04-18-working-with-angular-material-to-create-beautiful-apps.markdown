@@ -40,7 +40,7 @@ Open the project with your favorite IDE or editor.  The folder structure has a l
 
 ### Install Angular Material and Angular CDK.
 
-Navigate to the root of the project in your terminal or command line with `cd name_of_poject` and run 
+Navigate to the root of the project in your terminal or command line with `cd path/to name_of_poject` and run 
 `npm install --save @angular/material @angular/cdk` command. 
 
 ### Install Animations Module.
