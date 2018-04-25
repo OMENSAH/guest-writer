@@ -810,7 +810,7 @@ When the user clicks on that login button, we can use the Auth0 service to handl
 Import the AuthService into the `App component` TypeScript file as ;
 
 ```ts
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from './auth/auth.service';
 ```
 
 Inject it into the `AppComponent class constructor as;
