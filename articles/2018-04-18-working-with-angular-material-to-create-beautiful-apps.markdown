@@ -132,7 +132,7 @@ With the angular material, we can also make use of the awesome icons that comes 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 ```
 
-## The kind of Appliction we will be Build With Angular Material?
+## The kind of Appliction we will build with Angular Material.
 
 We have spent some time setting up the environment to work with Angular Material. Let's now look at the kind of application we are going to build with our setup. Also, by the way, you can use this setup in any Angular Material project.
 We will be focusing on building a sample application that makes use of the default theme that comes with Angular Material. The app is going to be a simple content management system for blog posts where you can just add and delete blog posts displayed in tabular form. It will not use permanent data storage so will make use of JavaScript arrays. 
