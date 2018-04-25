@@ -30,7 +30,7 @@ Let's start building a prototype app with Angular and Angular Material. We need 
 
 To work with angular, we need `Node.js` and `Angular CLI` installed. `Node.js` will help to provide the packages needed by the `CLI` to work. For example the development server package.  
 `Angular Command Line Interface (CLI)` is a tool that creates a new angular project for us. We need it because an angular project is more than ` HTML and script` files. An angular project uses `TypeScript` which needs to be optimized and run on some server, so we need a setup with more complex build workflow that uses third-party packages for optimization and builds stuff, the `CLI` just give us the workflow out of the box.
-After installing Node.js, you can now install the CLI with `npm install -g @angular/cli `.  
+If you don't have Node.js installed, visit [Node.js website] (https://nodejs.org/en/download/) to down and install that. After installing Node.js, you can now install the CLI with `npm install -g @angular/cli `.  
 Depending on the setup of your computer, you might need to install as an admin, UNIX users should start with `sudo`. 
 
 ### Create a project.
