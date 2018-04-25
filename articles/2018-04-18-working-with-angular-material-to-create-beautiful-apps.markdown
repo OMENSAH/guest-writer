@@ -347,6 +347,7 @@ We will create the following components:
 * Welcome - provides little details about the app
 * dashboard - displays a table of blog posts
 * post-dialog - Modal to add a new post.
+
 You can create these with the command `ng g c name_of_component`. I will name my component `welcome`. Since we have two modules in the src folder, the command will not be 
 able to identify which module it should import these created components.We can solve this by add `--module app.module` flag to our command. 
 In all the command will be `ng g c welcome --module app.module`. Open  the HTML file of the `welcome component` and add the following content:
