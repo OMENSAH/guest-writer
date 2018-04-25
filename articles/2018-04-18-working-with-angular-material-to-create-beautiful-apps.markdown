@@ -35,7 +35,8 @@ Depending on the setup of your computer, you might need to install as an admin, 
 
 ### Create a project.
 
-Once the installation is finished, let us create an angular project with `ng new  name_of_poject`.  Open the project with your favorite IDE or editor.  The folder structure has a lot of files. But where will be working with a lot is the src folder. 
+Once the installation is finished, let us create an angular project with `ng new  name_of_poject`. **NB: Replace name_of_project with any name you want to give to the project**.
+Open the project with your favorite IDE or editor.  The folder structure has a lot of files. But where will be working with a lot is the src folder. 
 
 ### Install Angular Material and Angular CDK.
 
