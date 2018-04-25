@@ -97,7 +97,7 @@ also `exports` property as well to outsource these modules.
 We can now import this created module in the root definition file(` app.module.ts `) as;
 
 ```ts
-import {MaterialModule} from './material.module.ts';
+import {MaterialModule} from './material.module';
 ```
 
 This helps to access to all those material components anywhere in our project. 
