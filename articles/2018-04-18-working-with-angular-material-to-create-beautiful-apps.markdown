@@ -20,7 +20,7 @@ Angular is an amazing frontend framework with which you can build powerful web a
 
 It is a third party package used in an Angular project. 
 At its core is an Angular Component Suite which is made up of pre-built styled angular components.
-With angular, the entire app is a composition of components and instead of building and styling components from the group up, you can leverage with Angular Material which provides out of the box styled components that follow the Material Design Spec. This is the Spec used by Google in the Android operating system and also very popular on the web due to it beautiful UI utilities.
+With angular, the entire app is a composition of components and instead of building and styling components from the group up, you can leverage with Angular Material which provides out of the box styled components that follow the [Material Design Spec](https://material.io/guidelines/). This is the Spec used by Google in the Android operating system and also very popular on the web due to it beautiful UI utilities.
 
 ## Get Setup.
 
