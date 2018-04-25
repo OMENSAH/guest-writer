@@ -164,7 +164,7 @@ import {
 })
 export class MaterialModule {}
 ```
-To use these modules in the `material.module.ts`, we will import this file into `app.module.ts` file which is like a root definition file that defines all the pieces our angular app is made up off.
+To use these modules in the `material.module.ts`, we will import this file into `app.module.ts` file which is like a root definition file that defines all the pieces our angular app is made up of.
 After importing `MaterialModule` from `material.module.ts` file into `app.module.ts`, `app.module.ts` must look like this;
 
 ```ts
@@ -190,7 +190,7 @@ export class AppModule { }
 
 We can now work with this imported modules in our app. 
 ### Working with Angular Material Components
-We will first create a navigation bar in Let's work with that in our AppComponent. In `src/app/app.component.html` file, replace everything with the code below;
+To create the navigation bar, let's do that in the `AppComponent`. In `src/app/app.component.html` file, replace everything with the code below;
 
 ```html
 <mat-sidenav-container>
