@@ -18,7 +18,7 @@ Angular is an amazing frontend framework with which you can build powerful web a
 
 ## So Exactly is Angular Material?
 
-A is a third party package used in an Angular project. 
+It is a third party package used in an Angular project. 
 At its core is an Angular Component Suite which is made pre-built styled angular components.
 With angular, the entire app is a composition of components and instead of building and styling components from the group up, you can leverage with Angular Material which provides out of the box styled components that follow the Material Design Spec. This is the Spec used by Google in the Android operating system and also very popular on the web due to it beautiful UI utilities.
 
