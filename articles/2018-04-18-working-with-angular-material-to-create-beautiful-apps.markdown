@@ -146,7 +146,7 @@ To make Angular Material components available in our application, we need to imp
 
 #### Importing Material Components.
 
-We already have a `material.module.ts` in the `src/app folder` where we will import all the needed modules from `Angular Material` for our sample application. We said we will make use of the `mat-sidenav` module from Angular Material for our naviagation bar. `mat-sidenav` module can be imported with the name `MatSidenavModule`. This is how we name the Angular Modules in our imports and exports property of @NgModule in our `material.module.ts` file. Let's go ahead and import that.
+We already have a `material.module.ts` in the `src/app folder` where we will import all the needed modules from `Angular Material` for our sample application. We said we will make use of the `mat-sidenav` module from Angular Material for our naviagation bar. `mat-sidenav` module can be imported with the name `MatSidenavModule`. This is how we name the Angular Modules in our imports and exports property of `@NgModule` in our `material.module.ts` file. Let's go ahead and import that.
 
 ```ts 
 import {NgModule} from '@angular/core'
@@ -164,10 +164,8 @@ import {
 })
 export class MaterialModule {}
 ```
-
-Afterward, we to make this module created available in our project, so we will import this file into `AppModule`
-which is like a root definition file that defines all the pieces our angular app is made up off.
-You can import the MaterialModule we created as
+To use these modules in the `material.module.ts`, we will import this file into `app.module.ts` file which is like a root definition file that defines all the pieces our angular app is made up off.
+After importing `MaterialModule` from `material.module.ts` file into `app.module.ts`, `app.module.ts` must look like this;
 
 ```ts
 import { BrowserModule } from '@angular/platform-browser';
