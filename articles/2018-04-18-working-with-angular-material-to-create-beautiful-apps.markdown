@@ -655,12 +655,27 @@ Using Auth0 authentication service is easy, you just have to create an account a
 provide authentication to our application;
 * Create a new application by clicking on `New Application` button on your dashboard page.
 * Give a name to your App and select `Single Page Web Applications`. Then click on create. This will create a new application for you. 
-* You will be asked to choose What technology are you using for your web app? Select `Angular2+`. Great we can now follow the instructions on the page 
-to authenticate our app by 
+* You will be asked to choose What technology are you using for your web app? Select `Angular2+`
+ **NB** : This will create a quickstart guide on how to create Authentication service. In that auth.service code, we will copy the portion that instantiate auth0.WebAuth object and used that to replace  
+ 
+ ```ts
+   auth0 = new auth0.WebAuth({
+    clientID: 'REPLACE WITH WHAT YOU HAVE IN YOUR APP DASHBOARD ',
+    domain: 'REPLACE WITH WHAT YOU HAVE IN YOUR APP DASHBOARD',
+    responseType: 'REPLACE WITH WHAT YOU HAVE IN YOUR APP DASHBOARD',
+    audience: 'REPLACE WITH WHAT YOU HAVE IN YOUR APP DASHBOARD',
+    redirectUri: 'http://localhost:4200/callback',
+    scope: 'openid'
+  });
+ ```
+ in our `src/app/auth/auth.service.ts` file.
+ 
+ Great we can now follow the instructions on the page to authenticate our app by 
  * installing the `auth0.js` library with `npm install --save auth0-js`
  * Under the settings section of the page, add `http://localhost:4200/callback` as the Allowed Callback URLs.
  * We will create an authentication service with `ng g s auth/auth --module app.module` command. 
  * Once the auth.service file is created, add the following content to the file;
+ **NB** : 
 
 ```ts
 import { Injectable } from '@angular/core';
@@ -852,19 +867,6 @@ Inject it into the `Dashboard` class constructor as;
   }
 ```
 
-
-
-```ts 
-deletePost(id){
-  if(this.auth.isAuthenticated()){
-    this.dataService.deletePost(id)
-    this.dataSource = new PostDataSource(this.dataService);
-  }else{
-      alert("Login in Before")
-  }
-}
-```
-
 To implement our delete functionality we need to modify the `dashboard.component.html` file by binding a click event to our delete element which will 
 invoke the `deletePost(index)` method in our `data service`.  
 
@@ -875,8 +877,7 @@ invoke the `deletePost(index)` method in our `data service`.
 </a> 
 ```
 
-In the `DashboardComponent` class, we have to implement `deletePost(element.position)` method that will call the  `deletePost(index)` method in our `data service` to be invoked
-when a user clicks on the delete button.
+In the `DashboardComponent` class, we have to implement `deletePost(element.position)` method that will call the `deletePost(index)` method in our `data service` to be invoked when a user clicks on the delete button.
 
 ```ts
   deletePost(id){
@@ -891,8 +892,7 @@ when a user clicks on the delete button.
 
 ### Completing the Adding Data Functionality.
 
-As we mentioned earlier, we wanted to be able to add a blog post to our data but we don't want anyone to add data just like that so we will have to also make sure the user can only add once authenticated. We can achieve this by adding `*ngIf="auth.isAuthenticated()"` directive to wrapping div of `Add Post`
-button as;
+As we mentioned earlier, we wanted to be able to add a blog post to our data but we don't want anyone to add data just like that so we will have to also make sure the user can only add once authenticated. We can achieve this by adding `*ngIf="auth.isAuthenticated()"` directive to wrapping div of `Add Post`button in `dashboard.component.html` file as;
 
 ```html
 <div class="blocks" *ngIf="auth.isAuthenticated()">
