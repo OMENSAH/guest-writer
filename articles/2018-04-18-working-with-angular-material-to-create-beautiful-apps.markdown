@@ -146,8 +146,7 @@ To make Angular Material components available in our application, we need to imp
 
 #### Importing Material Components.
 
-We already have a `material.module.ts` in the `src/app folder` where we will import all the modules from `Angular Material` we are going to make use of in our application.
-Import the `MatSidenavModule` into created file.  The content of `material.module.ts` must be like:
+We already have a `material.module.ts` in the `src/app folder` where we will import all the needed modules from `Angular Material` for our sample application. We said we will make use of the `mat-sidenav` module from Angular Material for our naviagation bar. `mat-sidenav` module can be imported with the name `MatSidenavModule`. This is how we name the modues in our imports and exports property of @NgModule in our `material.module.ts` file. Let's go ahead and import that.
 
 ```ts 
 import {NgModule} from '@angular/core'
