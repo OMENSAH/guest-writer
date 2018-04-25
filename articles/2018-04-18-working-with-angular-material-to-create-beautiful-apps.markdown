@@ -385,9 +385,7 @@ const routes: Routes = [
 export class AppRouters {}
 ```
 
-Creating routes is basically about making use of angular router which will help you to create 
-URLs that correspond to specific components. This file will help create two routes for our app
-which will be `http://localhost:4200 and http://localhost:4200/dashboard` 
+Creating routes is basically about making use of angular router which will help to create URLs that correspond to specific components. This file will help create two routes for our app which will be `http://localhost:4200 and http://localhost:4200/dashboard` 
 We can now add links to our navigation bar items and also add `router-outlet` to let us navigate between pages. For example, the dashboard item can be linked to `dashboard` route.
 Modify the `app.component.html` file to 
 
@@ -466,13 +464,13 @@ Modify the `app.component.html` file to
 </mat-sidenav-container>
 ```
 
-We will need to import  our routes into the `app.component.ts` file as;
+We will need to import  our routes into the `app.module.ts` file as;
 
 ```ts
 import { AppRouters } from './app.routes';
 ``` 
 
-Afterwards, add `AppRouters` to the import property of `@NgModule`.
+Afterwards, add `AppRouters` to the imports property of `@NgModule`.
 
 ## Associating Data with the App -- Part 1.
 
@@ -532,7 +530,7 @@ export class DataService {
   }
 }
 ```
-
+In our data service, we have two different arrays; one for storing categories of posts and the other one for storing blog posts. 
 We can now create our dashboard to make use of the data service to render the data to our databoard page. 
 In the `dashboard.component.ts` file, add the the following code;
 
@@ -599,7 +597,7 @@ In the `dashboard.component.html` replace everything with the following content;
                       </ng-container>
                       <ng-container matColumnDef="category">
                         <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
-                        <mat-ell *matCellDef="let element"> {{element.category}} </mat-cell>
+                        <mat-cell *matCellDef="let element"> {{element.category}} </mat-cell>
                       </ng-container>
                       <ng-container matColumnDef="delete">
                         <mat-header-cell *matHeaderCellDef></mat-header-cell>
