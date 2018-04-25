@@ -189,7 +189,9 @@ export class AppModule { }
 ```
 
 We can now work with this imported modules in our app. 
+
 ### Working with Angular Material Components
+
 To create the navigation bar, let's do that in the `AppComponent`. In `src/app/app.component.html` file, replace everything with the code below;
 
 ```html
@@ -262,9 +264,7 @@ To create the navigation bar, let's do that in the `AppComponent`. In `src/app/a
 ```
 
 Here, we are making use of `Angular Material Modules like like mat-icon, mat-toolbar, mat-list` and some directives 
-like `fxLayout`. 
-Basically, all the modules from `Angular Material` are prefixed with `mat`. And to use any of these modules in our app, we just have to import such modules 
-into `material.module.ts` file as we did earlier.  After adding the modules, `material.module.ts` should look like this;
+like `fxLayout`. As we now know how to import modules from `Angular Material`. You can go ahead and do that. After adding these modules, `material.module.ts` must look like this;
 
 ```ts 
 import {NgModule} from '@angular/core'
