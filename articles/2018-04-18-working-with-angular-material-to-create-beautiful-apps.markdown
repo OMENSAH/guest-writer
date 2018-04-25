@@ -299,7 +299,7 @@ In our navigation bar, we made use of some directives like `fxLayout fxLayoutAli
 
 Let's test our app by running `ng serve` command. This will compile the app for us. Once compilation is successful, we can test that in our browser 
 with `http://localhost:4200`.
-But still the navigation still not looks nice, let's add the following stylesheets to your `app.component.css` file;
+But the navigation does not look nice, let's add the following stylesheets to the `app.component.css` file;
 
 
 ```css
@@ -346,7 +346,7 @@ We just have one component that only renders the navigation. We can add extra co
 We will create the following components:
 * Welcome - provides little details about the app
 * dashboard - displays a table of blog posts
-* post-dialog - Modal to add a new post
+* post-dialog - Modal to add a new post.
 You can create these with the command `ng g c name_of_component`. I will name my component `welcome`. Since we have two modules in the src folder, the command will not be 
 able to identify which module it should import these created components.We can solve this by add `--module app.module` flag to our command. 
 In all the command will be `ng g c welcome --module app.module`. Open  the HTML file of the `welcome component` and add the following content:
