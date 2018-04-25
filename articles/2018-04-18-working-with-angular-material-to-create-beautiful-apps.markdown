@@ -620,7 +620,7 @@ In the `dashboard.component.html` replace everything with the following content;
    </div>
 ```
 
-Here, we are making some `Angular Material Components like mat-card, mat-button, and mat-table`. Import them as modules into the `material.module.ts` the file we have been working with 
+Here, we are using some Angular Material Components like `mat-card, mat-button, and mat-table`. Import them as modules into the `material.module.ts` the file we have been working with 
 over time.
 Let's add stylesheets to our dashboard component to make it look better. In our `dashboard.component.css` file, add the following content;
 
