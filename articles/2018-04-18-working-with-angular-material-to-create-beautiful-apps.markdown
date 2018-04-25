@@ -293,11 +293,10 @@ export class MaterialModule {}
 
 ### Controlling Layout of Angular Material Applications.
 
-The grid system is not part of the Angular Material, we can use Flex Layout package to control the layout of our application. This is where the  `fxLayout` directive in our navigation bar comes from.
-It uses CSS flexbox to position these HTML elements nicely by passing the flexbox components as directives. 
-Install it with `npm install @angular/flex-layout` and import into `src/app.module.ts` 
-as `import {FlexLayoutModule} from '@angular/flex-layout';`  and as  we always do, add the imported module to the imports array in `@NgModule`. 
-In our navigation bar, we made use of some directives like aligning some elements to its right end as well as hiding that element on smaller screen size. You can explore more of the package later.
+Grid system is not part of the Angular Material, we can use Flex Layout package to control the layout of our application. This is where the  `fxFlex ` directive in our navigation bar comes from. It uses CSS flexbox to position these HTML elements nicely by passing the flexbox components as directives. 
+Install it with `npm install @angular/flex-layout` and import into `src/app.module.ts` as `import {FlexLayoutModule} from '@angular/flex-layout';`  and as we always do, add the imported module to the imports array in `@NgModule`. 
+In our navigation bar, we made use of some directives like `fxLayout fxLayoutAlign` and other `fxFlex` directives. For instance the `fxLayoutAlign="flex-end"`  is aligning all its HMTL elements to its right end. `fxHide.xs` is hiding its HMTL elements on smaller screen size. You can explore more of the package later.
+
 Let's test our app by running `ng serve` command. This will compile the app for us. Once compilation is successful, we can test that in our browser 
 with `http://localhost:4200`.
 But still the navigation still not looks nice, let's add the following stylesheets to your `app.component.css` file;
