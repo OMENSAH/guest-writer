@@ -1,0 +1,1192 @@
+---
+layout: post
+title: "Developing Modern Apps with React Material"
+description: "React components that implement Google's Material Design"
+date: "2019-04-27 08:30"
+author:
+  name: "Oliver Mensah"
+  url: "OliverMensahDev"
+  mail: "olivermensah96@gmail.com"
+  avatar: "https://twitter.com/OliverMensahDev/profile_image?size=original"
+related:
+- 2017-11-15-an-example-of-all-possible-elements
+---
+
+**TL:DR:** In this article, you will learn about the basic concepts of React Material-UI while developing a simple event management dashboard.
+
+## Prerequisites
+
+In this tutorial, you will learn how to setup Material-UI library in any React-based web applications. Hence having a prior experience working with [React](https://reactjs.org/) is recommended.
+
+However, for those who have no prior `React` experience but have been working on general web development to get started with tutorial you need to have Node.js and NPM setup on your development environment. If you don't have them installed, kindly, [follow these instructions on the official documentation to install Node.js](https://nodejs.org/en/download/). 
+
+Finally, React web applications development workflow has been enhanced with Command Line Interface(CLI) tool hence you are going to be working from your terminal very often. Get access to that and let's get started.
+
+## What You Will Build
+
+After going through the basic concepts, you will be working on a sample project that utilises most of the React Material-UI components. This project is a simple event management application that allows registered users to store an event they have hosted. A user logs in to the application using `Auth0`. Once they are logged in the have access to see thier account profile and dashboard where they can create their events.
+
+Image
+
+
+## React Material-UI Introduction
+
+React Material-UI accoriding to its [website](https://material-ui.com/), it is the world's most popular React UI framework. Basically, it is made of React components that implement Google's Material Design. 
+
+With React Material UI, you can easily make use of these Material Design elements from Google in your React based applications. Since it is made for building good looking applications, it provides other utilities like `Icons` and `Themes` which you can add to your applications.
+
+
+## Setting up Material-UI with React.
+
+To get started with Material-UI, you have to add it as a dependency to your `React` application. Let's first create a `React` project with [create-react-app](https://facebook.github.io/create-react-app/), a tool that is developed and maintained by facebook team for creating pre-configured React project. 
+
+If you don't have it installed on your development enviroment, you need to. To install, you will need `Node.js` installed which comes with a utiltiy called `NPM` that allows making used of JavaScript packages easier. Let's use this `NPM` to install the create-react-app package. 
+
+```bash
+npm i -g  create-react-app
+```
+
+**NB::** If you get permission issues then run this command us an admin. 
+
+Now, you go ahead to create the `React` project. You can achieve this with any of these instructions;
+
+1. Create a folder and navigate to such folder with the `cd ` terminal utility function.
+
+```bash
+create-react-app .
+```
+
+2. Create project with a given folder name
+
+```bash
+create-react-app folderName 
+```
+
+
+### Cleaning App The Generated Boilerplate.
+
+The `create-react-app` generated pre-configured React project and you will not need some of the files hence we need to clean up the project. Just to use what you need but you can go ahead without cleaning up. To clean up, you will get ride of the test file, `App.test.js`, `logo.svg`, `serviceworkers.js`, remove the content of `App.css`, `index.css`. Update `index.js` to have the content below.
+
+```js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+
+ReactDOM.render(<App />, document.getElementById('root'));
+```
+
+Also update the `App.js` to the content below;
+
+```js
+import React from 'react';
+import './App.css';
+
+function App() {
+  return (
+    <div>
+    </div>
+  );
+}
+
+export default App;
+```
+
+Lots of work, right? I guess you did that. Finally let's test to see if the project outputs empty content in the browser without any error in the console as well.  Achieve this by issuing `npm start` command at the projects' root directory in your terminal.
+
+### Installing and Working with Material-UI
+
+Adding Material-UI library is the same as adding other library to `React` project. Type the following command  in your terminal to install the `Material-UI`.
+
+```bash
+npm install @material-ui/core 
+```
+
+Now that you have `Material-UI` added to your project, you got to use some of the components that come with.  Let's just add `Button` component from `Material-UI` to the project your created. In your `App.js` file, 
+
+```js
+import React from 'react';
+import './App.css';
+import Button from '@material-ui/core/Button';
+
+function App() {
+  return (
+    <div>
+      <Button variant="contained" color="primary">Test</Button>
+    </div>
+  );
+}
+
+export default App;
+```
+
+You just added `Button` component from the `Material-UI` from the library. You might note that the `Button` component includes props like:
+  1. variant: provides the visual style of the component. This can be either contained, outlined, fab.
+  2. color: gives that button a background color. It can be either primary, secondary, or default.
+
+Most of these props will be covered later. However, you can explore the properties of each component by visiting the `Material-UI` documentation.  
+
+### Installing and Working with Icons
+
+You can also add icons to your project, `React Material-UI` provides a pre-built icons that you can install and use in your project. You add these prebuild SVG icons using `@material-ui/icons` package.  Go ahead to install the package with this command;
+
+```bash
+npm install @material-ui/icons
+```
+After importing `info` icon to the project. The `App.js` file now looks like this;
+
+```js
+import React from 'react';
+import './App.css';
+import Button from '@material-ui/core/Button';
+import Info from "@material-ui/icons/Info";
+
+function App() {
+  return (
+    <div>
+      <Button variant="contained" color="secondary">
+        <Info/> Test
+      </Button>
+    </div>
+  );
+}
+export default App
+```
+
+**NB** To use a specific icon, you can visit [MATERIAL DESIGN ICONS](https://material.io/tools/icons) to find an icon and then you import it by pascal-casing its name.
+
+
+## Implementing the Sample Project
+
+So far, you have been able to dive into `React Material-UI`.  With our sample project, the user interface consists of material design elements. You will make use of Material-UI components to display tabular list of events' data as well create form to create event. It will consist of navigation bar on top which contains navigation drawer, dropdown list as well as navigation links. 
+
+To begin implementing our main sample project, you will need to clean up the `App.js` to:
+
+```js
+
+import React, { Component } from "react";
+import "./App.css";
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+
+      </div>
+    );
+  }
+}
+export default App;
+
+```
+
+This component will the root component that will hold other components. Let's go ahead to create our first component called the Navigation component.
+
+### Developing the Navigation component 
+
+Let's add some visuals to the application. First, you will add a navigation bar to the application.  This can be implemented using `Appbar` component from the `Material-UI` library. To create this new component ,create a new subfolder, `components`, in directory `src`. In the `components` folder create a subfolder to hold the file will contain the code. Thus, create `Header/Header.js` in the components folder. Add the code below to the newly created file.
+
+```js
+import React from 'react'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+const MenuAppBar = () => {
+    return(
+        <div>
+        <AppBar position="fixed">
+            <Toolbar>
+                <Typography variant="title" color="inherit">
+                  Sample Application
+                </Typography>
+            </Toolbar>
+        </AppBar>
+        </div>
+    )
+}
+export default MenuAppBar;
+```
+
+Here, you are making use of AppBar, Toolbar and Typography component from the Material-UI library to create the navigation bar. The component is then exported. You can now use it at the root component, `App.js` as below:
+
+```js
+import React, { Component } from "react";
+import "./App.css";
+
+import MenuAppBar from "./components/Header/Header";
+
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <MenuAppBar/>
+      </div>
+    );
+  }
+}
+export default App;
+```
+
+You got your first component implemented, you can go ahead to visualize it your browser. But there are other things you can add to this Navigation bar. Let's add a drawer to that. To implement the drawer, lets start to import some of the dependencies you will need to create a basic drawer in the `MenuAppBar` component.
+
+```js
+import Drawer from "@material-ui/core/Drawer";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Add from "@material-ui/icons/Add";
+import Info from "@material-ui/icons/Info";
+import Divider from "@material-ui/core/Divider";
+import List from "@material-ui/core/List";
+```
+
+With the drawer, you got to manage its state thus whether it is opened or closed hence you have to change the `MenuAppBar` from functional component to class component so as to manage the various states.
+
+```js
+class MenuAppBar extends React.Component {
+  
+  render() {
+    return (
+      <div>
+        <AppBar position="fixed">
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="Open drawer"
+            >
+              <MenuIcon />
+            </IconButton>
+
+            <Typography variant="title" color="inherit">
+              Home
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="persistent"  anchor="left" open={true}>
+          <div>
+            <IconButton >
+              <ChevronLeftIcon />
+            </IconButton>
+          </div>
+          <Divider />
+          <List>
+            <ListItem button>
+              <ListItemIcon>
+                <Info />
+              </ListItemIcon>
+              <ListItemText primary="About" />
+            </ListItem>
+
+            <ListItem button>
+              <ListItemIcon>
+                <Add />
+              </ListItemIcon>
+              <ListItemText primary="Add Event" />
+            </ListItem>
+          </List>
+        </Drawer>
+      </div>
+    );
+  }
+}
+export default MenuAppBar;
+```
+
+You just added a Drawer with two list items to the navigation bar. However, you could see the drawer is always open. The point is to click on the  MenuIcon to toggle the drawer. Adding up the functionality to  your `MenuAppBar` component, it now looks like this.
+
+```js
+class MenuAppBar extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      openDrawer: false
+    }
+  }
+
+  handleDrawerOpen = () => {
+    this.setState({ openDrawer: true });
+  };
+
+  handleDrawerClose = () => {
+    this.setState({ openDrawer: false });
+  };
+  
+  render() {
+    return (
+      <div>
+        <AppBar position="fixed">
+          <Toolbar>
+            <IconButton
+            color="inherit"
+            aria-label="Open drawer"
+            onClick={this.handleDrawerOpen}
+            >
+            ...
+          </Toolbar>
+        </AppBar>
+        <Drawer 
+          variant="persistent" 
+          anchor="left" 
+          open={this.state.openDrawer}>
+          <div>
+            <IconButton
+              onClick={this.handleDrawerClose}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </div>
+          ...
+      </div>
+    );
+  }
+}
+export default MenuAppBar;
+```
+
+Here, you added a state to the component to keep track of the drawer whether it is opened or closed which is managed by two methods; `handleDrawerOpen` and `handleDrawerClose`.  When the menuicon is clicked, it opens the drawer. The drawer has `>` icon which when clicked closes the drawer. You then updated the `Drawer` open probs to the `openDrawer`.  
+
+You will continue to make the navigation bar have a nice interation. When the menuicon is clicked to open the drawer, you should shift the navigation to the right and when it is closed it comes back to its actual position. This is achieved by just adding some few classes to the `AppBar `.  To create a class you are going to use [css-in-js](https://material-ui.com/customization/css-in-js/) approach which uses the higher-order component created by `withStyles` to inject an array of styles into the DOM as CSS, using JS.
+
+Before  your class, add the code below:
+
+```js
+const drawerWidth = 240;
+const styles = theme => ({
+  appBar: {
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    })
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen
+    })
+  }
+});
+```
+
+This will help create the styling of shifting the `AppBar` when the drawer is toggled. To use these classes on the `AppBar`, you have to import two components; `classNames` and `withStyles`. The className will also help in adding multiple classes to a component.
+
+```js
+import classNames from "classnames";
+import { withStyles } from "@material-ui/core/styles";
+```
+
+To inject that styles created so that you can uses the classes created you got to export `MenuAppBar` as module wrapped with a higher order function.
+
+```js
+export default withStyles(styles)(MenuAppBar);
+```
+
+Finally, you add the classes to the `AppBar` component as ;
+
+```js
+className={classNames(classes.appBar, {[classes.appBarShift]: this.state.openDrawer})}
+```
+
+So much work done here but when you check the current app especially after clicking the menuicon you can see there is a a lot of space between the drawer and the appbar. This can be solved by adding few styles to some elements.  In your styles, add the follow pieces of code:
+
+```js
+menuButton: {
+    marginLeft: 20,
+    marginRight: 20
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0
+  },
+  drawerPaper: {
+    width: drawerWidth
+  },
+  drawerHeader: {
+    display: "flex",
+    alignItems: "center",
+    padding: "0 8px",
+    ...theme.mixins.toolbar,
+    justifyContent: "flex-end"
+  }
+```
+
+From the above styling, `menuButton` will help create margin between the menu icon and the header text. `drawer` provides the width of the drawer while  `drawerPaper` and `drawerHeader` helps removes the margin between the drawer and the toolbar.
+
+Add these stylings to the few components elements like the drawer and menu icon. Update the menu icon right after toolbar to have `className` prop. 
+
+```js
+<Toolbar>
+  <IconButton
+    className={classNames(
+      classes.menuButton,
+      this.state.openDrawer
+    )}>
+    <MenuIcon />
+  </IconButton>
+  ...
+</Toolbar>  
+```
+
+Also, the drawer element can be updated to contain these classes and className. Afterwards, the parent element of the drawer, div element, must be styled as well.
+
+```js
+<Drawer
+  classes={{
+    paper: classes.drawerPaper
+  }}
+  className={classes.drawer}>
+  <div className={classes.drawerHeader}>
+    ...
+  </div>
+</Drawer>
+```
+In all,your `MenuAppBar` component's code must be like this;
+
+```js
+import React from "react";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+
+import Drawer from "@material-ui/core/Drawer";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Add from "@material-ui/icons/Add";
+import Info from "@material-ui/icons/Info";
+import Divider from "@material-ui/core/Divider";
+import List from "@material-ui/core/List";
+
+import classNames from "classnames";
+import { withStyles } from "@material-ui/core/styles";
+
+const drawerWidth = 240;
+const styles = theme => ({
+  appBar: {
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    })
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen
+    })
+  },
+  menuButton: {
+    marginLeft: 20,
+    marginRight: 20
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0
+  },
+  drawerPaper: {
+    width: drawerWidth
+  },
+  drawerHeader: {
+    display: "flex",
+    alignItems: "center",
+    padding: "0 8px",
+    ...theme.mixins.toolbar,
+    justifyContent: "flex-end"
+  }
+});
+
+class MenuAppBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      openDrawer: false
+    };
+  }
+
+  handleDrawerOpen = () => {
+    this.setState({ openDrawer: true });
+  };
+
+  handleDrawerClose = () => {
+    this.setState({ openDrawer: false });
+  };
+
+  render() {
+    const { classes } = this.props;
+
+    return (
+      <div>
+        <AppBar
+          position="fixed"
+          className={classNames(classes.appBar, {
+            [classes.appBarShift]: this.state.openDrawer
+          })}
+        >
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="Open drawer"
+              onClick={this.handleDrawerOpen}
+              className={classNames(classes.menuButton, this.state.openDrawer)}
+            >
+              <MenuIcon />
+            </IconButton>
+
+            <Typography variant="title" color="inherit">
+              Home
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          variant="persistent"
+          anchor="left"
+          open={this.state.openDrawer}
+          classes={{
+            paper: classes.drawerPaper
+          }}
+          className={classes.drawer}
+        >
+          <div className={classes.drawerHeader}>
+            <IconButton onClick={this.handleDrawerClose}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </div>
+          <Divider />
+          <List>
+            <ListItem button>
+              <ListItemIcon>
+                <Info />
+              </ListItemIcon>
+              <ListItemText primary="About" />
+            </ListItem>
+
+            <ListItem button>
+              <ListItemIcon>
+                <Add />
+              </ListItemIcon>
+              <ListItemText primary="Add Event" />
+            </ListItem>
+          </List>
+        </Drawer>
+      </div>
+    );
+  }
+}
+export default withStyles(styles)(MenuAppBar);
+```
+
+You are almost done implementing the naviagation bar but so far we have not added any navigation links yet.  You have `Home` as text on the menu. This will be converted to navigation link together with additional links. 
+
+Navigation requires routing to different URLS to load a page. However, routing utility does not come with React generated code, you have to install a package for that. `React-Router-Dom` is the package. Let's install it with the command;
+
+```bash
+  npm i react-router-dom
+```
+
+Then fromt the `react-router-dom` package, you will import `NavLink` module to as to create the links and you can do so with 
+
+```js
+import { NavLink} from "react-router-dom";
+```
+
+Already, the navigation bar has `Home`, this can be turned into a link by wrapping it with `NavLink` as bellow;
+
+```js
+<Typography variant="title" color="inherit">  
+  <NavLink
+    to="/"
+    style={{ textDecoration: "none", color: "white" }}>
+    Home
+  </NavLink>
+</Typography>
+```
+Few styles have been added to improve the Link. After saving the file and testing in the browser, you will get some errors. This is basically telling us the whole app is not setup to have routes. To solve this, lets wrap the whole application to use routes. Go to `index.js` and update the contents to;
+
+```js
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import { BrowserRouter, Route } from "react-router-dom";
+
+ReactDOM.render(
+  <BrowserRouter>
+    <Route component={App} />
+  </BrowserRouter>,
+  document.getElementById("root")
+);
+```
+Now when you hover over the home item on the navigation bar it turns into a clickable link.  Lets' creat another link item on the navigation bar after home as;
+
+```js
+<Typography variant="h6" color="inherit">
+  <NavLink
+    to="/dashboard"
+    style={{ textDecoration: "none", color: "white" }}>
+    Dashboard
+  </NavLink>
+</Typography>
+```
+
+After adding `Dashboard` Link, you could see both links are very close to each other. You can space them out by styling. Update your styles to have these two additional properties;
+
+```js
+const styles = theme => ({
+  ...
+  root: {
+    display: "flex",
+    flexGrow: 1
+  },
+  grow: {
+    flexGrow: 1,
+    marginLeft: 15
+  }
+})  
+```
+
+Then update the follow elements, the parent div of the component and the second navigation link item to have the styles that would help in spacing out the two links.
+
+```js
+class MenuAppBar extends React.Component {
+  ...
+  render(){
+    return(
+      <div className={classes.root}>
+        ...
+        <Typography 
+          variant="h6" 
+          color="inherit" 
+          className={classes.grow}>>
+          <NavLink
+            to="/dashboard"
+            style={{ textDecoration: "none", color: "white" }}
+          >
+            Dashboard
+          </NavLink>
+        </Typography>
+        ...
+      </div>
+    )
+  } 
+}
+```
+
+Also, in our drawer, the `About` item will be a link to `/about` page hence you need to implement navigation link for that as well. And that's how it looks like after adding the `NavLink`.
+
+```js
+<NavLink to="/about" style={{ textDecoration: "none" }}>
+  <ListItem button>
+    <ListItemIcon>
+      <Info />
+    </ListItemIcon>
+    <ListItemText primary="About" />
+  </ListItem>
+</NavLink>
+```
+
+Lastly, there is one feature on the naviagtion bar which has not yet been implemented. and that is the dropdown menu which has two items; `Account` and `Logout` items. To implement this, you need to import some components and icons from the `Material-UI` library. 
+
+```js
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+```
+
+From here, you can add these lines of code to your `Toolbar`. In the toolbar,right after the second naviation link, `Dashboard`, add these codes.
+
+```js
+<IconButton
+  color="inherit">
+  <AccountCircle />
+</IconButton>
+<Menu
+  anchorOrigin={{
+    vertical: "top",
+    horizontal: "right"
+  }}
+  anchorEl={this.state.anchorEl}
+  open={false}
+  onClose={this.handleClose}>
+  <MenuItem>
+    <NavLink
+      to="/account"
+      style={{ textDecoration: "none", color: "black" }}>
+      My Account
+      </NavLink>
+  </MenuItem>
+  <MenuItem>Logout</MenuItem>
+</Menu>
+```
+
+Here, you are using `IconButton` to create the list of popup menu elements. This menu has two elements, `My Account` and `Logout` with `My Account` as a link. In the menu, there is an `open` props that is currently set to false. One it is true, the pop will show. This means we have to handle its state as well.
+
+Update the state of the `MenuAppBar` component to have `anchorEl` as state property with value as null.  
+
+**NB** anchorEl is the DOM elements that will be positioned in the popover. Boolean value can be determined this anchorEL. Thus if `anchorEl` has value that is not null, it means there are items to be displayed in the popover if not return null. Truthy values can then be determined to show or hide the popOver depending on the anchorEl returned value. 
+
+Also, add these two methods to the `MenuAppBar` component to manipulate the state of `anchorEl`
+
+```js
+ handleMenuOpen = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleMenuClose = () => {
+    this.setState({ anchorEl: null });
+  };
+``` 
+
+`handleMenuOpen` should be called when the `IconButton` is clicked and `handleMenuClose` executes when the menu closes. You can update both the `Menu` and `IconButton` components to have these functionlities as show below;
+
+```js
+ <IconButton
+    onClick={this.handleMenuOpen}
+    color="inherit">
+    <AccountCircle />
+  </IconButton>
+  <Menu
+    anchorOrigin={{
+      vertical: "top",
+      horizontal: "right"
+    }}
+    open={showPopOver}
+    onClose={this.handleMenuClose}>
+```
+
+Also, you can observe that the `open` property has the value of `showPopOver` instead of the false value.  This `showPopOver` is obtained from the truthy value of `anchorEl`. Right after destructuring of the props;  `const { classes } = this.props; demonstrated below`, add the code below.
+
+```js
+const showPopOver = Boolean(this.state.anchorEl);
+```
+
+You have been able to achieve a navigation bar with almost its functionality achieve, later, you will hook in the remaining functionalities.
+
+
+### Developing the Homepage component
+
+The homepage has just a description  of the application as well as a button for the user to login. Let's go ahead to implement the Homepage component. 
+
+In your root directory, create a new folder called `pages`. Create a sub directory called `HomePage` which will hold `Homepage.js` file. In the newly created file., let's add these content;
+
+```js
+import React, { Component } from "react";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+
+import "./HomePage.css";
+
+class HomePage extends Component {
+  render() {
+    const { classes} = this.props;
+    return (
+      <div className="container">
+        <div className="overlay"/>
+        <div className="content">
+          <h1>Event Scheme</h1>
+          <Typography>
+            Let's help you create and manage your events.
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}>
+            Login
+          </Button>
+        </div>
+      </div>
+    );
+  }
+}
+export default HomePage;
+``` 
+
+Here, you are using `Button` and `Typography` components from `Material-UI`.
+Also, external css file named `HomePage.css` is imported. Create such file in the `HomePage` folder. After creating such file, add these css code to it.
+
+```css
+.container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  max-width: 960px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin: auto;
+  justify-content: center;
+  text-align: center;
+}
+
+.overlay {
+  height: 100vh;
+  position: absolute;
+  left: 0;
+  width: 100vw;
+  z-index: 1;
+  background: #225470;
+  opacity: 0.85;
+}
+
+.content {
+  z-index: 3;
+}
+
+.content h1 {
+  font-size: 50px;
+  margin-bottom: 0;
+}
+
+.content p {
+  font-size: 1.5rem;
+  display: block;
+  padding-bottom: 2rem;
+}
+```
+
+### Developing the About component
+
+Adding up the `About` component is just like what you implemented for the `HomePage` component. In your `pages` create another folder called `About`. In that `About` folder create `About.js` file.  With the `About` page, it uses `Stepper` component from `Material UI` to display content through a sequence of logical and numbered steps.  Add the following code this file;
+
+```js
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Stepper from "@material-ui/core/Stepper";
+import Step from "@material-ui/core/Step";
+import StepLabel from "@material-ui/core/StepLabel";
+import StepContent from "@material-ui/core/StepContent";
+import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1
+  },
+  button: {
+    marginTop: theme.spacing.unit,
+    marginRight: theme.spacing.unit
+  },
+  actionsContainer: {
+    marginBottom: theme.spacing.unit * 2
+  },
+  resetContainer: {
+    padding: theme.spacing.unit * 3
+  }
+});
+
+function getSteps() {
+  return ["About Us", "What We do?", "What Others are Saying?"];
+}
+
+function getStepContent(step) {
+  switch (step) {
+    case 0:
+      return `Success Scheme is the world's largest event management technology platform,
+       making sure millions of events happening accross the globe are well managed. 
+       We give event organizers the power to when it comes to event management`;
+    case 1:
+      return `At Success Scheme, we give power to event organizers when managing their events in just one place. 
+      Easier to sync across multipe devices and discovered by million of people on all social media platforms`;
+    case 2:
+      return `Try out different ad text to see what brings in the most customers,
+              and learn how to enhance your ads using features like ad extensions.
+              If you run into any problems with your ads, find out how to tell if
+              they're running and how to resolve approval issues. -- John Doe`;
+    default:
+      return "Unknown step";
+  }
+}
+
+class About extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeStep: 0
+    };
+  }
+
+  handleNext = () => {
+    this.setState(state => ({
+      activeStep: state.activeStep + 1
+    }));
+  };
+
+  handleBack = () => {
+    this.setState(state => ({
+      activeStep: state.activeStep - 1
+    }));
+  };
+
+  handleReset = () => {
+    this.setState({
+      activeStep: 0
+    });
+  };
+
+  render() {
+    const { classes } = this.props;
+    const steps = getSteps();
+    const { activeStep } = this.state;
+
+    return (
+      <div className={classes.root}>
+        <Grid container alignItems="center" justify="center">
+          <Stepper activeStep={activeStep} orientation="vertical">
+            {steps.map((label, index) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+                <StepContent>
+                  <Typography>{getStepContent(index)}</Typography>
+                  <div className={classes.actionsContainer}>
+                    <div>
+                      <Button
+                        disabled={activeStep === 0}
+                        onClick={this.handleBack}
+                        className={classes.button}
+                      >
+                        Back
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleNext}
+                        className={classes.button}
+                      >
+                        {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                      </Button>
+                    </div>
+                  </div>
+                </StepContent>
+              </Step>
+            ))}
+          </Stepper>
+          {activeStep === steps.length && (
+            <Paper square elevation={0} className={classes.resetContainer}>
+              <Typography>Thank you for getting to know us better.</Typography>
+              <Button
+                onClick={this.handleReset}
+                className={classes.button}
+                color="secondary"
+              >
+                Click to end
+              </Button>
+            </Paper>
+          )}
+        </Grid>
+      </div>
+    );
+  }
+}
+
+export default withStyles(styles)(About);
+
+```
+
+To navigate through contents using `Steppers`, you need to set up state to track your navigation. And this state is manipulated while doing the navigation. With the `About` component, the contents are generate using two functions; `getSteps` generating the header and `getStepContent` gives the content at a particular step index. Finally the component gets exported.
+
+
+### Setting up routes
+In order to visualize the content of the `About` component, you need to setup the routes. 
+
+In `App.js`, you will turn the components that would be used as pages  into routes. To do so import `Routes` from `react-router-dom` as shown below:
+
+```js
+import { Route} from "react-router-dom";
+``` 
+Now, you can clean up the `App` class to hold the routes and other components with these codes.
+
+```js
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <MenuAppBar/>
+        <Route path="/" exact component={() => <HomePage/>}/>
+        <Route path="/about" component={About} />
+      </div>
+    );
+  }
+}
+export default App;
+```
+
+With the routes setup, you can visit the about page by clicking on `About` item in the drawer.
+
+When you visit, the  `About` page in your browser, you can see that its contents have been pushed within the navigation bar. You can solve it by given a margin to the overall application and that can be done within `App.js` instead of doing providing margin per page.  In your `App.js`, add this styling right before the class definition.
+
+```js
+const divStyle = {
+  marginTop: "65px"
+};
+```
+
+Add this style to the parent container of the application, `div` at the `App.js ` file.
+
+```js
+class App extends Component {
+  render() {
+    return (
+      <div style={divStyle}>
+        ...
+      </div>
+    );
+  }
+}
+```
+
+### Additional Touches
+
+Now, you click on the `About` link, you can hide the drawer. You just have to implement hiding functionality. To do so go to the `Header.js` file, then add the code below as a property of the `NavLink` that wraps the `About` item.  
+
+```js
+<NavLink 
+  ...
+  onClick={this.handleDrawerClose}>
+  ...
+
+```
+
+
+### Developing the Dashboard component
+
+The `Dashboard` page will hold a tabular representation of the stored data. Hence, it will mostly used components that related to the `Table` module. You can start importing the modules/components from the `Material-UI` that you will need to tabular view. Let's do that together.
+
+```js
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    marginTop: 30
+  },
+  paper: {
+    padding: theme.spacing.unit * 2,
+    textAlign: "center",
+    color: theme.palette.text.secondary
+  },
+  table: {
+    minWidth: 700
+  },
+  row: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.background.default
+    }
+  }
+});
+
+const CustomTableCell = withStyles(theme => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white
+  },
+  body: {
+    fontSize: 14
+  }
+}))(TableCell);
+
+class Dashboard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: []
+    };
+  }
+  render() {
+    const { classes } = this.props;
+    const dashboardContent =
+      this.state.data.length > 0 ? (
+        <div>
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <CustomTableCell>Upcoming Events</CustomTableCell>
+                <CustomTableCell align="right">
+                  Number of Participants
+                </CustomTableCell>
+                <CustomTableCell align="right">Event Date</CustomTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {this.data.map((row, id) => (
+                <TableRow key={id} className={classes.row}>
+                  <CustomTableCell component="th" scope="row">
+                    {row.eventName}
+                  </CustomTableCell>
+                  <CustomTableCell align="right">
+                    {row.totalParticipants}
+                  </CustomTableCell>
+                  <CustomTableCell align="right">
+                    {row.selectedDate}
+                  </CustomTableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      ) : (
+        <h1>You are currently not managing any Event.</h1>
+      );
+    return (
+      <div className={classes.root}>
+        <Grid container align="center" justify="center">
+          <Paper className={classes.paper}>{dashboardContent}</Paper>
+        </Grid>
+      </div>
+    );
+  }
+}
+
+export default withStyles(styles)(Dashboard);
+```
+
+The code for the `Dashboard` is similar to those we have been implement earlier. There is `styles` for styling the page, also importing components, creating the contents and finally wrapping the component  with `withStyles` for the styling to take effect. However, if data to be used to create the tabular view is empty then a different view with message is displayed. 
+
+To make the cells of the table to have a common view, a higher order component, `CustomTableCell` was created to make use of the customizations needed for the cell. Customizations like `background` color for the table head, `font-size` for the table body have been added to this HOC. 
+
+For the table to populate content, adding data functionality needs to be hooked in the application. If you remember, the application had `Add Event` label on the drawer hence the data will be taken when such item is clicked.  
+
+To do so, update the  `ListItem` that contains `Add Event` to 
+
+```js
+<ListItem button onClick={this.saveData}>
+  <ListItemIcon>
+    <Add />
+  </ListItemIcon>
+  <ListItemText primary="Add Event" />
+</ListItem>
+```
+
+The `ListItem`  now has `onClick` property with `this.saveData` as a value. Hence you need to implement `saveData` as a method in the `MenuAppBar` component. Let's add that method.
+
+```js
+ saveData = () => {
+    alert("me")
+  }
+```
+
+When you click on `Add Event`, you can now see the alert dialog. For the user to store data, a form needs to be created so such user can input in his/her data before saving.  
+
+## Securing Your React App with Auth0
+
+### Implementing the Account component
+
+### Implementing silent authentication
+
+## Conclusion
