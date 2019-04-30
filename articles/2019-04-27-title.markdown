@@ -761,7 +761,7 @@ Also, add these two methods to the `MenuAppBar` component to manipulate the stat
     onClose={this.handleMenuClose}>
 ```
 
-Also, you can observe that the `open` property has the value of `showPopOver` instead of the false value.  This `showPopOver` is obtained from the truthy value of `anchorEl`. Right after destructuring of the props;  `const { classes } = this.props; demonstrated below`, add the code below.
+Also, you can observe that the `open` property has the value of `showPopOver` instead of the false value.  This `showPopOver` is obtained from the truthy value of `anchorEl`. Right after destructuring of the props;  `const { classes } = this.props;`, add the code below.
 
 ```js
 const showPopOver = Boolean(this.state.anchorEl);
@@ -1124,7 +1124,7 @@ class Dashboard extends React.Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.data.map((row, id) => (
+              {this.state.data.map((row, id) => (
                 <TableRow key={id} className={classes.row}>
                   <CustomTableCell component="th" scope="row">
                     {row.eventName}
@@ -1165,7 +1165,7 @@ For the table to populate content, adding data functionality needs to be hooked 
 To do so, update the  `ListItem` that contains `Add Event` to 
 
 ```js
-<ListItem button onClick={this.saveData}>
+<ListItem button onClick={this.handleClickOpenDialog}>
   <ListItemIcon>
     <Add />
   </ListItemIcon>
@@ -1173,15 +1173,286 @@ To do so, update the  `ListItem` that contains `Add Event` to
 </ListItem>
 ```
 
-The `ListItem`  now has `onClick` property with `this.saveData` as a value. Hence you need to implement `saveData` as a method in the `MenuAppBar` component. Let's add that method.
+The `ListItem`  now has `onClick` property with `this.handleClickOpenDialog` as a value. Hence you need to implement `handleClickOpenDialog` as a method in the `MenuAppBar` component. Let's add that method.
 
 ```js
- saveData = () => {
+ handleClickOpenDialog = () => {
     alert("me")
+  }
+``` 
+
+### Creating Form Component
+
+When you click on `Add Event`, you can now see the alert dialog. For the user to store data, a form needs to be created so such user can input in his/her data before saving. In your `components` folder, create a subfolder named `AddEvent` and then create  `AddEvent.js` file. Then add the code below to this file.
+
+```js
+import React from "react";
+import TextField from "@material-ui/core/TextField";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Button from "@material-ui/core/Button";
+import { Redirect } from "react-router-dom";
+
+const date = new Date().toDateString();
+
+class AddEvent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      eventName: "",
+      totalParticipants: "",
+      selectedDate: date
+    };
+  }
+
+  handleChange = e => {
+    e.persist();
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  handleDateChange = date => {
+    this.setState({ selectedDate: date.toDateString() });
+  };
+
+  saveData = () => {
+    if (this.state.eventName !== "" && this.state.totalParticipants !== "") {
+      let data = {
+        eventName: this.state.eventName,
+        totalParticipants: this.state.totalParticipants,
+        selectedDate: this.state.selectedDate
+      };
+
+      this.setState(
+        {
+          eventName: "",
+          totalParticipants: "", 
+          selectedDate: date.toString()
+        },
+        () => {
+          return <Redirect to="/dashboard" />;
+        }
+      );
+    }
+  };
+
+  render() {
+    const { selectedDate } = this.state;
+    return (
+      <Dialog
+        open={true}
+        onClose={false}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">Adding Event</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Record your events and management them anywhere, everytime.
+          </DialogContentText>
+          <form>
+            <TextField
+              value={this.state.eventName}
+              onChange={this.handleChange}
+              autoFocus
+              margin="dense"
+              id="eventName"
+              name="eventName"
+              label="Event Name"
+              type="text"
+              fullWidth
+            />
+            <TextField
+              value={this.state.totalParticipants}
+              onChange={this.handleChange}
+              autoFocus
+              margin="dense"
+              id="totalParticipants"
+              name="totalParticipants"
+              label="Total Number of Participants"
+              type="number"
+              fullWidth
+            />
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <DatePicker
+                margin="dense"
+                label="Event Date"
+                value={selectedDate}
+                onChange={this.handleDateChange}
+              />
+            </MuiPickersUtilsProvider>
+          </form>
+        </DialogContent>
+        <DialogActions>
+          <Button color="secondary" onClick={handleCancelMesage}>
+            Cancel
+          </Button>
+          <Button color="primary" onClick={this.saveData}>
+            Send
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
+}
+
+export default AddEvent;
+```
+
+This form is created as with `Dialog` module.  The `Dialog` module presents `DialogActions` where actions like closing the `Dialog` are placed as well as `DialogContent` which will hold some content. Also, it has `DialogTitle` for its caption. In the `DialogContent` is where you will add the `form`. The form is made of two `TextFields` and a `DatePicker`. The DatePicker here by default uses native date picker. For more advanced use cases, you can make use of `material-ui-pickers` which provides date and time controls that follow the Material Design. To use that you have to install  this package using npm command as shown below:
+
+```js
+npm i material-ui-pickers
+```
+
+Also, this `material-ui-pickers` is designed to use a date management library, such as `moment `, `date-fns`, `luxon` and `dayjs`. Here, you will be using `date-fns`, hence you got to install that as well using the command below;
+
+```js
+npm i @date-io/date-fns date-fns@next
+```
+ 
+Since you are to save data, you need to keep track of the data in component state and that is why you have state defined in the constructor. For you to handle the entered data, two methods `handleChange` and `handleDateChange` are defined where `handleChange` is used on the TextFields to capture the entered data as well as using `handleDateChange` to deal with the date data.  To handle the date, add these three imports;
+
+```js
+import DateFnsUtils from "@date-io/date-fns";
+import { MuiPickersUtilsProvider, DatePicker } from "material-ui-pickers";
+import "date-fns";
+```
+
+Finally, `saveData` will be executed to store the data in a data store. For now it just validate the data and group the the captured data into literal object without saving it in a data store. 
+
+Now you can see in your browser that the `Dialog` box is shown automitically. This is because, `Dialog` component has `open` props set to `true` and `onClose` to `false`. Thi means the state of the `Dialog` must be controlled.  Since you are using the `AddEvent` component in `MenuAppBar` component, you can manipulate the state at `MenuAppBar` component and pass the result to the `AddEvent` component via props. In the `MenuAppBar` component, `openDialog` as key to the state object with a value of `false as demonstrated below. 
+
+```js
+openDialog: false
+```
+
+Update `handleClickOpenDialog` to show the dialog by setting the state of `openDialog` to true and add another method called `handleCloseDialog` in the `MenuAppBar` component to reset the of the `openDialog`  state to false.
+
+```js
+ handleClickOpenDialog = () => {
+    this.setState({ openDialog: true });
+  };
+
+  handleCloseDialog = () =>{
+    this.setState({ openDialog: false });
   }
 ```
 
-When you click on `Add Event`, you can now see the alert dialog. For the user to store data, a form needs to be created so such user can input in his/her data before saving.  
+You can now pass the `openDialog` state to the `AddEvent` component to use via props. In the ``MenuAppBar` component, add the code below as additional `prop` to `AddEvent` 
+
+```js
+openDialog={this.state.openDialog}
+onCloseDialog={this.handleCloseDialog}
+```
+
+In the `AddEvent` component change the props value of `open` from true to `this.props.openDialog` and that of `onClose` from false to `this.props.onCloseDialog` as shown below.  
+
+```js
+<Dialog
+  open={this.props.openDialog}
+  onClose={this.props.onCloseDialog}
+  aria-labelledby="form-dialog-title"
+  >
+```
+
+Finally, you have gotten the dialog to show by only clicking on `Add Event` item.  
+
+Now, you got to think about saving the actual data. This will lead you to think about where should that data be stored? Where would the data be used?  The data will be needed in the dashboard to populate its table.  However, the data is collected in `AddEvent` component which has been nested in `MenuAppBar` component. Hence the datastore must be accessible by both `MenuAppBar` and `Dashboard` components so that it can be passed around. Therefore defining the datastore in `App.js` will be very much appropriate. 
+
+In the `App.js`, let's define the datastore and also think about how it could be manipuated.  
+
+```js
+constructor(props){
+  super(props)
+  this.state ={
+    data: []
+  }
+}
+```
+
+You have the datastore create, the next you can think of is by creating a functionality to add data to the it. The data will be added when the `Send` button on the `Dialog` is clicked. Meaning the method that would be created here must be passed along to be executed in `AddEvent` component as well. Let's achieve this as well.
+
+```js
+createEvent = (event, cb) => {
+  let newDataSet = [...this.state.data, event];
+  this.setState({ data: newDataSet }, () => cb());
+};
+```
+The method you have here accepts in the data about event and callback method that would be executed after adding the data to the dataStore. Now you can pass this functionality to the `AddEvent` component through `MenuAppBar` using props as shown below'
+
+```js
+<MenuAppBar createEvent={this.createEvent} />
+```
+
+In the `MenuAppBar` component, you can pass the receiving props as a props to `AddEvent` as demonstrated here;
+
+```js
+<AddEvent
+  createEvent={this.props.createEvent}
+   ...
+/>
+```
+
+Now `AddEvent` has access to `createEvent` method which needs to be executed. In the `AddEvent`  component, you got to update the `saveData` method to 
+
+```js
+saveData = () => {
+    if (this.state.eventName !== "" && this.state.totalParticipants !== "") {
+      let data = {
+        eventName: this.state.eventName,
+        totalParticipants: this.state.totalParticipants,
+        selectedDate: this.state.selectedDate
+      };
+      this.props.createEvent(data, () => {
+        alert("Data saved");
+        this.setState(
+          {
+            eventName: "",
+            totalParticipants: "", 
+            selectedDate: date.toString()
+          }
+        );
+        this.props.onCloseDialog();  
+      });
+    }
+  };
+```
+
+Here you execute the `createEvent` props on the data collected to save the data and once it is done, callback function is invoked.  Go ahead to test in your browser. 
+
+
+**NB**: Notice how you are passing down `createEvent` to every child component until it gets execured. You can imagine how this can get tedious on large apps with many nested components. You might have to pass the object down on props through many layers to get to the component that needs it. This problem is commonly called prop drilling. Two popular solutions to this pain point are Redux and React's built-in Context.You can explore them later.
+
+
+You have saved some data to the data store, you have to be able to see that content in the dashboard table. But nothing is showing. This means that data must be made available in the `Dashboard` component as well.  This where you have to pass down the data store to the `Dashboard` component; In the `App.js` the `Dashboard` component route is designed as shown below;
+
+```js
+<Route path="/dashboard" component={Dashboard} />
+```
+
+For you to be able to pass down the props to the `Dashboard component, you have to change the route to 
+
+```js
+<Route
+    path="/dashboard"
+    component={() => <Dashboard  data={this.state.data} />}/>
+```
+
+Now that you have the data passed down to the `Dashboard` component, we have to update the state in the `Dashboard` component to use the incoming data. You can achieve that with this code;
+
+```js
+this.state = {
+  data: this.props.data
+};
+```
+
+When the data is successfully saved, you then see a alert box. Let's replace this with `Material-UI` component.
+
+### Adding Snackbar Component.
+
+
 
 ## Securing Your React App with Auth0
 
