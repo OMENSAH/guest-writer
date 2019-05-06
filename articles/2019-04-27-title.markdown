@@ -26,9 +26,6 @@ Finally, React web applications development workflow has been enhanced with Comm
 
 After going through the basic concepts, you will be working on a sample project that utilises most of the React Material-UI components. This project is a simple event management application that allows registered users to store an event they have hosted. A user logs in to the application using `Auth0`. Once they are logged in the have access to see thier account profile and dashboard where they can create their events.
 
-Image
-
-
 ## React Material-UI Introduction
 
 React Material-UI accoriding to its [website](https://material-ui.com/), it is the world's most popular React UI framework. Basically, it is made of React components that implement Google's Material Design. 
@@ -1285,7 +1282,7 @@ class AddEvent extends React.Component {
           </form>
         </DialogContent>
         <DialogActions>
-          <Button color="secondary" onClick={handleCancelMesage}>
+          <Button color="secondary">
             Cancel
           </Button>
           <Button color="primary" onClick={this.saveData}>
@@ -1448,16 +1445,721 @@ this.state = {
 };
 ```
 
-When the data is successfully saved, you then see a alert box. Let's replace this with `Material-UI` component.
+When the data is successfully saved, you then see a alert box. Let's replace this with `Material-UI`'s snackbar component.
 
 ### Adding Snackbar Component.
 
+`Snackbar` component presents a single line of text directly related to the operation performed. They may contain a text action, but no icons. You can use them to display notifications. Let's implement this by creating a subfolder in the `component` named `Snackbar` with `Snackbar.js` file. In the `Snackbar.js` file, add the following lines of code.
 
+```js
+import React from "react";
+import classNames from "classnames";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import ErrorIcon from "@material-ui/icons/Error";
+import CloseIcon from "@material-ui/icons/Close";
+import green from "@material-ui/core/colors/green";
+import IconButton from "@material-ui/core/IconButton";
+import SnackbarContent from "@material-ui/core/SnackbarContent";
+import { withStyles } from "@material-ui/core/styles";
+
+const variantIcon = {
+  success: CheckCircleIcon,
+  error: ErrorIcon
+};
+
+const styles = theme => ({
+  success: {
+    backgroundColor: green[600]
+  },
+  error: {
+    backgroundColor: theme.palette.error.dark
+  },
+  icon: {
+    fontSize: 20
+  },
+  iconVariant: {
+    opacity: 0.9,
+    marginRight: theme.spacing.unit
+  },
+  message: {
+    display: "flex",
+    alignItems: "center"
+  }
+});
+
+const MySnackbarContent = props => {
+  const { classes, className} =  props;
+  const variant = "success"
+  const Icon = variantIcon[variant];
+
+  return (
+    <SnackbarContent
+      className={classNames(classes[variant], className)}
+      aria-describedby="client-snackbar"
+      message={
+        <span id="client-snackbar" className={classes.message}>
+          <Icon className={classNames(classes.icon, classes.iconVariant)} />
+          Data successfully added
+        </span>
+      }
+      action={[
+        <IconButton
+          key="close"
+          aria-label="Close"
+          color="inherit"
+          className={classes.close}
+        >
+          <CloseIcon className={classes.icon} />
+        </IconButton>
+      ]}
+    />
+  );
+};
+
+export default withStyles(styles)(MySnackbarContent);
+
+```
+
+The `MySnackbarContent` component  basically has `message`that it will be displayed and `action` to close the snackbar. Currently, youu have a prepopulated message and `IconButton` that handle the action of the snackbar. Let's go ahead to use this. 
+
+In the `AddEvent` component, you need to include the snackbar and that can be achieved by wrapping the ` MySnackbarContent` in `Snackbar` component. For the The root element of `AddEvent` component is `Dialog`, because you need to add extra component let' wrap the `Dialog` and `Snackbar` components in `div` element as shown below.
+
+```js
+<div>
+  <Dialog
+    open={this.props.openDialog}
+    onClose={this.props.onCloseDialog}
+    aria-labelledby="form-dialog-title">
+      ...
+  </Dialog>
+  <Snackbar
+    anchorOrigin={{
+      vertical: "bottom",
+      horizontal: "left"
+    }}
+    open={true}
+    autoHideDuration={6000}>
+      <MySnackbarContentWrapper />
+  </Snackbar>
+</div>
+```
+
+You can see view is using `Snackbar` and `MySnackbarContentWrapper`, you will have to import them into `AddEvent` component as demontrated below:
+
+```js
+import MySnackbarContentWrapper from "../Snackbar/Snackbar";
+import { Snackbar } from "@material-ui/core";
+```
+
+The snackbar is showing but it is supposed to be shown after successful submission of the form. Hence the state of the snacbar must be controlled. Initially, it should not be shown and later get shown, so it is just a manipualation of boolean value. Add extra `showSnackbar` with a value of false to the state object in the `AddEvent` component. Let's update the `saveData` method to manipulate this `showSnackbar` state value.
+
+```js
+saveData = () => {
+  ...
+
+  this.props.createEvent(data, () => {
+    this.setState(
+      {
+        eventName: "",
+        totalParticipants: "", 
+        selectedDate: date.toString(),
+        showSnackbar: true
+     }
+    );
+    this.props.onCloseDialog();  
+  });
+
+  ...
+}
+```
+
+What if you want you want to show a snackbar after closing the dialog form. You can achieve that as well. In the form dialog, there are two buttons, `CANCEL` and `SEND`. To close the dialog, you can have just used the ` this.props.onCloseDialog()` on `onClick` props but in this case you have extra functionality to be accomplished by the `CLOSE` button. You can equally create a method to do so. Let's add a method `handleDialogCancel` to the `AddEvent` component with the code below;
+
+```js
+  handleDialogCancel = () => {
+    this.props.onCloseDialog()
+    this.setState({ isCancelled: true, showSnackbar:true});
+  }
+```
+
+Here, you a manipulating a state called `isCancelled` to a truthy value. Hence you will need to `isCancelled` to the state object with a value of `false`. 
+To make this method to be executed, you have to pass it as a reference to an `onClick` prop of the `CANCEL` button as ;
+
+```js
+<DialogActions>
+  <Button color="secondary" onClick={this.handleDialogCancel}>
+    Cancel
+  </Button>
+    ...
+</DialogActions>
+```
+
+Now what you can do is to show the dialog when it is cancelled or when it is saved by updating the `Snackbar` component in `AddEvent` to this code;
+
+```js
+{this.state.isCancelled ? (
+  <Snackbar
+    anchorOrigin={{
+      vertical: "bottom",
+      horizontal: "left"
+    }}
+    open={this.state.showSnackbar}
+    autoHideDuration={6000}>
+    <MySnackbarContentWrapper/>
+  </Snackbar>
+  ) : (
+  <Snackbar
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "left"
+      }}
+      open={this.state.showSnackbar}
+      autoHideDuration={6000}>
+      <MySnackbarContentWrapper/>
+  </Snackbar>
+)}
+```
+
+But there is an issue, same message and color of dialog box. Let's customize `MySnackbarContentWrapper` to have a custome message and a color of the dialog box that depicts it. For instance, we can make the dialog looks successfully when data is saved  or erronous when form gets cancelled. That means we have to pass props around the `MySnackbarContentWrapper`. The main props that you will need are variant and message for the dialog color and the content respectively.
+Update `MySnackbarContentWrapper` component in the `AddEvent` component to contain both the variant and message as shown below;
+
+```js
+{this.state.isCancelled ? (
+  <Snackbar
+    ...
+    >
+    <MySnackbarContentWrapper
+      variant="error"
+      message="Form Got Cancelled"
+    />
+  </Snackbar>
+  ) : (
+  <Snackbar
+    ...
+    >
+      <MySnackbarContentWrapper
+        variant="success"
+        message="Data Successfully Saved"
+       />
+  </Snackbar>
+)}
+```
+**NB** Sometimes, the `Snackbar` component autoHideDuration does not work, so you can manually close with onClose props and then pass a the method reference that hides the snackbar as shown. For instance, this method will hide the snackbar when passed as reference to Snackbar's `onClose` prop.
+
+```js
+  handleCloseSnackbar = () => {
+    this.setState({ showSnackbar: false });
+  };
+```
+
+A lot has been done here using Material-UI to build modern UI for React application by wiring up various components. In the next sections, you will have a look at how you can secure React Applications with Auth0.  
 
 ## Securing Your React App with Auth0
 
+You have a working React App. In this section, you will learn how to secure React application with Auth0.  For those of you who don't know much about Auth0, you can read more about it from its [official website](https://auth0.com/). In using Auth0 to secure your React App, it involves `Sign up for Auth0`, `Create Auth0 App` and `Setup Configuration Values`.
+
+Visit the website to create an account by following the instructions page by page. Once you have finished creating your account, Auth0 dashboard page will be lauched. There you create the `Auth0 app` which points to the React app.  To create a `Auth0 app` on the dashboard click on `New Application` then you choose a name for the app, say `react-material-ui` for instance and then select `Single Page Applications`(SPA's) as the type of application since React is used in creating SPA's. Finally, there is a widget that asks you the technology you are using to create your application. Since you are using React, you have to select React. Then a page is presented with tutorials on how to setup Auth0 with React Application.  Instead of copying and pasting directly, let's do something different but you can still go ahead with the tutorials.
+
+Still on Auth0 dashboard, click on `Applications` and then select the application you just created. There you have an overview of the Auth0 app you created. Under settings, you have a default settings for SPA's which includes, `name, domain, client id, client secret, etc.` You are going to be using some of these settings in your code to configure your app to use Auth0, so you need to take notice of these. 
+
+### Integration Auth0 Authentication in React App
+
+Auth0 provides API's to handle authentication and authorization for your applications. Here, you will be using the Auth0 authentication in your application to handle users to log in with their credentials. To do you so you will need a package called `auth0.js` that contains functions to interact with Auth0. Install this package using the command `npm install auth0-js`
+
+Once you have it installed, you have to configure your application to be identified by Auth0. This why you created the `Auth0 App`. This has some information that you can use in your application thus linking your App to Auth0. For this you have to create a file that would hold your `Auth0 App` information. Prefered file for this kind of task is enviroment variable file. Create an environment variable file as `.env` at the root of your project. In that file, you are going to specify few variables using certain information from the `Auth0 App` settings as demonstrated below
+
+```bash
+REACT_APP_AUTHO_DOMAIN=xxxx
+
+REACT_APP_AUTHO_CLIENTID=xxx
+
+REACT_APP_AUTHO_CALLBACKURL=http://localhost:3000/callback
+```
+
+Here, you are specifying the domain, client id and callback url. You can get the domain as well as the client id from the settings of the `Auth0 App`. Once you get them replace `xxx` with those values respectively. Also in the same settings, fill the `Allowed Callback URLs` with `http://localhost:3000/callback`. This is the URL that the user will be redirected to after the user is authenticated. 
+
+A very quick notice, you can see that the environment variables starts with `REACT_APP`. This is how `create-react-app` expects the variables to be stored in order for it to automatically expose those variables.
+
+With the help of Auth0 package you can now use the `.env` information to interact with Auth0. In the `src` folder of your application create a folder called `service` which will hold a `Auth.js` file. In the `Auth.js` file, add these code;
+
+```js
+import auth0 from "auth0-js";
+
+export default class Auth {
+  constructor(history) {
+    this.history = history;
+    this.auth0 = new auth0.WebAuth({
+      domain: process.env.REACT_APP_AUTHO_DOMAIN,
+      clientID: process.env.REACT_APP_AUTHO_CLIENTID,
+      redirectUri: process.env.REACT_APP_AUTHO_CALLBACKURL,
+      responseType: "id_token",
+      scope: "openid profile"
+    });
+  }
+
+  getProfile = () => {
+    return this.profile;
+  };
+
+  getIdToken = () => {
+    return this.idToken;
+  };
+
+  isAuthenticated = () => {
+    return new Date().getTime() < this.expiresAt;
+  };
+
+  signIn = () => {
+    this.auth0.authorize();
+  };
+
+  handleAuthentication = () => {
+    this.auth0.parseHash((err, authResult) => {
+      if (err) {
+        this.history.push("/");
+      }
+      if (authResult && authResult.idToken) {
+        this.setSession(authResult);
+        this.history.push("/");
+      }
+    });
+  };
+
+  signOut = () => {
+    this.idToken = null;
+    this.profile = null;
+    this.expiresAt = null;
+    this.auth0.logout({
+      clientID: process.env.REACT_APP_AUTHO_CLIENTID,
+      returnTo: "http://localhost:3000"
+    });
+  };
+
+  setSession = authResult => {
+    this.idToken = authResult.idToken;
+    this.profile = authResult.idTokenPayload;
+    this.expiresAt = authResult.idTokenPayload.exp * 1000;
+  };
+}
+```
+Here, you began by importing  `auth0-js` and then declared `Auth` class. This class is constructed by accepting `react-router` history hence you can perform routing functionality like redirects here. Also, during construction of the Auth class, you are instantiating the auth0.webAuth that accepts options object  with `domain` as a key and its value references the domain environment variable and the list constinues for `clientID` and `redirectUri`.  Also, the options object has `responseType` which gives the type of response after user authentication. Here the `responseType` is an `id_token` which give you a JWT token to the authenticate the user after they login. The last but not the least option is the `scope` which specify permission. The kind of permission to be used here is `openid` and would like to obtain basic information of the user, thus the user's profile such as name, picture, etc.  
+
+The Auth class has  `getProfile`, `getIdToken`, `isAuthenticated`, `signIn`, `handleAuthentication`, `signOut` and `setSession` methods which use class property syntax for their definitions. And thier names depict their function. For instance `signIn` uses auth0 authorize method to log in the user. 0
+
+To use this class in other components, you need to wire it up with the app so other components can use its instance. This can be done in the `App.js` and then pass it down to other components.  Open the `App.js` file and import and instantiate the `Auth` class in the constructor.
+
+The `HomePage` component has login button and for the user to login with Auth0, you need to pass that instance to the HomePage as props. 
+
+```js
+...
+import Auth from './service/Auth'
+...
+
+class App extends Component {
+  constructor(props){
+    super(props)
+    this.state ={
+      data: []
+    }
+
+    this.auth = new Auth(this.props.history);
+  }
+  ...
+  render() {
+    return (
+      <div style={divStyle}>
+        ..
+        <Route path="/" exact component={() => <HomePage auth={this.auth}/>}/>
+        ...
+      </div>
+    );
+  }
+}
+```
+
+Now in the `HomePage` component, you can then pass the incoming prop, auth's signIn method as a reference to the onClick property on `Button` component as shown below 
+
+```js
+<Button
+ ...
+  onClick={this.props.auth.signIn}>  
+  Login
+</Button>
+```
+
+Go ahead and test the login functionality with Auth0. It works perfectly, but wait! After login, the page hangs on to an empty page with a long string value in the `Browser` address bar. That long string value is the result from authenticating the user and we have to handle that. Well, you remember while specifying the environment variables, you had a callback url. That needs to be executed after a successful login. What you can do now is to create such url but URL in react must come with a component so you need to create a component for this functionality. 
+
+Go ahead to create a component named `Callback` in your components folder.  In that `Callback.js` file add these code;
+
+```js
+import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+
+class Callback extends Component {
+  componentDidMount() {
+    this.props.auth.handleAuthentication();
+  }
+
+  render() {
+    return <p>Loading profile...</p>;
+  }
+}
+
+export default withRouter(Callback);
+
+```
+
+This component accepts auth props and then executes its `handleAuthentication` method. In order for this to be executed after the user is authenticated, you have to set it up as a route. In the `App.js` file setup another route as shown below;
+
+```js
+...
+import Callback from "./components/Callback";
+...
+
+class App extends Component {
+  ...
+  render() {
+    return (
+      <div style={divStyle}>
+        <Route path="/callback"  component={() => <Callback auth={this.auth}/>}/>
+      </div>
+    );
+  }
+}
+```
+
+Now after the login is successful, the user is redirected to `Callback` component.
+
+Now once you are authenticated, you can use Auth0 functionality to achieve authorization such as not allowing users to visit the dashboard page without being authenticated or even hidding the login button after login. 
+
+  1. Preventing user from accessing the dashboard page 
+
+This is pretty much simply, you have to call the `isAuthenticated` method which gives a boolean value. So in the `App.js` update the Dashboard Route to;
+
+```js
+ <Route
+    path="/dashboard"
+    component={() =>
+      this.auth.isAuthenticated() 
+        ? <Dashboard auth={this.auth} data={this.state.data} />
+        : <Redirect to="/" />
+    }
+/>
+```
+
+You are just redirecting the user to the homepage if the user is not logged in. That means, you have to also import the `Redirect` module from `react-router-dom`.
+
+  2. Hidding the Login button after login
+
+After the user is logged in the button must be hidden and that can be achieved simply by rendering null if the user is logged in else render the button. update the `Button` section of the  `homepage.js` to the code below;
+
+```js
+{this.props.auth.isAuthenticated() 
+  ? null
+  : <Button
+      variant="contained"
+      color="primary"
+      onClick={this.props.auth.signIn}
+    >                       
+      Login
+    </Button>
+}
+```
+
+  3. Hidding `Add Event`, `Logout` and `My Account` labels on the MenuAppBar Component
+ 
+The MenuAppBar houses `Add Event`, `Logout` and `My Account` labels. The `Add Event` label shows the addEvent dialog resides in the Header component.  That item should only be shown when user is logged in else show nothing. You got to update that portion of code as well. Before that, you need to pass the auth instance to the header component through probs. Therefore you have to update the `<MenuAppBar createEvent={this.createEvent}/>` in the App.js to `<MenuAppBar createEvent={this.createEvent} auth={this.auth}/>
+
+In the header.js file, update the ListItem that has the `Add Event` label to;
+
+```js
+{
+  this.props.auth.isAuthenticated()
+  ? <ListItem button onClick={this.handleClickOpenDialog}>
+      <ListItemIcon>
+        <Add />
+      </ListItemIcon>
+      <ListItemText primary="Add Event" />
+    </ListItem>
+  : null
+}
+```
+
+The `Logout` and `My Account` labels are shown in the dropdown menu.  The entire block of code from `<IconButton>` to `</Menu>`  in the MenuAppBar component should be updated to;
+
+```js
+{
+  this.props.auth.isAuthenticated()
+  ?(
+    <div>
+      <IconButton
+        onClick={this.handleMenuOpen}
+        color="inherit">
+        <AccountCircle />
+      </IconButton>
+      <Menu
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right"
+        }}
+        anchorEl={this.state.anchorEl}
+        open={showPopOver}
+        onClose={this.handleMenuClose}
+        >
+        <MenuItem>
+          <NavLink
+            to="/account"
+            style={{ textDecoration: "none", color: "black" }}>
+            My Account
+          </NavLink>
+        </MenuItem>
+        <MenuItem>Logout</MenuItem>
+    </Menu>
+    </div>
+  )
+  : null
+}
+```
+Thus the IconButton that hold the ` My Account ` and `Logout` labels should not be shown when user is not logged in.
+
+You can now wire up the Logout functionality to the `Logout` MenuItem by just referencing `this.props.auth.signOut` method on the auth instance to the `onClick` props on the `MenuItem` as shown below;
+
+```js
+ <MenuItem
+    onClick={this.props.auth.signOut}>
+    Logout
+  </MenuItem>
+```
+
+When you click on `My Account` an empty page is shown.  You have not created any component for that page yet.  Let's take a look at how you can create a component that will hold the logged in user details.
+
 ### Implementing the Account component
+
+This Account component will be made up of a Card component from Material-UI. Card component is also made of CardHeader for displaying caption , CardMedia to display any media content. CardContent to hold the main content and CardActions will be used in case of performing any action relatedto card module. In the `pages` subfolder create a subfolder named `Account`. In the newly created `Account` folder create `Account.js` file and add these code to it. 
+
+
+```js
+import React from "react";
+import {withStyles} from "@material-ui/core/styles";
+import classnames from "classnames";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import Collapse from "@material-ui/core/Collapse";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Grid from "@material-ui/core/Grid";
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    marginTop: 30,
+  },
+  card: {
+    maxWidth: 400
+  },
+  media: {
+    height: 0,
+    paddingTop: "56.25%"
+  },
+  actions: {
+    display: "flex"
+  },
+  expand: {
+    transform: "rotate(0deg)",
+    marginLeft: "auto",
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.shortest
+    })
+  },
+  expandOpen: {
+    transform: "rotate(180deg)"
+  }
+});
+class AccountDetails extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      expanded: false,
+      profile: {},
+      imagePlaceHolder:"./placeholder.png"
+    };
+  }
+
+  componentDidMount() {
+    let profile = this.props.auth.getProfile()
+    this.setState({ profile, imagePlaceHolder: profile.picture })
+  }
+
+  handleExpandClick = () => {
+    this.setState(state => ({ expanded: !state.expanded }));
+  };
+
+  render() {
+    const { classes } = this.props;
+    const { profile } = this.state;
+    return (
+      <div className={classes.root}>
+        <Grid container alignItems="center" justify="center">
+          <Card className={classes.card}>
+            <CardHeader title={profile.nickname} />
+            <CardMedia
+              className={classes.media}
+              image={this.state.imagePlaceHolder}
+              title={profile.name}
+            />
+            <CardContent>
+              <Typography variant="h5" gutterBottom={true}>
+                Other Profile Data
+              </Typography>
+            </CardContent>
+            <CardActions className={classes.actions} disableActionSpacing>
+              <IconButton
+                className={classnames(classes.expand, {
+                  [classes.expandOpen]: this.state.expanded
+                })}
+                onClick={this.handleExpandClick}
+                aria-expanded={this.state.expanded}
+                aria-label="Show more"
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </CardActions>
+            <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+              <CardContent>
+                <Typography component={"span"} variant={"body2"}>
+                  <pre>{JSON.stringify(profile, null, 2)}</pre>
+                </Typography>
+              </CardContent>
+            </Collapse>
+          </Card>
+        </Grid>
+      </div>
+    );
+  }
+}
+export default withStyles(styles)(AccountDetails);
+
+```
+
+Most of the code here won't be that new to you. You are following the same style of writing code where you have imported the modules you will need to create your card, your CSS-in-JS named as `styles` which is basically providing styling to component and few methods to be rendered on this component as well.  One of the most essential takeaway would be image rendering in card component especially when you are retrieving the image from a particular web service, you will need a default image to be rendered and then later be updated with the image that would be fetched from the web service.
+
+This account component retrieves the logged in user's profile and then outputs the details in the card as demonstrated above. 
+
+Once you have this account setup, you will have import it in your root component , that's the `App.js` file and create its route as shown belwow;
+
+```js
+// ... other imports ...
+import AccountDetails from "./pages/Account/Account";
+
+class App extends Component {
+  // ... constructor
+  render() {
+    return (
+      <div style={divStyle}>
+        {/*other ... routes */}
+
+        <Route
+          path="/account"
+          component={() =>
+           this.auth.isAuthenticated() 
+            ? <AccountDetails auth={this.auth}/>
+            : <Redirect to="/" />
+          }
+        />
+      </div>
+    );
+  }
+}
+```
+
+You can now test your `My Account` link by clicking on it to route to `/account`. 
 
 ### Implementing silent authentication
 
+If you have noticed, anytime you refresh the browser even though you are logged in, you are automatically logged out. There reason is after the user is logged in, the data from the `Auth0` response is then handled by `handleAuthentication` method in the `Auth.js` file.  The data is currently stored in-memory of the class properties and that does not store the user session permanently. 
+
+Options like localStorage has been one of the means to store such user information permanently but they have their own issues in terms of security.  Auth0 recommends an approach called [silent authentication](https://auth0.com/docs/api-auth/tutorials/silent-authentication) to check if the user still has session or lost session. In this section, you are going to implement such feature in this sample project. 
+
+In your `Auth.js` class, add this method;
+
+```js
+silentAuth() {
+  return new Promise((resolve, reject) => {
+    this.auth0.checkSession({}, (err, authResult) => {
+      if (err) return reject(err);
+      this.setSession(authResult);
+      resolve();
+    });
+  });
+}
+```
+By default JWT from Auth0 expires after 3600 seconds which is about 10 hours hence user must logged in for such period.  To still make user loggd in, you make http call behind the scene using Auth0's `checkSession` method to check if the current user is still having session on Auth0 server and if so then the user can still access the page else, you are logged out. 
+
+When and where then do you call this method? This must be called anytime there is a request and since request are handled by routes, you can make use of the `silentAuth` method in `App.js` since that is where all Routes are defined.
+In the `src/App.js` file update the code as follows;
+
+```js
+// ... other imports ...
+import {Route, withRouter} from 'react-router-dom';
+
+class App extends Component {
+  // ... constructor here ...
+  async componentDidMount() {
+    if (this.props.location.pathname === '/callback') return;
+    try {
+      await auth0Client.silentAuth();
+      this.forceUpdate();
+    } catch (err) {
+      if (err.error !== 'login_required') console.log(err.error);
+    }
+  }
+
+  // ... render ...
+}
+
+export default withRouter(App);
+```
+
+Here, you defined what to do when your app loads (componentDidMount):
+*  If the incoming route is `/callback`, the app does nothing. And that is expected behavior because, `/callback` route, is called after the authentication process. In this case, you can leave the Callback component handle the process.
+
+* If the requested route is anything else, the app wants to try a silentAuth. Then, if no error occurs, the app calls forceUpdate so the user can see whatever they asked for.
+
+* If there is an error on the silentAuth, the app checks if the error is different than login_required. If this is the case, the app logs the problem. Otherwise, the app does nothing because it means the user is not signed in 
+
+
+Also, you are enclosing your App class inside the withRouter function so you can check what route is being called using `this.props.location.pathname`. Without withRouter, you wouldn't have access to the location object.
+
+
+With all these changes made and to make this method work as expected, you have to do few changes to your `Auth0 App` settings. In your `Auth0 App` settings, add these changes;
+  1.  Allowed Web Origins: As your app is going to issue an AJAX request to Auth0, you will need to add http://localhost:3000 to this field. Without this value there, Auth0 would deny any AJAX request coming from your app.
+
+  2. Allowed Logout URLs: To enable users to end their session at Auth0, you will have to call the [logout endpoint](https://auth0.com/docs/logout#log-out-a-user). Similarly to the authorization endpoint, the log out endpoint only redirects users to whitelisted URLs after the process. As such, you will have to add http://localhost:3000 in this field too.
+
+
+After updating these fields, you can hit the `Save Changes` button. Then, the last thing you will have to do before focusing in your app's code is to replace the development keys that Auth0 is using to enable users to authenticate through Google.
+
+
+You might not have noticed but, even though you didn't configure anything related to Google in your Auth0 account, the social login button is there and works just fine. The only reason this feature works out of the box is because Auth0 auto-configure all new accounts to use development keys registered at Google. However, when developers start using Auth0 more seriously, they are expected to replace these keys with their own. And, to force this, every time an app tries to perform a silent authentication, and that app is still using the development keys, Auth0 returns that there is no session active (even though this is not true).
+
+So, to change these keys, move to [the Social Connections on your dashboard](https://manage.auth0.com/#/connections/social), and click on Google. There, you will see two fields among other things: Client ID and Client Secret. This is where you will insert your keys. To get your keys, please, read [the Connect your app to Google documentation provided by Auth0](https://auth0.com/docs/connections/social/google).
+
+**Note:** If you don't want to use your Google keys, you can deactivate this social connection and rely only on users that sign up to your app through Auth0's Username and Password Authentication.
+
+
+
 ## Conclusion
+
+Congratulations, you have come a long way to get started with the basics of using Material-UI in React applications. You will bear with me that not all the components that come with Material-UI were covered but you can use the same pattern of importing components, defining styles for components and using components as well as working with their props and finally enclosing your component class inside the `withStyles` for the style to have effect on various components that used them to build any React application using Material-UI. 
+
+Also, you lately wired up the application to use Auth0 for authentication and authorization. Continune to explore more of how Auth0 can help you build well-secured applications.
+
+Also, if you need help, do not hesitate to leave a message on the comments section down below. Have fun with it, thanks. 
+
+
+
+
