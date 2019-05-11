@@ -1175,11 +1175,11 @@ class Dashboard extends React.Component {
 export default withStyles(styles)(Dashboard);
 ```
 
-The code for the `Dashboard` is similar to those we have been implement earlier. There is `styles` for styling the page, also importing components, creating the contents and finally wrapping the component  with `withStyles` for the styling to take effect. However, if data to be used to create the tabular view is empty then a different view with message is displayed. 
+The code for the `Dashboard` is similar to those we have been implement earlier. You have a reference for styling the page, importing components, creating the contents and finally wrapping the component  with `withStyles` for the styling to take effect. The `Dashboard` component is also dealing with dynamic rendering where a tabular view is created after data is stored from the form dialog. If there is no data a different view with a custom data is displayed.
 
-To make the cells of the table to have a common view, a higher order component, `CustomTableCell` was created to make use of the customizations needed for the cell. Customizations like `background` color for the table head, `font-size` for the table body have been added to this HOC. 
+To make the cells of the table to have a common view, a Higher Order Component(HOC), `CustomTableCell` was created to make use of the customizations needed for the cell. Customizations like `background` color for the table head, `font-size` for the table body have been added to this HOC. 
 
-For the table to populate content, adding data functionality needs to be hooked in the application. If you remember, the application had `Add Event` label on the drawer hence the data will be taken when such item is clicked.  
+For the table to populate content, there must a functionality to store data into the application. If you remember, the application had `Add Event` label on the drawer which will be responsible to open the form dialog to enter the data needed to create the table.  
 
 To do so, update the  `ListItem` that contains `Add Event` to 
 
@@ -1202,7 +1202,7 @@ The `ListItem`  now has `onClick` property with `this.handleClickOpenDialog` as 
 
 ### Creating Form Component
 
-When you click on `Add Event`, you can now see the alert dialog. For the user to store data, a form needs to be created so such user can input in his/her data before saving. In your `components` folder, create a subfolder named `AddEvent` and then create  `AddEvent.js` file. Then add the code below to this file.
+When you click on `Add Event`, you can now see the alert dialog. For the user to store data, a form needs to be created so such user can input in his/her data before saving. In your `components` folder, create a subfolder named `AddEvent` with `AddEvent.js` file. Then add the code below to this file.
 
 ```js
 import React from "react";
@@ -1319,7 +1319,7 @@ class AddEvent extends React.Component {
 export default AddEvent;
 ```
 
-This form is created as with `Dialog` module.  The `Dialog` module presents `DialogActions` where actions like closing the `Dialog` are placed as well as `DialogContent` which will hold some content. Also, it has `DialogTitle` for its caption. In the `DialogContent` is where you will add the `form`. The form is made of two `TextFields` and a `DatePicker`. The DatePicker here by default uses native date picker. For more advanced use cases, you can make use of `material-ui-pickers` which provides date and time controls that follow the Material Design. To use that you have to install  this package using npm command as shown below:
+This form is created with `Dialog` module.  The `Dialog` module presents `DialogActions` where actions like closing the `Dialog` are placed. It also contains `DialogContent` holds the actual content in this case the `form`. There is also `DialogTitle` for its caption. The form is made of two `TextFields` and a `DatePicker`. The DatePicker by default uses native date picker. For more advanced use cases, you can make use of `material-ui-pickers` which provides date and time controls that follow the Material Design. To use `material-ui-pickers` package  you need to install it using npm command as shown below:
 
 ```js
 npm i material-ui-pickers
@@ -1331,7 +1331,7 @@ Also, this `material-ui-pickers` is designed to use a date management library, s
 npm i @date-io/date-fns date-fns@next
 ```
  
-Since you are to save data, you need to keep track of the data in component state and that is why you have state defined in the constructor. For you to handle the entered data, two methods `handleChange` and `handleDateChange` are defined where `handleChange` is used on the TextFields to capture the entered data as well as using `handleDateChange` to deal with the date data.  To handle the date, add these three imports;
+Saving the entered data requires keeping track of each field in the component's state and that is why you have state defined in the constructor. For you to handle the entered data, two methods `handleChange` and `handleDateChange` are defined where `handleChange` is used on the TextFields to capture the entered data as well as using `handleDateChange` to deal with the date data.  To handle the date, add these three imports;
 
 ```js
 import DateFnsUtils from "@date-io/date-fns";
@@ -1339,7 +1339,29 @@ import { MuiPickersUtilsProvider, DatePicker } from "material-ui-pickers";
 import "date-fns";
 ```
 
-Finally, `saveData` will be executed to store the data in a data store. For now it just validate the data and group the the captured data into literal object without saving it in a data store. 
+Finally, `saveData` will be executed to store the data in a data store. For now, it just validate the data and group the the captured data into literal object without saving it in a data store.  The `AddEvent` component will be used in the `MenuAppBar` component so you got to import and use it; 
+
+```js
+//...Other imports
+import AddEvent from '../AddEvent/AddEvent';
+
+//... styles here
+
+class MenuAppBar extends React.Component {
+
+  //... other methods
+
+  render(){
+    return (
+       <div className={classes.root}>
+        { /*... Other Components*/}
+        <AddEvent/>
+      </div>
+    )
+  }
+}
+```
+
 
 Now you can see in your browser that the `Dialog` box is shown automitically. This is because, `Dialog` component has `open` props set to `true` and `onClose` to `false`. Thi means the state of the `Dialog` must be controlled.  Since you are using the `AddEvent` component in `MenuAppBar` component, you can manipulate the state at `MenuAppBar` component and pass the result to the `AddEvent` component via props. In the `MenuAppBar` component, `openDialog` as key to the state object with a value of `false as demonstrated below. 
 
