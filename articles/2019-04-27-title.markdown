@@ -16,36 +16,36 @@ related:
 
 ## Prerequisites
 
-In this tutorial, you will learn how to setup Material-UI library in any React-based web applications. Hence having a prior experience working with [React](https://reactjs.org/) is recommended.
+In order for you to follow the walk-through on how to setup Material-UI library in any React-based web applications, it is recommended to have a prior experience working with [React](https://reactjs.org/).
 
-However, for those who have no prior `React` experience but have been working on general web development to get started with tutorial you need to have Node.js and NPM setup on your development environment. If you don't have them installed, kindly, [follow these instructions on the official documentation to install Node.js](https://nodejs.org/en/download/). 
+However, if this is the first working with `React` but you have been doing web development with vanilla JavaScript in general, that's fine. To get started with tutorial you need to have Node.js and NPM installed on your development environment. If you don't, kindly [follow these instructions on the official documentation to install Node.js](https://nodejs.org/en/download/). Having Nod.js installed means you have NPM as well since NPM comes with Node.js. 
 
-Finally, React web applications development workflow has been enhanced with Command Line Interface(CLI) tool hence you are going to be working from your terminal very often. Get access to that and let's get started.
+Finally, the workflow of building React applications has been enhanced with Command Line Interface(CLI) tool which means you are going to be working from your terminal very often. Get access to that and let's get started.
 
 ## What You Will Build
 
-After going through the basic concepts, you will be working on a sample project that utilises most of the React Material-UI components. This project is a simple event management application that allows registered users to store an event they have hosted. A user logs in to the application using `Auth0`. Once they are logged in the have access to see thier account profile and dashboard where they can create their events.
+After going you have been familiarize with the basic concepts of Material-UI, you will be working on a sample project that utilises most of the React Material-UI components. This project is a simple event management application that allows registered users to store an event they have hosted. A user is presented a page to sign up on the first time using `Auth0`. After you are authenticated as a user with `Auth0`, you then have access to an account and dashboard page as well as form dialog. The account page reveals your account details from `Auth0` while the dashboard page presents your recorded events using the form dialog.
 
 ## React Material-UI Introduction
 
-React Material-UI accoriding to its [website](https://material-ui.com/), it is the world's most popular React UI framework. Basically, it is made of React components that implement Google's Material Design. 
+React Material-UI is the world's most popular React UI framework according to [the official website](https://material-ui.com/). Basically, it is made of React components that implement Google's Material Design. 
 
-With React Material UI, you can easily make use of these Material Design elements from Google in your React based applications. Since it is made for building good looking applications, it provides other utilities like `Icons` and `Themes` which you can add to your applications.
+With React Material UI, you can easily make use of these Material Design elements from Google in your React based applications. Since it is made for building good looking applications, it provides other utilities like `Icons` and `Themes` which you can add to your applications. 
 
 
 ## Setting up Material-UI with React.
 
-To get started with Material-UI, you have to add it as a dependency to your `React` application. Let's first create a `React` project with [create-react-app](https://facebook.github.io/create-react-app/), a tool that is developed and maintained by facebook team for creating pre-configured React project. 
+To get started with Material-UI, you have to add it as a dependency to your `React` project. Let's first create a `React` project with [create-react-app](https://facebook.github.io/create-react-app/), a tool that is developed and maintained by facebook team for creating pre-configured React project. 
 
-If you don't have it installed on your development enviroment, you need to. To install, you will need `Node.js` installed which comes with a utiltiy called `NPM` that allows making used of JavaScript packages easier. Let's use this `NPM` to install the create-react-app package. 
+If you don't have it installed on your development enviroment, you need to. As discussed earlier; you need `Node.js` installed which comes with a utiltiy called `NPM` that allows making used of JavaScript packages easier. Let's use this `NPM` to install the create-react-app package. 
 
 ```bash
 npm i -g  create-react-app
 ```
 
-**NB::** If you get permission issues then run this command us an admin. 
+**NB::** If you get permission issues then run this command us an admin or root user. 
 
-Now, you go ahead to create the `React` project. You can achieve this with any of these instructions;
+With `create-react-app` installed, go ahead to create the `React` project. You can achieve this with any of these instructions;
 
 1. Create a folder and navigate to such folder with the `cd ` terminal utility function.
 
@@ -59,10 +59,11 @@ create-react-app .
 create-react-app folderName 
 ```
 
+**NB::** Replace folderName with the name of a folder you will choose.
 
 ### Cleaning App The Generated Boilerplate.
 
-The `create-react-app` generated pre-configured React project and you will not need some of the files hence we need to clean up the project. Just to use what you need but you can go ahead without cleaning up. To clean up, you will get ride of the test file, `App.test.js`, `logo.svg`, `serviceworkers.js`, remove the content of `App.css`, `index.css`. Update `index.js` to have the content below.
+Running the `create-react-app` command will generate a pre-configured React project. And epending on your project scope, some of the files will not be needed hence you need to clean up the project. Thus you just use what you need but you can go ahead without cleaning up some of these files. To clean up the project, you will get ride of `App.test.js`, `logo.svg`, `serviceworkers.js` files in `./src` folder. Also, remove the content of `App.css`, `index.css` and update `index.js` to have the content below.
 
 ```js
 import React from 'react';
@@ -73,7 +74,7 @@ import App from './App';
 ReactDOM.render(<App />, document.getElementById('root'));
 ```
 
-Also update the `App.js` to the content below;
+Also update the `./src/App.js` to the content below;
 
 ```js
 import React from 'react';
@@ -89,17 +90,17 @@ function App() {
 export default App;
 ```
 
-Lots of work, right? I guess you did that. Finally let's test to see if the project outputs empty content in the browser without any error in the console as well.  Achieve this by issuing `npm start` command at the projects' root directory in your terminal.
+Finally you can test the project to make sure everything works fine. By issuing `npm start` command at the project's root directory in your terminal, it must be serve on development server via `http://localhost:3000/`. This must output empty content in the browser and also check the browser console to see if there is no error. 
 
 ### Installing and Working with Material-UI
 
-Adding Material-UI library is the same as adding other library to `React` project. Type the following command  in your terminal to install the `Material-UI`.
+Adding Material-UI library to `React` project is the same as adding other library to `React` project.  You can go ahead to add `Material-UI` to your project with the command below.
 
 ```bash
 npm install @material-ui/core 
 ```
 
-Now that you have `Material-UI` added to your project, you got to use some of the components that come with.  Let's just add `Button` component from `Material-UI` to the project your created. In your `App.js` file, 
+Now that you have `Material-UI` added to your project, you have to use some of the components that come with.  For instance, let's just add `Button` component from `Material-UI` to the project your created. In your `./src/App.js` file, 
 
 ```js
 import React from 'react';
@@ -117,15 +118,16 @@ function App() {
 export default App;
 ```
 
-You just added `Button` component from the `Material-UI` from the library. You might note that the `Button` component includes props like:
+You just added `Button` component from the `Material-UI` from the library. You might noticed that the `Button` component includes props like:
   1. variant: provides the visual style of the component. This can be either contained, outlined, fab.
   2. color: gives that button a background color. It can be either primary, secondary, or default.
 
-Most of these props will be covered later. However, you can explore the properties of each component by visiting the `Material-UI` documentation.  
+Most of these props will be covered later. However, you can explore the properties of each component by visiting the `Material-UI Component API` documentation.  For instance the `Button Component API` has its documentation available at [https://material-ui.com/api/button/](https://material-ui.com/api/button/). To see other component's API, go through `Component API` item on the drawer of [Material-UI Website](https://material-ui.com).
+
 
 ### Installing and Working with Icons
 
-You can also add icons to your project, `React Material-UI` provides a pre-built icons that you can install and use in your project. You add these prebuild SVG icons using `@material-ui/icons` package.  Go ahead to install the package with this command;
+`React Material-UI` provides a pre-built icons that you can install and use in your project. You add these prebuild SVG icons using `@material-ui/icons` package.  Go ahead to install the package with this command;
 
 ```bash
 npm install @material-ui/icons
@@ -155,7 +157,7 @@ export default App
 
 ## Implementing the Sample Project
 
-So far, you have been able to dive into `React Material-UI`.  With our sample project, the user interface consists of material design elements. You will make use of Material-UI components to display tabular list of events' data as well create form to create event. It will consist of navigation bar on top which contains navigation drawer, dropdown list as well as navigation links. 
+In all `React Material-UI` presents components which would include certain props. Visiting the   With our sample project, the user interface consists of material design elements. You will make use of Material-UI components to display tabular list of events' data as well create form to create event. It will consist of navigation bar on top which contains navigation drawer, dropdown list as well as navigation links. 
 
 To begin implementing our main sample project, you will need to clean up the `App.js` to:
 
@@ -181,7 +183,7 @@ This component will the root component that will hold other components. Let's go
 
 ### Developing the Navigation component 
 
-Let's add some visuals to the application. First, you will add a navigation bar to the application.  This can be implemented using `Appbar` component from the `Material-UI` library. To create this new component ,create a new subfolder, `components`, in directory `src`. In the `components` folder create a subfolder to hold the file will contain the code. Thus, create `Header/Header.js` in the components folder. Add the code below to the newly created file.
+Adding navigation bar to the sample application can be implemented using `Appbar` component from the `Material-UI` library. To create this `Navigation` component, create , `components` subfolder in `src` directory. In the `components` folder create `./Header/Header.js` file and add the code below to the newly created file.
 
 ```js
 import React from 'react'
@@ -194,7 +196,7 @@ const MenuAppBar = () => {
         <AppBar position="fixed">
             <Toolbar>
                 <Typography variant="title" color="inherit">
-                  Sample Application
+                  Home
                 </Typography>
             </Toolbar>
         </AppBar>
@@ -204,7 +206,7 @@ const MenuAppBar = () => {
 export default MenuAppBar;
 ```
 
-Here, you are making use of AppBar, Toolbar and Typography component from the Material-UI library to create the navigation bar. The component is then exported. You can now use it at the root component, `App.js` as below:
+Here, you are making use of `AppBar`, `Toolbar` and `Typography` components from the Material-UI library to create the navigation bar. The component is then exported.  The sample project has a common navigation bar hence you need to import and use it at the root component, `./src/App.js`.
 
 ```js
 import React, { Component } from "react";
@@ -225,12 +227,13 @@ class App extends Component {
 export default App;
 ```
 
-You got your first component implemented, you can go ahead to visualize it your browser. But there are other things you can add to this Navigation bar. Let's add a drawer to that. To implement the drawer, lets start to import some of the dependencies you will need to create a basic drawer in the `MenuAppBar` component.
+You got your first component implemented, you can go ahead to test it your browser. 
+
+There are other components like drawer that you can add to this Navigation bar. To implement a drawer, import these extra dependencies that will be needed to create a basic drawer in the `MenuAppBar` component.
 
 ```js
 import Drawer from "@material-ui/core/Drawer";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -238,9 +241,11 @@ import Add from "@material-ui/icons/Add";
 import Info from "@material-ui/icons/Info";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
 ```
 
-With the drawer, you got to manage its state thus whether it is opened or closed hence you have to change the `MenuAppBar` from functional component to class component so as to manage the various states.
+With the drawer, you have to change the `MenuAppBar` from functional component to class component so as to manage the some states. Drawer needs to be toggled hence you got to manage its state of it being opened or closed.
 
 ```js
 class MenuAppBar extends React.Component {
@@ -292,7 +297,7 @@ class MenuAppBar extends React.Component {
 export default MenuAppBar;
 ```
 
-You just added a Drawer with two list items to the navigation bar. However, you could see the drawer is always open. The point is to click on the  MenuIcon to toggle the drawer. Adding up the functionality to  your `MenuAppBar` component, it now looks like this.
+You just added a Drawer with two list items to the navigation bar. However, you could see the drawer is always open. The point is to click on the  MenuIcon to toggle the drawer. Adding up that functionality of opening or closing a drawer to  your `MenuAppBar` component, then you should update `MenuAppBar` class to the code below.
 
 ```js
 class MenuAppBar extends React.Component {
@@ -322,7 +327,9 @@ class MenuAppBar extends React.Component {
             aria-label="Open drawer"
             onClick={this.handleDrawerOpen}
             >
-            ...
+             <MenuIcon />
+            </IconButton>
+           {/* ...Home Typography Here */}
           </Toolbar>
         </AppBar>
         <Drawer 
@@ -335,7 +342,9 @@ class MenuAppBar extends React.Component {
               <ChevronLeftIcon />
             </IconButton>
           </div>
-          ...
+            {/* ...Divider Here */}
+            {/* ...List of Menu Items Here */}
+          </Drawer>
       </div>
     );
   }
@@ -343,11 +352,13 @@ class MenuAppBar extends React.Component {
 export default MenuAppBar;
 ```
 
-Here, you added a state to the component to keep track of the drawer whether it is opened or closed which is managed by two methods; `handleDrawerOpen` and `handleDrawerClose`.  When the menuicon is clicked, it opens the drawer. The drawer has `>` icon which when clicked closes the drawer. You then updated the `Drawer` open probs to the `openDrawer`.  
+**NB**: For brevity, you have some section of the code removed. You got to replace `{/* ...Home Typography Here */}` and other commented sections with the right code from the previous code of that same component section. 
 
-You will continue to make the navigation bar have a nice interation. When the menuicon is clicked to open the drawer, you should shift the navigation to the right and when it is closed it comes back to its actual position. This is achieved by just adding some few classes to the `AppBar `.  To create a class you are going to use [css-in-js](https://material-ui.com/customization/css-in-js/) approach which uses the higher-order component created by `withStyles` to inject an array of styles into the DOM as CSS, using JS.
+Here, you added `openDrawer` state with a default value of `false` to the component. This state will help keep track of the drawer whether it is opened or closed. The `openDrawer` state is then manipulated by two methods; `handleDrawerOpen` and `handleDrawerClose`. When the `MenuIcon` is clicked, it opens the drawer by referencing `handleDrawerOpen` method.  The drawer has `ChevronLeftIcon (<)`  which when clicked closes the drawer by also referencing `handleDrawerClose` method.  
 
-Before  your class, add the code below:
+You will continue to make the navigation bar have a nice interation. You might have noticed already that when the `MenuIcon` is clicked to open the drawer, the drawer covers the icon and the text on the navigation. You can shift the navigation to the right when the icon is clicked and when it is closed, it should come back to its actual position. This is achieved by just adding some few css styles to the `AppBar `.  [CSS-in-JS](https://material-ui.com/customization/css-in-js/) approach will be used. This uses higher-order component `withStyles` to inject an array of styles into the DOM as CSS using JS.
+
+Before `MenuAppBar` class, add the code below:
 
 ```js
 const drawerWidth = 240;
@@ -376,19 +387,26 @@ import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 ```
 
-To inject that styles created so that you can uses the classes created you got to export `MenuAppBar` as module wrapped with a higher order function.
+To inject that styles you created to have effect on the component you have to export `MenuAppBar` as module wrapped with a higher order function as shown below;
 
 ```js
 export default withStyles(styles)(MenuAppBar);
 ```
 
-Finally, you add the classes to the `AppBar` component as ;
+Wrapping the class with `withStyles` passes down `classes` props to that component.  You can access this `classes` props in the `render` method of the component by destructuring the props as shown below;
 
 ```js
-className={classNames(classes.appBar, {[classes.appBarShift]: this.state.openDrawer})}
+  const { classes } = this.props;
 ```
 
-So much work done here but when you check the current app especially after clicking the menuicon you can see there is a a lot of space between the drawer and the appbar. This can be solved by adding few styles to some elements.  In your styles, add the follow pieces of code:
+Finally, apply the styles to `Appbar` by including the className below as a prop to `Appbar` component.
+
+```js
+className = { classNames(classes.appBar, {[classes.appBarShift]: this.state.openDrawer})}
+```
+
+
+Now it the navigation should look quite better after clicking the menuicon. But you can see there is a lot of space between the drawer and the appbar. This can be solved by adding few styles to some elements.  In your styles, add the follow pieces of code:
 
 ```js
 menuButton: {
@@ -413,18 +431,19 @@ menuButton: {
 
 From the above styling, `menuButton` will help create margin between the menu icon and the header text. `drawer` provides the width of the drawer while  `drawerPaper` and `drawerHeader` helps removes the margin between the drawer and the toolbar.
 
-Add these stylings to the few components elements like the drawer and menu icon. Update the menu icon right after toolbar to have `className` prop. 
+Add these stylings to the few components elements like the `IconButton` higher order component for `MenuIcon` and that of `Drawer`. Update the `IconButton` right after toolbar to have `className` prop. 
 
 ```js
 <Toolbar>
   <IconButton
+    {/* ...Other Props Here*/}
     className={classNames(
       classes.menuButton,
       this.state.openDrawer
     )}>
     <MenuIcon />
   </IconButton>
-  ...
+    {/* ...Other Components Here*/}
 </Toolbar>  
 ```
 
@@ -432,15 +451,17 @@ Also, the drawer element can be updated to contain these classes and className. 
 
 ```js
 <Drawer
+  {/* ...Other Props Here*/}
   classes={{
     paper: classes.drawerPaper
   }}
   className={classes.drawer}>
   <div className={classes.drawerHeader}>
-    ...
+      {/* ...Other Components Here*/}
   </div>
 </Drawer>
 ```
+
 In all,your `MenuAppBar` component's code must be like this;
 
 ```js
@@ -580,21 +601,21 @@ class MenuAppBar extends React.Component {
 export default withStyles(styles)(MenuAppBar);
 ```
 
-You are almost done implementing the naviagation bar but so far we have not added any navigation links yet.  You have `Home` as text on the menu. This will be converted to navigation link together with additional links. 
+You are almost done implementing the naviagation bar but so far we have not added any navigation links yet.  You have `Home` as normal text on the navigation bar, you can convert it to navigation link. 
 
-Navigation requires routing to different URLS to load a page. However, routing utility does not come with React generated code, you have to install a package for that. `React-Router-Dom` is the package. Let's install it with the command;
+Navigation requires routing to different URLS to load a page. However, routing utility does not come with React by default. You have to install a package, `React-Router-Dom` for this. Use the command below to do the installation.
 
 ```bash
   npm i react-router-dom
 ```
 
-Then fromt the `react-router-dom` package, you will import `NavLink` module to as to create the links and you can do so with 
+Then from `react-router-dom` package, import `NavLink` module into the `MenuAppBar` component to create the link. 
 
 ```js
 import { NavLink} from "react-router-dom";
 ```
 
-Already, the navigation bar has `Home`, this can be turned into a link by wrapping it with `NavLink` as bellow;
+Wrap the `Home` text with `NavLink` as bellow;
 
 ```js
 <Typography variant="title" color="inherit">  
@@ -605,7 +626,7 @@ Already, the navigation bar has `Home`, this can be turned into a link by wrappi
   </NavLink>
 </Typography>
 ```
-Few styles have been added to improve the Link. After saving the file and testing in the browser, you will get some errors. This is basically telling us the whole app is not setup to have routes. To solve this, lets wrap the whole application to use routes. Go to `index.js` and update the contents to;
+Few styles have been added to improve the Link. After saving the file and testing in the browser, you will get some errors. This is basically telling us that the whole app is not setup to have routes. To solve this, lets wrap the whole application to use routes. Go to `./src/index.js` and update the contents to;
 
 ```js
 import React from "react";
@@ -621,7 +642,7 @@ ReactDOM.render(
   document.getElementById("root")
 );
 ```
-Now when you hover over the home item on the navigation bar it turns into a clickable link.  Lets' creat another link item on the navigation bar after home as;
+Now when you hover over the home item on the navigation bar it turns into a clickable link.  Lets' create another link item on the navigation bar after `Home` Typography as;
 
 ```js
 <Typography variant="h6" color="inherit">
@@ -637,7 +658,7 @@ After adding `Dashboard` Link, you could see both links are very close to each o
 
 ```js
 const styles = theme => ({
-  ...
+  //... Other Styles Here
   root: {
     display: "flex",
     flexGrow: 1
@@ -653,15 +674,15 @@ Then update the follow elements, the parent div of the component and the second 
 
 ```js
 class MenuAppBar extends React.Component {
-  ...
+  //.. Other Component Methods Here
   render(){
     return(
       <div className={classes.root}>
-        ...
+        {/*... Other Components Here*/}
         <Typography 
           variant="h6" 
           color="inherit" 
-          className={classes.grow}>>
+          className={classes.grow}>
           <NavLink
             to="/dashboard"
             style={{ textDecoration: "none", color: "white" }}
@@ -669,7 +690,7 @@ class MenuAppBar extends React.Component {
             Dashboard
           </NavLink>
         </Typography>
-        ...
+        {/*... Other Components Here*/}
       </div>
     )
   } 
@@ -689,7 +710,7 @@ Also, in our drawer, the `About` item will be a link to `/about` page hence you 
 </NavLink>
 ```
 
-Lastly, there is one feature on the naviagtion bar which has not yet been implemented. and that is the dropdown menu which has two items; `Account` and `Logout` items. To implement this, you need to import some components and icons from the `Material-UI` library. 
+Lastly, there is one feature on the navigation bar which has not yet been implemented. and that is the dropdown menu which has two items; `Account` and `Logout` items. To implement this, you need to import some components and icons from the `Material-UI` library. 
 
 ```js
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -710,8 +731,7 @@ From here, you can add these lines of code to your `Toolbar`. In the toolbar,rig
     horizontal: "right"
   }}
   anchorEl={this.state.anchorEl}
-  open={false}
-  onClose={this.handleClose}>
+  open={false}>
   <MenuItem>
     <NavLink
       to="/account"
@@ -723,9 +743,9 @@ From here, you can add these lines of code to your `Toolbar`. In the toolbar,rig
 </Menu>
 ```
 
-Here, you are using `IconButton` to create the list of popup menu elements. This menu has two elements, `My Account` and `Logout` with `My Account` as a link. In the menu, there is an `open` props that is currently set to false. One it is true, the pop will show. This means we have to handle its state as well.
+Here, you are using `IconButton` to create popup menu elements. This menu has two elements, `My Account` and `Logout` where `My Account` is a link to `/account` url. In the menu, there is an `open` props that is currently set to false. Once it is true, the pop will show. This means we have to handle its state as well.
 
-Update the state of the `MenuAppBar` component to have `anchorEl` as state property with value as null.  
+Update the state of the `MenuAppBar` component to have `anchorEl` as state property with value of null.  
 
 **NB** anchorEl is the DOM elements that will be positioned in the popover. Boolean value can be determined this anchorEL. Thus if `anchorEl` has value that is not null, it means there are items to be displayed in the popover if not return null. Truthy values can then be determined to show or hide the popOver depending on the anchorEl returned value. 
 
@@ -745,16 +765,14 @@ Also, add these two methods to the `MenuAppBar` component to manipulate the stat
 
 ```js
  <IconButton
+    {/*...Other Props Here*/}
     onClick={this.handleMenuOpen}
-    color="inherit">
+    >
     <AccountCircle />
   </IconButton>
   <Menu
-    anchorOrigin={{
-      vertical: "top",
-      horizontal: "right"
-    }}
-    open={showPopOver}
+    {/*...Other Props Here*/}
+    open={showPopOver} {/* Changed from false to showPopOver */}
     onClose={this.handleMenuClose}>
 ```
 
@@ -782,7 +800,6 @@ import "./HomePage.css";
 
 class HomePage extends Component {
   render() {
-    const { classes} = this.props;
     return (
       <div className="container">
         <div className="overlay"/>
@@ -794,7 +811,7 @@ class HomePage extends Component {
           <Button
             variant="contained"
             color="primary"
-            className={classes.button}>
+            >
             Login
           </Button>
         </div>
@@ -992,12 +1009,16 @@ To navigate through contents using `Steppers`, you need to set up state to track
 
 
 ### Setting up routes
-In order to visualize the content of the `About` component, you need to setup the routes. 
 
-In `App.js`, you will turn the components that would be used as pages  into routes. To do so import `Routes` from `react-router-dom` as shown below:
+Now that you have the `HomePage` and `About` components to be used as pages, you need to setup your routes. 
+
+In `App.js`, import `Routes` from `react-router-dom` as well as `HomePage` and `About` components  as shown below;
 
 ```js
+//... Other Imports
 import { Route} from "react-router-dom";
+import HomePage from "./pages/HomePage/HomePage";
+import About from "./pages/About/About";
 ``` 
 Now, you can clean up the `App` class to hold the routes and other components with these codes.
 
@@ -1033,7 +1054,7 @@ class App extends Component {
   render() {
     return (
       <div style={divStyle}>
-        ...
+        {/*... Other Components and Routs*/}
       </div>
     );
   }
@@ -1046,16 +1067,17 @@ Now, you click on the `About` link, you can hide the drawer. You just have to im
 
 ```js
 <NavLink 
-  ...
+  {/*Other Props here*/}
   onClick={this.handleDrawerClose}>
-  ...
+    {/*Components here*/}
+</NavLink>
 
 ```
 
 
 ### Developing the Dashboard component
 
-The `Dashboard` page will hold a tabular representation of the stored data. Hence, it will mostly used components that related to the `Table` module. You can start importing the modules/components from the `Material-UI` that you will need to tabular view. Let's do that together.
+The `Dashboard` page will hold a tabular representation of the stored data. Hence, it will mostly used components that related to the `Table` module. You can start importing the modules from the `Material-UI` that you will need to tabular view. Let's do that together by creating a `./Dashboard/Dashboard.js` file in the `pages` subfolder.
 
 ```js
 import React from "react";
