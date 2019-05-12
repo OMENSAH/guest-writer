@@ -1177,7 +1177,14 @@ export default withStyles(styles)(Dashboard);
 
 The code for the `Dashboard` is similar to those we have been implement earlier. You have a reference for styling the page, importing components, creating the contents and finally wrapping the component  with `withStyles` for the styling to take effect. The `Dashboard` component is also dealing with dynamic rendering where a tabular view is created after data is stored from the form dialog. If there is no data a different view with a custom data is displayed.
 
-To make the cells of the table to have a common view, a Higher Order Component(HOC), `CustomTableCell` was created to make use of the customizations needed for the cell. Customizations like `background` color for the table head, `font-size` for the table body have been added to this HOC. 
+To make the cells of the table to have a common style, a Higher Order Component(HOC), `CustomTableCell` was created to make use of the customizations needed for the cell. Customizations like `background` color for the table head, `font-size` for the table body have been added to this HOC.  
+
+Now that you have the `Dashboard` component created,  you have to setup a route for it in order to access that page. In your `App.js` file, add this additional route by importing `Dashboard` component first;
+
+```js
+<Route path="/dashboard" component={Dashboard} />
+```
+
 
 For the table to populate content, there must a functionality to store data into the application. If you remember, the application had `Add Event` label on the drawer which will be responsible to open the form dialog to enter the data needed to create the table.  
 
@@ -1213,7 +1220,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
-import { Redirect } from "react-router-dom";
 
 const date = new Date().toDateString();
 
@@ -1249,11 +1255,7 @@ class AddEvent extends React.Component {
           eventName: "",
           totalParticipants: "", 
           selectedDate: date.toString()
-        },
-        () => {
-          return <Redirect to="/dashboard" />;
-        }
-      );
+        });
     }
   };
 
@@ -1363,13 +1365,13 @@ class MenuAppBar extends React.Component {
 ```
 
 
-Now you can see in your browser that the `Dialog` box is shown automitically. This is because, `Dialog` component has `open` props set to `true` and `onClose` to `false`. Thi means the state of the `Dialog` must be controlled.  Since you are using the `AddEvent` component in `MenuAppBar` component, you can manipulate the state at `MenuAppBar` component and pass the result to the `AddEvent` component via props. In the `MenuAppBar` component, `openDialog` as key to the state object with a value of `false as demonstrated below. 
+Now you can see in your browser that the `Dialog` box is automitically shown. This is because, `Dialog` component has `open` props which is currently set to `true` and `onClose` to `false`. This means the state of the `Dialog` must be manipulated to be opened and closed on certain conditions.  Since you are using the `AddEvent` component in `MenuAppBar` component, you can manipulate the state of the  `Dialog` component in `MenuAppBar` component and then pass the result to the `AddEvent` component via props. In the `MenuAppBar` component, add `openDialog` as key to the state object with a value of `false` as demonstrated below. 
 
 ```js
 openDialog: false
 ```
 
-Update `handleClickOpenDialog` to show the dialog by setting the state of `openDialog` to true and add another method called `handleCloseDialog` in the `MenuAppBar` component to reset the of the `openDialog`  state to false.
+Update `handleClickOpenDialog` to show the dialog by setting the value of `openDialog` to ``true`.  Also, add another method named `handleCloseDialog` in the `MenuAppBar` component to reset the of the `openDialog`  value to `false`.
 
 ```js
  handleClickOpenDialog = () => {
@@ -1381,26 +1383,28 @@ Update `handleClickOpenDialog` to show the dialog by setting the state of `openD
   }
 ```
 
-You can now pass the `openDialog` state to the `AddEvent` component to use via props. In the ``MenuAppBar` component, add the code below as additional `prop` to `AddEvent` 
+You can now pass the `openDialog` state object key to the `AddEvent` component as discussed earlier. In the ``MenuAppBar` component, add the code below as additional `prop` to `AddEvent` 
 
 ```js
 openDialog={this.state.openDialog}
 onCloseDialog={this.handleCloseDialog}
 ```
 
-In the `AddEvent` component change the props value of `open` from true to `this.props.openDialog` and that of `onClose` from false to `this.props.onCloseDialog` as shown below.  
+In the `AddEvent` component change the props value of `open` from `true` to `this.props.openDialog` and that of `onClose` from false to `this.props.onCloseDialog` as shown below.  
 
 ```js
 <Dialog
   open={this.props.openDialog}
   onClose={this.props.onCloseDialog}
-  aria-labelledby="form-dialog-title"
+  {/*... Other Props*/}
   >
 ```
 
-Finally, you have gotten the dialog to show by only clicking on `Add Event` item.  
+Finally, you have the form dialog been controlled by some state values. 
 
-Now, you got to think about saving the actual data. This will lead you to think about where should that data be stored? Where would the data be used?  The data will be needed in the dashboard to populate its table.  However, the data is collected in `AddEvent` component which has been nested in `MenuAppBar` component. Hence the datastore must be accessible by both `MenuAppBar` and `Dashboard` components so that it can be passed around. Therefore defining the datastore in `App.js` will be very much appropriate. 
+Now that you have the form been shown and closed as expected, the next activity to do is to get the form to save some data you will be entering. The question that you will be asking is where should this captured data be stored in order to make it accessible to the dashboard to populate its table?
+
+Defining the datastore for the captured data in `App.js` will be very much appropriate. Since `AddEvent` component is nested in `MenuAppBar` component. Hence the datastore must be accessible by both `MenuAppBar` and `Dashboard` components so that it can be passed around to where it is needed very most. 
 
 In the `App.js`, let's define the datastore and also think about how it could be manipuated.  
 
@@ -1413,7 +1417,7 @@ constructor(props){
 }
 ```
 
-You have the datastore create, the next you can think of is by creating a functionality to add data to the it. The data will be added when the `Send` button on the `Dialog` is clicked. Meaning the method that would be created here must be passed along to be executed in `AddEvent` component as well. Let's achieve this as well.
+You have the datastore created. Next is to add a functionality to store the data in the created datastore.  Since the data will be captured in the `AddEvent` component, the functionality can be  created in the `App.js` file and pass it down to `AddEvent` component. In the `App.js` file, add this method to the component;
 
 ```js
 createEvent = (event, cb) => {
@@ -1421,22 +1425,22 @@ createEvent = (event, cb) => {
   this.setState({ data: newDataSet }, () => cb());
 };
 ```
-The method you have here accepts in the data about event and callback method that would be executed after adding the data to the dataStore. Now you can pass this functionality to the `AddEvent` component through `MenuAppBar` using props as shown below'
+This method accepts the event data and callback method that would be executed after you have successfully saved the data to the dataStore. To make this method executed in the `AddEvent` component, you have to pass it through `MenuAppBar` using props as shown below'
 
 ```js
 <MenuAppBar createEvent={this.createEvent} />
 ```
 
-In the `MenuAppBar` component, you can pass the receiving props as a props to `AddEvent` as demonstrated here;
+In the `MenuAppBar` component, you are passing the receiving props as a property to `AddEvent`;
 
 ```js
 <AddEvent
   createEvent={this.props.createEvent}
-   ...
+   {/*... Other Props*/}
 />
 ```
 
-Now `AddEvent` has access to `createEvent` method which needs to be executed. In the `AddEvent`  component, you got to update the `saveData` method to 
+Now `AddEvent` has access to `createEvent` method which needs to be executed after clicking on the `Send` buttton. In the `AddEvent`  component, you got to update the `saveData` method to 
 
 ```js
 saveData = () => {
@@ -1464,10 +1468,10 @@ saveData = () => {
 Here you execute the `createEvent` props on the data collected to save the data and once it is done, callback function is invoked.  Go ahead to test in your browser. 
 
 
-**NB**: Notice how you are passing down `createEvent` to every child component until it gets execured. You can imagine how this can get tedious on large apps with many nested components. You might have to pass the object down on props through many layers to get to the component that needs it. This problem is commonly called prop drilling. Two popular solutions to this pain point are Redux and React's built-in Context.You can explore them later.
+**NB**: Notice how you are passing down `createEvent` to every child component until it gets executed. You can imagine how this can get tedious on large apps with many nested components. You might have to pass the object down on props through many layers to get to the component that needs it. This problem is commonly called `prop drilling`. Two popular solutions to this pain point are Redux and React's built-in Context.You can explore them later.
 
 
-You have saved some data to the data store, you have to be able to see that content in the dashboard table. But nothing is showing. This means that data must be made available in the `Dashboard` component as well.  This where you have to pass down the data store to the `Dashboard` component; In the `App.js` the `Dashboard` component route is designed as shown below;
+You have saved some data to the datastore but when you visit the dashboard page, the data is not populated in a tabular view. This means that data must be made available in the `Dashboard` component as well.  This where you have to pass down the datastore to the `Dashboard` component.  In the `App.js` the `Dashboard` component route is designed as shown below;
 
 ```js
 <Route path="/dashboard" component={Dashboard} />
@@ -1489,11 +1493,11 @@ this.state = {
 };
 ```
 
-When the data is successfully saved, you then see a alert box. Let's replace this with `Material-UI`'s snackbar component.
+When the data is successfully saved, you then see an alert box. Let's replace this with `Material-UI`'s snackbar component.
 
 ### Adding Snackbar Component.
 
-`Snackbar` component presents a single line of text directly related to the operation performed. They may contain a text action, but no icons. You can use them to display notifications. Let's implement this by creating a subfolder in the `component` named `Snackbar` with `Snackbar.js` file. In the `Snackbar.js` file, add the following lines of code.
+`Snackbar` component presents a single line of text directly related to the operation performed. You can use it to display notifications. Let's implement `Snackbar` component by creating a subfolder in the `component` named `Snackbar` with `Snackbar.js` file. In the `Snackbar.js` file, add the following lines of code.
 
 ```js
 import React from "react";
@@ -1564,28 +1568,41 @@ export default withStyles(styles)(MySnackbarContent);
 
 ```
 
-The `MySnackbarContent` component  basically has `message`that it will be displayed and `action` to close the snackbar. Currently, youu have a prepopulated message and `IconButton` that handle the action of the snackbar. Let's go ahead to use this. 
+The `MySnackbarContent` component  basically has `message` that will be displayed and `action` to close the snackbar. Currently, you have a prepopulated message and `IconButton` that handle the action of the snackbar. Go ahead to use this component in your project.
 
-In the `AddEvent` component, you need to include the snackbar and that can be achieved by wrapping the ` MySnackbarContent` in `Snackbar` component. For the The root element of `AddEvent` component is `Dialog`, because you need to add extra component let' wrap the `Dialog` and `Snackbar` components in `div` element as shown below.
+In the `AddEvent` component, you need to include the snackbar and that can be achieved by wrapping the ` MySnackbarContent` in `Snackbar` component. 
+However, the root element of `AddEvent` component is `Dialog`, to add `Snackbar` component, you need to wrap both `Dialog` and `Snackbar` components in `div` element as shown below.
 
 ```js
-<div>
-  <Dialog
-    open={this.props.openDialog}
-    onClose={this.props.onCloseDialog}
-    aria-labelledby="form-dialog-title">
-      ...
-  </Dialog>
-  <Snackbar
-    anchorOrigin={{
-      vertical: "bottom",
-      horizontal: "left"
-    }}
-    open={true}
-    autoHideDuration={6000}>
-      <MySnackbarContentWrapper />
-  </Snackbar>
-</div>
+//... Imports here
+
+// date instance
+
+class AddEvent extends React.Component { 
+  // ... Other Component Methods
+
+  render(){
+    return (
+        <div>
+        <Dialog
+          open={this.props.openDialog}
+          onClose={this.props.onCloseDialog}
+          aria-labelledby="form-dialog-title">
+            {/*... Other Components*/}
+        </Dialog>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={true}
+          autoHideDuration={6000}>
+            <MySnackbarContentWrapper />
+        </Snackbar>
+      </div>
+    )
+  }
+}
 ```
 
 You can see view is using `Snackbar` and `MySnackbarContentWrapper`, you will have to import them into `AddEvent` component as demontrated below:
@@ -1595,29 +1612,33 @@ import MySnackbarContentWrapper from "../Snackbar/Snackbar";
 import { Snackbar } from "@material-ui/core";
 ```
 
-The snackbar is showing but it is supposed to be shown after successful submission of the form. Hence the state of the snacbar must be controlled. Initially, it should not be shown and later get shown, so it is just a manipualation of boolean value. Add extra `showSnackbar` with a value of false to the state object in the `AddEvent` component. Let's update the `saveData` method to manipulate this `showSnackbar` state value.
+The snackbar is showing but it is supposed to be shown after successful submission of the form. 
+This means the state of snackbar must be controlled. Add extra state property,`showSnackbar`, with a value of `false` to the state object in the `AddEvent` component. Let's update the `saveData` method to set `showSnackbar` to `true`;
 
 ```js
 saveData = () => {
-  ...
-
-  this.props.createEvent(data, () => {
-    this.setState(
-      {
-        eventName: "",
-        totalParticipants: "", 
-        selectedDate: date.toString(),
-        showSnackbar: true
-     }
-    );
-    this.props.onCloseDialog();  
-  });
-
-  ...
+  if (this.state.eventName !== "" && this.state.totalParticipants !== "") {
+      let data = {
+        eventName: this.state.eventName,
+        totalParticipants: this.state.totalParticipants,
+        selectedDate: this.state.selectedDate
+      };
+      this.props.createEvent(data, () => {
+        this.setState(
+          {
+            eventName: "",
+            totalParticipants: "", 
+            selectedDate: date.toString(),
+            showSnackbar: true // updating the showSnackbar state
+          }
+        );
+        this.props.onCloseDialog();  
+      });
 }
 ```
 
-What if you want you want to show a snackbar after closing the dialog form. You can achieve that as well. In the form dialog, there are two buttons, `CANCEL` and `SEND`. To close the dialog, you can have just used the ` this.props.onCloseDialog()` on `onClick` props but in this case you have extra functionality to be accomplished by the `CLOSE` button. You can equally create a method to do so. Let's add a method `handleDialogCancel` to the `AddEvent` component with the code below;
+What if you want to also show a snackbar after closing the dialog form? In the form dialog, there are two buttons, `CANCEL` and `SEND`. To close the dialog, you can just use  `this.props.onCloseDialog` reference on `onClick` props but in this case you have extra functionality to be accomplished by the `CLOSE` button. 
+You can equally create a method to do so. Let's add a method `handleDialogCancel` to the `AddEvent` component with the code below;
 
 ```js
   handleDialogCancel = () => {
@@ -1626,15 +1647,14 @@ What if you want you want to show a snackbar after closing the dialog form. You 
   }
 ```
 
-Here, you a manipulating a state called `isCancelled` to a truthy value. Hence you will need to `isCancelled` to the state object with a value of `false`. 
-To make this method to be executed, you have to pass it as a reference to an `onClick` prop of the `CANCEL` button as ;
+Here, you a manipulating a state object's propety called `isCancelled` to a truthy value. Hence you will need to add `isCancelled` to the state object as a property with a value of `false`.  Add `handleDialogCancel` method as  a reference to an `onClick` prop of the `CANCEL` button as shown below;
 
 ```js
 <DialogActions>
   <Button color="secondary" onClick={this.handleDialogCancel}>
     Cancel
   </Button>
-    ...
+    {/*... Other Components here*/}
 </DialogActions>
 ```
 
@@ -1664,13 +1684,13 @@ Now what you can do is to show the dialog when it is cancelled or when it is sav
 )}
 ```
 
-But there is an issue, same message and color of dialog box. Let's customize `MySnackbarContentWrapper` to have a custome message and a color of the dialog box that depicts it. For instance, we can make the dialog looks successfully when data is saved  or erronous when form gets cancelled. That means we have to pass props around the `MySnackbarContentWrapper`. The main props that you will need are variant and message for the dialog color and the content respectively.
+But there is an issue, same message and color of dialog box. Let's customize `MySnackbarContentWrapper` to have a custom message and a color of the dialog box depending the state of the form whether it was cancelled or successfully submittted. This means you have to pass props around the `MySnackbarContentWrapper` component. The main props that you will need are `variant` and `message` for the dialog color and the content respectively.
 Update `MySnackbarContentWrapper` component in the `AddEvent` component to contain both the variant and message as shown below;
 
 ```js
 {this.state.isCancelled ? (
   <Snackbar
-    ...
+    {/*... Some Props*/}
     >
     <MySnackbarContentWrapper
       variant="error"
@@ -1679,7 +1699,7 @@ Update `MySnackbarContentWrapper` component in the `AddEvent` component to conta
   </Snackbar>
   ) : (
   <Snackbar
-    ...
+    {/*... Some Props*/}
     >
       <MySnackbarContentWrapper
         variant="success"
@@ -1688,7 +1708,49 @@ Update `MySnackbarContentWrapper` component in the `AddEvent` component to conta
   </Snackbar>
 )}
 ```
-**NB** Sometimes, the `Snackbar` component autoHideDuration does not work, so you can manually close with onClose props and then pass a the method reference that hides the snackbar as shown. For instance, this method will hide the snackbar when passed as reference to Snackbar's `onClose` prop.
+
+You have to use the `message` and `variant` in the `MySnackbarContent` component by updating the component definition to;
+
+```js
+// Some imports
+
+// An Icon definition
+
+// Some Styles
+
+const MySnackbarContent = props => {
+  const { classes, className, variant, message } = props;
+  const Icon = variantIcon[variant];
+
+  return (
+    <SnackbarContent
+      className={classNames(classes[variant], className)}
+      aria-describedby="client-snackbar"
+      message={
+        <span id="client-snackbar" className={classes.message}>
+          <Icon className={classNames(classes.icon, classes.iconVariant)} />
+          {message}
+        </span>
+      }
+      action={[
+        <IconButton
+          key="close"
+          aria-label="Close"
+          color="inherit"
+          className={classes.close}
+        >
+          <CloseIcon className={classes.icon} />
+        </IconButton>
+      ]}
+    />
+  );
+};
+
+export default withStyles(styles)(MySnackbarContent);
+```
+
+
+**NB** Sometimes, the `Snackbar` component autoHideDuration does not work, so you can manually close with onClose props and then pass a  method reference that hides the snackbar. For instance, this method will hide the snackbar when passed as reference to Snackbar's `onClose` prop.
 
 ```js
   handleCloseSnackbar = () => {
@@ -1795,11 +1857,13 @@ To use this class in other components, you need to wire it up with the app so ot
 The `HomePage` component has login button and for the user to login with Auth0, you need to pass that instance to the HomePage as props. 
 
 ```js
-...
+//... Other Imports Here
 import Auth from './service/Auth'
-...
+
+//... Styles Here
 
 class App extends Component {
+
   constructor(props){
     super(props)
     this.state ={
@@ -1808,13 +1872,13 @@ class App extends Component {
 
     this.auth = new Auth(this.props.history);
   }
-  ...
+  //...  Other Method
   render() {
     return (
       <div style={divStyle}>
-        ..
+        {/*... Other Components */}
         <Route path="/" exact component={() => <HomePage auth={this.auth}/>}/>
-        ...
+        {/*... Other Routes */}
       </div>
     );
   }
@@ -1825,7 +1889,7 @@ Now in the `HomePage` component, you can then pass the incoming prop, auth's sig
 
 ```js
 <Button
- ...
+  {/*... Other Props */}
   onClick={this.props.auth.signIn}>  
   Login
 </Button>
@@ -1856,15 +1920,18 @@ export default withRouter(Callback);
 This component accepts auth props and then executes its `handleAuthentication` method. In order for this to be executed after the user is authenticated, you have to set it up as a route. In the `App.js` file setup another route as shown below;
 
 ```js
-...
+//... Other Imports Here
 import Callback from "./components/Callback";
-...
+
+
+//... Styles Here
 
 class App extends Component {
-  ...
+  //...  Other Methods
   render() {
     return (
       <div style={divStyle}>
+        {/*... Other Components and Routs */}
         <Route path="/callback"  component={() => <Callback auth={this.auth}/>}/>
       </div>
     );
@@ -2147,11 +2214,11 @@ When and where then do you call this method? This must be called anytime there i
 In the `src/App.js` file update the code as follows;
 
 ```js
-// ... other imports ...
+// ... other imports
 import {Route, withRouter} from 'react-router-dom';
 
 class App extends Component {
-  // ... constructor here ...
+  // ... constructor here 
   async componentDidMount() {
     if (this.props.location.pathname === '/callback') return;
     try {
@@ -2162,7 +2229,7 @@ class App extends Component {
     }
   }
 
-  // ... render ...
+  // ... render
 }
 
 export default withRouter(App);
