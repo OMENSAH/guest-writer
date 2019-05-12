@@ -24,7 +24,7 @@ Finally, the workflow of building React applications has been enhanced with Comm
 
 ## What You Will Build
 
-After going you have been familiarize with the basic concepts of Material-UI, you will be working on a sample project that utilises most of the React Material-UI components. This project is a simple event management application that allows registered users to store an event they have hosted. A user is presented a page to sign up on the first time using `Auth0`. After you are authenticated as a user with `Auth0`, you then have access to an account and dashboard page as well as form dialog. The account page reveals your account details from `Auth0` while the dashboard page presents your recorded events using the form dialog.
+After going you have been familiarize with the basic concepts of Material-UI, you will be working on a sample project that utilizes most of the React Material-UI components. This project is a simple event management application that allows registered users to store an event they have hosted. A user is presented a page to sign up on the first time using `Auth0`. After you are authenticated as a user with `Auth0`, you then have access to an account and dashboard page as well as form dialog. The account page reveals your account details from `Auth0` while the dashboard page presents your recorded events using the form dialog.
 
 ## React Material-UI Introduction
 
@@ -37,7 +37,7 @@ With React Material UI, you can easily make use of these Material Design element
 
 To get started with Material-UI, you have to add it as a dependency to your `React` project. Let's first create a `React` project with [create-react-app](https://facebook.github.io/create-react-app/), a tool that is developed and maintained by facebook team for creating pre-configured React project. 
 
-If you don't have it installed on your development enviroment, you need to. As discussed earlier; you need `Node.js` installed which comes with a utiltiy called `NPM` that allows making used of JavaScript packages easier. Let's use this `NPM` to install the create-react-app package. 
+If you don't have it installed on your development environment, you need to. As discussed earlier; you need `Node.js` installed which comes with a utility called `NPM` that allows making used of JavaScript packages easier. Let's use this `NPM` to install the create-react-app package. 
 
 ```bash
 npm i -g  create-react-app
@@ -63,7 +63,7 @@ create-react-app folderName
 
 ### Cleaning App The Generated Boilerplate.
 
-Running the `create-react-app` command will generate a pre-configured React project. And epending on your project scope, some of the files will not be needed hence you need to clean up the project. Thus you just use what you need but you can go ahead without cleaning up some of these files. To clean up the project, you will get ride of `App.test.js`, `logo.svg`, `serviceworkers.js` files in `./src` folder. Also, remove the content of `App.css`, `index.css` and update `index.js` to have the content below.
+Running the `create-react-app` command will generate a pre-configured React project. And depending on your project scope, some of the files will not be needed hence you need to clean up the project. Thus you just use what you need but you can go ahead without cleaning up some of these files. To clean up the project, you will get ride of `App.test.js`, `logo.svg`, `serviceworkers.js` files in `./src` folder. Also, remove the content of `App.css`, `index.css` and update `index.js` to have the content below.
 
 ```js
 import React from 'react';
@@ -183,7 +183,7 @@ This component will the root component that will hold other components. Let's go
 
 ### Developing the Navigation component 
 
-Adding navigation bar to the sample application can be implemented using `Appbar` component from the `Material-UI` library. To create this `Navigation` component, create , `components` subfolder in `src` directory. In the `components` folder create `./Header/Header.js` file and add the code below to the newly created file.
+Adding navigation bar to the sample application can be implemented using `Appbar` component from the `Material-UI` library. To create this `Navigation` component, create , `components` sub-folder in `src` directory. In the `components` folder create `./Header/Header.js` file and add the code below to the newly created file.
 
 ```js
 import React from 'react'
@@ -356,7 +356,7 @@ export default MenuAppBar;
 
 Here, you added `openDrawer` state with a default value of `false` to the component. This state will help keep track of the drawer whether it is opened or closed. The `openDrawer` state is then manipulated by two methods; `handleDrawerOpen` and `handleDrawerClose`. When the `MenuIcon` is clicked, it opens the drawer by referencing `handleDrawerOpen` method.  The drawer has `ChevronLeftIcon (<)`  which when clicked closes the drawer by also referencing `handleDrawerClose` method.  
 
-You will continue to make the navigation bar have a nice interation. You might have noticed already that when the `MenuIcon` is clicked to open the drawer, the drawer covers the icon and the text on the navigation. You can shift the navigation to the right when the icon is clicked and when it is closed, it should come back to its actual position. This is achieved by just adding some few css styles to the `AppBar `.  [CSS-in-JS](https://material-ui.com/customization/css-in-js/) approach will be used. This uses higher-order component `withStyles` to inject an array of styles into the DOM as CSS using JS.
+You will continue to make the navigation bar have a nice interaction. You might have noticed already that when the `MenuIcon` is clicked to open the drawer, the drawer covers the icon and the text on the navigation. You can shift the navigation to the right when the icon is clicked and when it is closed, it should come back to its actual position. This is achieved by just adding some few css styles to the `AppBar `.  [CSS-in-JS](https://material-ui.com/customization/css-in-js/) approach will be used. This uses higher-order component `withStyles` to inject an array of styles into the DOM as CSS using JS.
 
 Before `MenuAppBar` class, add the code below:
 
@@ -399,14 +399,14 @@ Wrapping the class with `withStyles` passes down `classes` props to that compone
   const { classes } = this.props;
 ```
 
-Finally, apply the styles to `Appbar` by including the className below as a prop to `Appbar` component.
+Finally, apply the styles to `AppBar` by including the className below as a prop to `AppBar` component.
 
 ```js
 className = { classNames(classes.appBar, {[classes.appBarShift]: this.state.openDrawer})}
 ```
 
 
-Now it the navigation should look quite better after clicking the menuicon. But you can see there is a lot of space between the drawer and the appbar. This can be solved by adding few styles to some elements.  In your styles, add the follow pieces of code:
+Now it the navigation should look quite better after clicking the MenuIcon. But you can see there is a lot of space between the `Drawer` and the `AppBar`. This can be solved by adding few styles to some elements.  In your styles, add the follow pieces of code:
 
 ```js
 menuButton: {
@@ -601,7 +601,7 @@ class MenuAppBar extends React.Component {
 export default withStyles(styles)(MenuAppBar);
 ```
 
-You are almost done implementing the naviagation bar but so far we have not added any navigation links yet.  You have `Home` as normal text on the navigation bar, you can convert it to navigation link. 
+You are almost done implementing the navigation bar but so far we have not added any navigation links yet.  You have `Home` as normal text on the navigation bar, you can convert it to navigation link. 
 
 Navigation requires routing to different URLS to load a page. However, routing utility does not come with React by default. You have to install a package, `React-Router-Dom` for this. Use the command below to do the installation.
 
@@ -761,7 +761,7 @@ Also, add these two methods to the `MenuAppBar` component to manipulate the stat
   };
 ``` 
 
-`handleMenuOpen` should be called when the `IconButton` is clicked and `handleMenuClose` executes when the menu closes. You can update both the `Menu` and `IconButton` components to have these functionlities as show below;
+`handleMenuOpen` should be called when the `IconButton` is clicked and `handleMenuClose` executes when the menu closes. You can update both the `Menu` and `IconButton` components to have these functionalities as show below;
 
 ```js
  <IconButton
@@ -905,11 +905,11 @@ function getStepContent(step) {
   switch (step) {
     case 0:
       return `Success Scheme is the world's largest event management technology platform,
-       making sure millions of events happening accross the globe are well managed. 
+       making sure millions of events happening across the globe are well managed. 
        We give event organizers the power to when it comes to event management`;
     case 1:
       return `At Success Scheme, we give power to event organizers when managing their events in just one place. 
-      Easier to sync across multipe devices and discovered by million of people on all social media platforms`;
+      Easier to sync across multiple devices and discovered by million of people on all social media platforms`;
     case 2:
       return `Try out different ad text to see what brings in the most customers,
               and learn how to enhance your ads using features like ad extensions.
@@ -1177,7 +1177,7 @@ export default withStyles(styles)(Dashboard);
 
 The code for the `Dashboard` is similar to those we have been implement earlier. You have a reference for styling the page, importing components, creating the contents and finally wrapping the component  with `withStyles` for the styling to take effect. The `Dashboard` component is also dealing with dynamic rendering where a tabular view is created after data is stored from the form dialog. If there is no data a different view with a custom data is displayed.
 
-To make the cells of the table to have a common style, a Higher Order Component(HOC), `CustomTableCell` was created to make use of the customizations needed for the cell. Customizations like `background` color for the table head, `font-size` for the table body have been added to this HOC.  
+To make the cells of the table to have a common style, a Higher Order Component(HOC), `CustomTableCell` was created to make use of the customization needed for the cell. Customization like `background` color for the table head, `font-size` for the table body have been added to this HOC.  
 
 Now that you have the `Dashboard` component created,  you have to setup a route for it in order to access that page. In your `App.js` file, add this additional route by importing `Dashboard` component first;
 
@@ -1270,7 +1270,7 @@ class AddEvent extends React.Component {
         <DialogTitle id="form-dialog-title">Adding Event</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Record your events and management them anywhere, everytime.
+            Record your events and manage them anywhere, anytime.
           </DialogContentText>
           <form>
             <TextField
@@ -1365,7 +1365,7 @@ class MenuAppBar extends React.Component {
 ```
 
 
-Now you can see in your browser that the `Dialog` box is automitically shown. This is because, `Dialog` component has `open` props which is currently set to `true` and `onClose` to `false`. This means the state of the `Dialog` must be manipulated to be opened and closed on certain conditions.  Since you are using the `AddEvent` component in `MenuAppBar` component, you can manipulate the state of the  `Dialog` component in `MenuAppBar` component and then pass the result to the `AddEvent` component via props. In the `MenuAppBar` component, add `openDialog` as key to the state object with a value of `false` as demonstrated below. 
+Now you can see in your browser that the `Dialog` box is automatically shown. This is because, `Dialog` component has `open` props which is currently set to `true` and `onClose` to `false`. This means the state of the `Dialog` must be manipulated to be opened and closed on certain conditions.  Since you are using the `AddEvent` component in `MenuAppBar` component, you can manipulate the state of the  `Dialog` component in `MenuAppBar` component and then pass the result to the `AddEvent` component via props. In the `MenuAppBar` component, add `openDialog` as key to the state object with a value of `false` as demonstrated below. 
 
 ```js
 openDialog: false
@@ -1404,9 +1404,9 @@ Finally, you have the form dialog been controlled by some state values.
 
 Now that you have the form been shown and closed as expected, the next activity to do is to get the form to save some data you will be entering. The question that you will be asking is where should this captured data be stored in order to make it accessible to the dashboard to populate its table?
 
-Defining the datastore for the captured data in `App.js` will be very much appropriate. Since `AddEvent` component is nested in `MenuAppBar` component. Hence the datastore must be accessible by both `MenuAppBar` and `Dashboard` components so that it can be passed around to where it is needed very most. 
+Defining the data-store for the captured data in `App.js` will be very much appropriate. Since `AddEvent` component is nested in `MenuAppBar` component. Hence the data-store must be accessible by both `MenuAppBar` and `Dashboard` components so that it can be passed around to where it is needed very most. 
 
-In the `App.js`, let's define the datastore and also think about how it could be manipuated.  
+In the `App.js`, let's define the data-store and also think about how it could be manipulated.  
 
 ```js
 constructor(props){
@@ -1417,7 +1417,7 @@ constructor(props){
 }
 ```
 
-You have the datastore created. Next is to add a functionality to store the data in the created datastore.  Since the data will be captured in the `AddEvent` component, the functionality can be  created in the `App.js` file and pass it down to `AddEvent` component. In the `App.js` file, add this method to the component;
+You have the data-store created. Next is to add a functionality to store the data in the created data-store.  Since the data will be captured in the `AddEvent` component, the functionality can be  created in the `App.js` file and pass it down to `AddEvent` component. In the `App.js` file, add this method to the component;
 
 ```js
 createEvent = (event, cb) => {
@@ -1440,7 +1440,7 @@ In the `MenuAppBar` component, you are passing the receiving props as a property
 />
 ```
 
-Now `AddEvent` has access to `createEvent` method which needs to be executed after clicking on the `Send` buttton. In the `AddEvent`  component, you got to update the `saveData` method to 
+Now `AddEvent` has access to `createEvent` method which needs to be executed after clicking on the `Send` button. In the `AddEvent`  component, you got to update the `saveData` method to 
 
 ```js
 saveData = () => {
@@ -1471,7 +1471,7 @@ Here you execute the `createEvent` props on the data collected to save the data 
 **NB**: Notice how you are passing down `createEvent` to every child component until it gets executed. You can imagine how this can get tedious on large apps with many nested components. You might have to pass the object down on props through many layers to get to the component that needs it. This problem is commonly called `prop drilling`. Two popular solutions to this pain point are Redux and React's built-in Context.You can explore them later.
 
 
-You have saved some data to the datastore but when you visit the dashboard page, the data is not populated in a tabular view. This means that data must be made available in the `Dashboard` component as well.  This where you have to pass down the datastore to the `Dashboard` component.  In the `App.js` the `Dashboard` component route is designed as shown below;
+You have saved some data to the data-store but when you visit the dashboard page, the data is not populated in a tabular view. This means that data must be made available in the `Dashboard` component as well.  This where you have to pass down the data-store to the `Dashboard` component.  In the `App.js` the `Dashboard` component route is designed as shown below;
 
 ```js
 <Route path="/dashboard" component={Dashboard} />
@@ -1497,7 +1497,7 @@ When the data is successfully saved, you then see an alert box. Let's replace th
 
 ### Adding Snackbar Component.
 
-`Snackbar` component presents a single line of text directly related to the operation performed. You can use it to display notifications. Let's implement `Snackbar` component by creating a subfolder in the `component` named `Snackbar` with `Snackbar.js` file. In the `Snackbar.js` file, add the following lines of code.
+`Snackbar` component presents a single line of text directly related to the operation performed. You can use it to display notifications. Let's implement `Snackbar` component by creating a sub-folder in the `component` named `Snackbar` with `Snackbar.js` file. In the `Snackbar.js` file, add the following lines of code.
 
 ```js
 import React from "react";
@@ -1568,7 +1568,7 @@ export default withStyles(styles)(MySnackbarContent);
 
 ```
 
-The `MySnackbarContent` component  basically has `message` that will be displayed and `action` to close the snackbar. Currently, you have a prepopulated message and `IconButton` that handle the action of the snackbar. Go ahead to use this component in your project.
+The `MySnackbarContent` component  basically has `message` that will be displayed and `action` to close the snackbar. Currently, you have a pre-populated message and `IconButton` that handle the action of the snackbar. Go ahead to use this component in your project.
 
 In the `AddEvent` component, you need to include the snackbar and that can be achieved by wrapping the ` MySnackbarContent` in `Snackbar` component. 
 However, the root element of `AddEvent` component is `Dialog`, to add `Snackbar` component, you need to wrap both `Dialog` and `Snackbar` components in `div` element as shown below.
@@ -1605,7 +1605,7 @@ class AddEvent extends React.Component {
 }
 ```
 
-You can see view is using `Snackbar` and `MySnackbarContentWrapper`, you will have to import them into `AddEvent` component as demontrated below:
+You can see view is using `Snackbar` and `MySnackbarContentWrapper`, you will have to import them into `AddEvent` component as demonstrated below:
 
 ```js
 import MySnackbarContentWrapper from "../Snackbar/Snackbar";
@@ -1647,7 +1647,7 @@ You can equally create a method to do so. Let's add a method `handleDialogCancel
   }
 ```
 
-Here, you a manipulating a state object's propety called `isCancelled` to a truthy value. Hence you will need to add `isCancelled` to the state object as a property with a value of `false`.  Add `handleDialogCancel` method as  a reference to an `onClick` prop of the `CANCEL` button as shown below;
+Here, you a manipulating a state object's property called `isCancelled` to a truthy value. Hence you will need to add `isCancelled` to the state object as a property with a value of `false`.  Add `handleDialogCancel` method as  a reference to an `onClick` prop of the `CANCEL` button as shown below;
 
 ```js
 <DialogActions>
@@ -1684,7 +1684,7 @@ Now what you can do is to show the dialog when it is cancelled or when it is sav
 )}
 ```
 
-But there is an issue, same message and color of dialog box. Let's customize `MySnackbarContentWrapper` to have a custom message and a color of the dialog box depending the state of the form whether it was cancelled or successfully submittted. This means you have to pass props around the `MySnackbarContentWrapper` component. The main props that you will need are `variant` and `message` for the dialog color and the content respectively.
+But there is an issue, same message and color of dialog box. Let's customize `MySnackbarContentWrapper` to have a custom message and a color of the dialog box depending the state of the form whether it was cancelled or successfully submitted. This means you have to pass props around the `MySnackbarContentWrapper` component. The main props that you will need are `variant` and `message` for the dialog color and the content respectively.
 Update `MySnackbarContentWrapper` component in the `AddEvent` component to contain both the variant and message as shown below;
 
 ```js
@@ -1764,7 +1764,7 @@ A lot has been done here using Material-UI to build modern UI for React applicat
 
 You have a working React App. In this section, you will learn how to secure React application with Auth0.  For those of you who don't know much about Auth0, you can read more about it from its [official website](https://auth0.com/). In using Auth0 to secure your React App, it involves `Sign up for Auth0`, `Create Auth0 App` and `Setup Configuration Values`.
 
-Visit the website to create an account by following the instructions page by page. Once you have finished creating your account, Auth0 dashboard page will be lauched. There you create the `Auth0 app` which points to the React app.  To create a `Auth0 app` on the dashboard click on `New Application` then you choose a name for the app, say `react-material-ui` for instance and then select `Single Page Applications`(SPA's) as the type of application since React is used in creating SPA's. Finally, there is a widget that asks you the technology you are using to create your application. Since you are using React, you have to select React. Then a page is presented with tutorials on how to setup Auth0 with React Application.  Instead of copying and pasting directly, let's do something different but you can still go ahead with the tutorials.
+Visit the website to create an account by following the instructions page by page. Once you have finished creating your account, Auth0 dashboard page will be launched. There you create the `Auth0 app` which points to the React app.  To create a `Auth0 app` on the dashboard click on `New Application` then you choose a name for the app, say `react-material-ui` for instance and then select `Single Page Applications`(SPA's) as the type of application since React is used in creating SPA's. Finally, there is a widget that asks you the technology you are using to create your application. Since you are using React, you have to select React. Then a page is presented with tutorials on how to setup Auth0 with React Application.  Instead of copying and pasting directly, let's do something different but you can still go ahead with the tutorials.
 
 Still on Auth0 dashboard, click on `Applications` and then select the application you just created. There you have an overview of the Auth0 app you created. Under settings, you have a default settings for SPA's which includes, `name, domain, client id, client secret, etc.` You are going to be using some of these settings in your code to configure your app to use Auth0, so you need to take notice of these. 
 
@@ -1772,7 +1772,7 @@ Still on Auth0 dashboard, click on `Applications` and then select the applicatio
 
 Auth0 provides API's to handle authentication and authorization for your applications. Here, you will be using the Auth0 authentication in your application to handle users to log in with their credentials. To do you so you will need a package called `auth0.js` that contains functions to interact with Auth0. Install this package using the command `npm install auth0-js`
 
-Once you have it installed, you have to configure your application to be identified by Auth0. This why you created the `Auth0 App`. This has some information that you can use in your application thus linking your App to Auth0. For this you have to create a file that would hold your `Auth0 App` information. Prefered file for this kind of task is enviroment variable file. Create an environment variable file as `.env` at the root of your project. In that file, you are going to specify few variables using certain information from the `Auth0 App` settings as demonstrated below
+Once you have it installed, you have to configure your application to be identified by Auth0. This why you created the `Auth0 App`. This has some information that you can use in your application thus linking your App to Auth0. For this you have to create a file that would hold your `Auth0 App` information. Preferred file for this kind of task is environment variable file. Create an environment variable file as `.env` at the root of your project. In that file, you are going to specify few variables using certain information from the `Auth0 App` settings as demonstrated below
 
 ```bash
 REACT_APP_AUTHO_DOMAIN=xxxx
@@ -1848,9 +1848,9 @@ export default class Auth {
   };
 }
 ```
-Here, you began by importing  `auth0-js` and then declared `Auth` class. This class is constructed by accepting `react-router` history hence you can perform routing functionality like redirects here. Also, during construction of the Auth class, you are instantiating the auth0.webAuth that accepts options object  with `domain` as a key and its value references the domain environment variable and the list constinues for `clientID` and `redirectUri`.  Also, the options object has `responseType` which gives the type of response after user authentication. Here the `responseType` is an `id_token` which give you a JWT token to the authenticate the user after they login. The last but not the least option is the `scope` which specify permission. The kind of permission to be used here is `openid` and would like to obtain basic information of the user, thus the user's profile such as name, picture, etc.  
+Here, you began by importing  `auth0-js` and then declared `Auth` class. This class is constructed by accepting `react-router` history hence you can perform routing functionality like redirects here. Also, during construction of the Auth class, you are instantiating the auth0.webAuth that accepts options object  with `domain` as a key and its value references the domain environment variable and the list continues for `clientID` and `redirectUri`.  Also, the options object has `responseType` which gives the type of response after user authentication. Here the `responseType` is an `id_token` which give you a JWT token to the authenticate the user after they login. The last but not the least option is the `scope` which specify permission. The kind of permission to be used here is `openid` and would like to obtain basic information of the user, thus the user's profile such as name, picture, etc.  
 
-The Auth class has  `getProfile`, `getIdToken`, `isAuthenticated`, `signIn`, `handleAuthentication`, `signOut` and `setSession` methods which use class property syntax for their definitions. And thier names depict their function. For instance `signIn` uses auth0 authorize method to log in the user. 0
+The Auth class has  `getProfile`, `getIdToken`, `isAuthenticated`, `signIn`, `handleAuthentication`, `signOut` and `setSession` methods which use class property syntax for their definitions. And their names depict their function. For instance `signIn` uses auth0 authorize method to log in the user. 0
 
 To use this class in other components, you need to wire it up with the app so other components can use its instance. This can be done in the `App.js` and then pass it down to other components.  Open the `App.js` file and import and instantiate the `Auth` class in the constructor.
 
@@ -1941,7 +1941,7 @@ class App extends Component {
 
 Now after the login is successful, the user is redirected to `Callback` component.
 
-Now once you are authenticated, you can use Auth0 functionality to achieve authorization such as not allowing users to visit the dashboard page without being authenticated or even hidding the login button after login. 
+Now once you are authenticated, you can use Auth0 functionality to achieve authorization such as not allowing users to visit the dashboard page without being authenticated or even hiding the login button after login. 
 
   1. Preventing user from accessing the dashboard page 
 
@@ -1960,7 +1960,7 @@ This is pretty much simply, you have to call the `isAuthenticated` method which 
 
 You are just redirecting the user to the homepage if the user is not logged in. That means, you have to also import the `Redirect` module from `react-router-dom`.
 
-  2. Hidding the Login button after login
+  2. Hiding the Login button after login
 
 After the user is logged in the button must be hidden and that can be achieved simply by rendering null if the user is logged in else render the button. update the `Button` section of the  `homepage.js` to the code below;
 
@@ -1977,7 +1977,7 @@ After the user is logged in the button must be hidden and that can be achieved s
 }
 ```
 
-  3. Hidding `Add Event`, `Logout` and `My Account` labels on the MenuAppBar Component
+  3. Hiding `Add Event`, `Logout` and `My Account` labels on the MenuAppBar Component
  
 The MenuAppBar houses `Add Event`, `Logout` and `My Account` labels. The `Add Event` label shows the addEvent dialog resides in the Header component.  That item should only be shown when user is logged in else show nothing. You got to update that portion of code as well. Before that, you need to pass the auth instance to the header component through probs. Therefore you have to update the `<MenuAppBar createEvent={this.createEvent}/>` in the App.js to `<MenuAppBar createEvent={this.createEvent} auth={this.auth}/>
 
@@ -2046,7 +2046,7 @@ When you click on `My Account` an empty page is shown.  You have not created any
 
 ### Implementing the Account component
 
-This Account component will be made up of a Card component from Material-UI. Card component is also made of CardHeader for displaying caption , CardMedia to display any media content. CardContent to hold the main content and CardActions will be used in case of performing any action relatedto card module. In the `pages` subfolder create a subfolder named `Account`. In the newly created `Account` folder create `Account.js` file and add these code to it. 
+This Account component will be made up of a Card component from Material-UI. Card component is also made of CardHeader for displaying caption , CardMedia to display any media content. CardContent to hold the main content and CardActions will be used in case of performing any action related to card module. In the `pages` sub-folder create a sub-folder named `Account`. In the newly created `Account` folder create `Account.js` file and add these code to it. 
 
 
 ```js
@@ -2160,7 +2160,7 @@ Most of the code here won't be that new to you. You are following the same style
 
 This account component retrieves the logged in user's profile and then outputs the details in the card as demonstrated above. 
 
-Once you have this account setup, you will have import it in your root component , that's the `App.js` file and create its route as shown belwow;
+Once you have this account setup, you will have import it in your root component , that's the `App.js` file and create its route as shown below;
 
 ```js
 // ... other imports ...
@@ -2208,7 +2208,7 @@ silentAuth() {
   });
 }
 ```
-By default JWT from Auth0 expires after 3600 seconds which is about 10 hours hence user must logged in for such period.  To still make user loggd in, you make http call behind the scene using Auth0's `checkSession` method to check if the current user is still having session on Auth0 server and if so then the user can still access the page else, you are logged out. 
+By default JWT from Auth0 expires after 3600 seconds which is about 10 hours hence user must logged in for such period.  To still make user logged in, you make http call behind the scene using Auth0's `checkSession` method to check if the current user is still having session on Auth0 server and if so then the user can still access the page else, you are logged out. 
 
 When and where then do you call this method? This must be called anytime there is a request and since request are handled by routes, you can make use of the `silentAuth` method in `App.js` since that is where all Routes are defined.
 In the `src/App.js` file update the code as follows;
@@ -2267,7 +2267,7 @@ So, to change these keys, move to [the Social Connections on your dashboard](htt
 
 Congratulations, you have come a long way to get started with the basics of using Material-UI in React applications. You will bear with me that not all the components that come with Material-UI were covered but you can use the same pattern of importing components, defining styles for components and using components as well as working with their props and finally enclosing your component class inside the `withStyles` for the style to have effect on various components that used them to build any React application using Material-UI. 
 
-Also, you lately wired up the application to use Auth0 for authentication and authorization. Continune to explore more of how Auth0 can help you build well-secured applications.
+Also, you lately wired up the application to use Auth0 for authentication and authorization. Continue to explore more of how Auth0 can help you build well-secured applications.
 
 Also, if you need help, do not hesitate to leave a message on the comments section down below. Have fun with it, thanks. 
 
