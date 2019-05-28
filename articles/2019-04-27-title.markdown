@@ -20,7 +20,7 @@ In order for you to follow through how to setup Material-UI library in any React
 
 To get started with the tutorial you will need Node.js and NPM installed on your development environment. If you don't, kindly [follow these instructions on the official documentation to install Node.js](https://nodejs.org/en/download/). Having Node.js installed means you have NPM as well since NPM comes with Node.js. 
 
-Finally, you need to get access to your terminal or command prompt since React applications are preferably develop with the help of command line interface utility.
+Finally, you need to get access to your terminal or command prompt since React applications are preferably developed with the help of command line interface utility.
 
 ## What You Will Build
 
@@ -33,7 +33,7 @@ React Material-UI is the world's most popular React UI framework according to [t
 
 ## Setting up Material-UI with React.
 
-Adding Material-UI to React application starts by adding the Material UI library as a dependency your React project. Create your project by the help of [create-react-app](https://facebook.github.io/create-react-app/), a tool that is developed and maintained by facebook team for creating pre-configured React project. If you don't have Create-React-App package installed in your development environment, install it as follows;
+Adding Material-UI to React application starts by adding the Material UI library as a dependency your React project. Create your project by the help of [create-react-app](https://facebook.github.io/create-react-app/), a tool that is developed and maintained by Facebook team for creating pre-configured React project. If you don't have Create-React-App package installed in your development environment, install it as follows;
 
 ```bash
 npm i -g  create-react-app
@@ -49,7 +49,7 @@ create-react-app projectName
 
 ### Cleaning App The Generated Boilerplate.
 
-Creating a project with Create-React-App generates a pre-configured React project with certain files and folders. Depending on your project scope, some of the files will not be needed hence you can get rid of them. Files like `App.test.js`, `logo.svg`, `serviceworkers.js` in `./src` folder should be removed. Also, remove the content of `App.css`, `index.css` and update `index.js` to have the content below.
+Creating a project with Create-React-App generates a pre-configured React project with certain files and folders. Depending on your project scope, some of the files will not be needed hence you can get rid of them. Files like `App.test.js`, `logo.svg`, `serviceworkers.js` in `./src`  folder should be removed. Also, remove the content of `App.css`, `index.css` and update `index.js` to have the content below.
 
 ```js
 import React from 'react';
@@ -76,17 +76,17 @@ function App() {
 export default App;
 ```
 
-To make sure the app works without any error, you can test in your browser by running the project using `npm start` command at the project's root directory in your terminal.  This will serve the project will be on development server via http://localhost:3000/. Make sure there is no error showing in the browser's console. 
+To make sure the app works without any error, you can test in your browser by running the project using `npm start` command at the project's root directory in your terminal.  This will serve the project will be on a development server via http://localhost:3000/. Make sure there is no error showing in the browser's console. 
 
 ### Installing and Working with Material-UI
 
-Adding Material-UI library to React project is the same as adding other libraries to React project.  Go  ahead to add Material-UI to your project with the command below.
+Adding Material-UI library to React project is the same as adding other libraries to React project.  Go ahead to add Material-UI to your project with the command below.
 
 ```bash
 npm install @material-ui/core 
 ```
 
-By testing few components from Material-UI,  update `./src/App.js` content as follows;
+By testing a few components from Material-UI,  update `./src/App.js` content as follows;
 
 ```js
 import React from 'react';
@@ -108,7 +108,7 @@ Here, you just added Button component from the Material-UI library. You might no
   1. variant: provides the visual style of the component. This can be either contained, outlined, fab.
   2. color: gives that button background color. It can be either primary, secondary, or default.
 
-There are a lot of properties you can add to such components. The best way to get to know more of these properties is to explore them by visiting the Material-UI Component APIs documentation.  For instance the Button Component API has its documentation available at [https://material-ui.com/api/button/](https://material-ui.com/api/button/).
+There are a lot of properties you can add to such components. The best way to get to know more of these properties is to explore them by visiting the Material-UI Component APIs documentation.  For instance, the Button Component API has its documentation available at [https://material-ui.com/api/button/](https://material-ui.com/api/button/).
 **NB::** Do well to visit the documentation to learn more about the properties of these components.
 
 
@@ -139,16 +139,16 @@ function App() {
 export default App
 ```
 
-Here, you just imported Info icon to the project. And then used it the before the Button's component text.
+Here, you just imported Info icon to the project. And then used it before the Button's component text.
 
 **NB** To use a specific icon, you can visit [MATERIAL DESIGN ICONS](https://material.io/tools/icons) to find an icon and then you import it by Pascal-casing its name.
 
 
 ## Implementing the Sample Project
 
-Now that you have learn how to use Material-UI components and icons, you can start implementing the sample project to use more of these components and icons. The sample project makes use of Material-UI components to display the tabular list of events' data as well create a form to create an event. It also consists of the navigation bar which contains navigation drawer, dropdown list as well as navigation links. 
+Now that you have learned how to use Material-UI components and icons, you can start implementing the sample project to use more of these components and icons. The sample project makes use of Material-UI components to display the tabular list of events' data as well create a form to create an event. It also consists of the navigation bar which contains navigation drawer, dropdown list as well as navigation links. 
 
-In terms of structure, the project will have `components` folder to hold components that can be used in different components. It will also contain `pages` folder to hold all components that would be used as pages. And a `service` folder to hold third party services like Auth0 that would be used in the application. Finally, `./src/App.js` will eb the root component to load other components and pages of the entire application. 
+In terms of structure, the project will have `components` folder to hold components that can be used in different components. It will also contain the `pages` folder to hold all components that would be used as pages. And a `service` folder to hold third-party services like Auth0 that would be used in the application. Finally, `./src/App.js` will be the root component to load other components and pages of the entire application. 
 
 To begin with, you will need to clean up the `App.js` to:
 
@@ -287,7 +287,7 @@ class NavBar extends React.Component {
 export default NavBar;
 ```
 
-The drawer you just added has two items and it is always opened. It should not be so.  It only opens when the MenuIcon is used to clicked. Adding up that functionality of opening or closing a drawer to your NavBar component, then you should update `NavBar.js` file to the code below.
+The drawer you just added has two items and it is always opened. It should not be so.  It only opens when the MenuIcon is used to click. Adding up that functionality of opening or closing a drawer to your NavBar component, then you should update `NavBar.js` file to the code below.
 
 ```js
 class NavBar extends React.Component {
@@ -344,9 +344,9 @@ export default NavBar;
 
 **NB**: For brevity, you have some section of the code replaced with comments. Which means those sections have not changed so you got to maintain them. 
 
-Here,  you aded few properties like openDrawer. Currently it is set to false. This state property will keep track whether the drawer is opened or closed. The openDrawer state property is then manipulated by two methods; `handleDrawerOpen` and `handleDrawerClose` where it is reset to true and false respectively. When the MenuIcon is clicked, `handleDrawerOpen` method is invoked and thus changing the state of the drawer to true.  The drawer has ChevronLeftIcon (<)  which when clicked closes the drawer by also referencing `handleDrawerClose` method.  
+Here,  you added a few properties like openDrawer. Currently, it is set to false. This state property will keep track of whether the drawer is opened or closed. The openDrawer state property is then manipulated by two methods; `handleDrawerOpen` and `handleDrawerClose` where it is reset to true and false respectively. When the MenuIcon is clicked, `handleDrawerOpen` method is invoked and thus changing the state of the drawer to true.  The drawer has ChevronLeftIcon (<)  which when clicked closes the drawer by also referencing `handleDrawerClose` method.  
 
-You might have noticed already that when the MenuIcon is clicked to open the drawer, the drawer covers the MenuIcon and the text on the navigation. The navigation bar should be shifted to the right when the MenuIcon is clicked and when it is closed, it should get back to its original position. This is achieved by just adding some few css styles to the AppBar using [CSS-in-JS](https://material-ui.com/customization/css-in-js/) approach. This approach uses higher-order component, `withStyles`, to inject an array of styles into the DOM as CSS using JS.
+You might have noticed already that when the MenuIcon is clicked to open the drawer, the drawer covers the MenuIcon and the text on the navigation. The navigation bar should be shifted to the right when the MenuIcon is clicked and when it is closed, it should get back to its original position. This is achieved by just adding some few CSS styles to the AppBar using [CSS-in-JS](https://material-ui.com/customization/css-in-js/) approach. This approach uses higher-order component, `withStyles`, to inject an array of styles into the DOM as CSS using JS.
 
 Before NavBar class, add the code below:
 
@@ -401,7 +401,7 @@ Finally, apply the following code as property to the AppBar;
 className = { classNames(classes.appBar, {[classes.appBarShift]: this.state.openDrawer})}
 ```
 
-On viewing the application in the browser, you could see that the navigation looks better after clicking the MenuIcon. But there is so much space between the Drawer and the AppBar after each click. This can be solved by adding a few CSS style.  In the CSS you created, add the following pieces of code;
+On viewing the application in the browser, you could see that the navigation looks better after clicking the MenuIcon. But there is so much space between the Drawer and the AppBar after each click. This can be solved by adding a few CSS styles.  In the CSS you created, add the following pieces of code;
 
 ```js
 const styles = theme => ({
@@ -427,7 +427,7 @@ const styles = theme => ({
 })
 ```
 
-From the above CSS styles, menuButton will help create a margin between the menuIcon and the text. drawer provides the width of the drawer while  drawerPaper and drawerHeader removes the margin between the drawer and the toolbar.Add these CSS styles to the few components like IconButton.
+From the above CSS styles, menuButton will help create a margin between the menuIcon and the text. drawer provides the width of the drawer while drawerPaper and drawerHeader remove the margin between the drawer and the toolbar. Add these CSS styles to the few components like IconButton.
 
 ```js
 <Toolbar>
@@ -597,7 +597,7 @@ class NavBar extends React.Component {
 export default withStyles(styles)(NavBar);
 ```
 
-The navigation bar implementation is by far great. However, navigation bar needs to have links to other pages, hence you got to add navigation links. You will be using `react-router-fom`  package to handle the navigation since React does not come with routing implementation. Use the command below to do the installation.
+The navigation bar implementation is by far great. However, the navigation bar needs to have links to other pages, hence you got to add navigation links. You will be using `react-router-dom`  package to handle the navigation since React does not come with routing implementation. Use the command below to do the installation.
 
 ```bash
   npm i react-router-dom
@@ -621,7 +621,7 @@ You can convert the normal `Home` text on the navigation bar to a link by wrappi
 </Typography>
 ```
 
-Here, few styles have been added to remove underline and make the text white. After saving the file and testing in the browser, you will get some errors. This is basically telling us that the whole app is not set up to have routes. To solve this, you can wrap the whole application to use routes. Go to `./src/index.js` and update as follows;
+Here, few styles have been added to remove the underline and make the text white. After saving the file and testing in the browser, you will get some errors. This is basically telling us that the whole app is not set up to have routes. To solve this, you can wrap the whole application to use routes. Go to `./src/index.js` and update as follows;
 
 ```js
 import React from "react";
@@ -638,7 +638,7 @@ ReactDOM.render(
 );
 ```
 
-Testing to see we have a link, a hover on the text turns the cursor to be clickable. Create another link item on the navigation bar after Home text as;
+Testing to see we have a link, a hover on the text turns the cursor to be clickable. Create another link item on the navigation bar after the Home text as;
 
 ```js
 <Typography variant="h6" color="inherit">
@@ -706,7 +706,7 @@ Also, in our drawer, the About item has to be a link hence you need to update th
 </NavLink>
 ```
 
-The navigation bar has to also contain dropdown menu with two items, My Account  and Logout. Implement this feature by importing some components and icons from the Material-UI and the icons libraries as follows;
+The navigation bar has to also contain a dropdown menu with two items, My Account and Logout. Implement this feature by importing some components and icons from the Material-UI and the icons libraries as follows;
 
 ```js
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -714,7 +714,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 ```
 
-In the toolbar, right after the second navigation link, Dashboard, implement the the dropdown menu as follows;
+In the toolbar, right after the second navigation link, Dashboard, implement the dropdown menu as follows;
 
 ```js
 <IconButton
@@ -999,7 +999,7 @@ export default withStyles(styles)(About);
 
 ```
 
-To navigate through contents using Steppers, you need to set up the state to track your navigation. And this state is manipulated while doing the navigation. With the `About` component, the contents are generated using two ,wr; `getSteps` generating the header and `getStepContent` gives the content at a particular step index. Finally, the component gets exported.
+To navigate through contents using Steppers, you need to set up the state to track your navigation. And this state is manipulated while doing the navigation. With the `About` component, the contents are generated using two methods; `getSteps` generating the header and `getStepContent` gives the content at a particular step index. Finally, the component gets exported.
 
 
 ### Setting up routes
@@ -1031,7 +1031,7 @@ export default App;
 
 ### Additional Touches
 
-Here, you are adding top margin to the entire application by updating the `App.js ` file to add a simple CSS to the parent element.
+Here, you are adding a top margin to the entire application by updating the `App.js ` file to add a simple CSS to the parent element.
 
 ```js
 // ... some components and module imports
@@ -1055,7 +1055,7 @@ class App extends Component {
 export default withRouter(App);
 ```
 
-Also, you can hide the drawer when you click on About item element in the drawer. Implement this hiding functionality by updating `NavBar.js` file,to include a property to the NavLink that wraps the About item.  
+Also, you can hide the drawer when you click on About item element in the drawer. Implement this hiding functionality by updating `NavBar.js` file, to include a property to the NavLink that wraps the About item.  
 
 ```js
 <NavLink 
@@ -1314,7 +1314,7 @@ class AddEvent extends React.Component {
 export default AddEvent;
 ```
 
-Here, you are creating a form with Dialog module.  The Dialog module presents DialogActions where actions can be perform on the dialog can be positioned. It also contains DialogContent section to hold the actual content, in this case, it is a form, There is also DialogTitle for its caption. 
+Here, you are creating a form with Dialog module.  The Dialog module presents DialogActions, where actions can be performed on the dialog, can be positioned. It also contains DialogContent section to hold the actual content, in this case, it is a form, There is also DialogTitle for its caption. 
 
 The form created in the Dialog is made of two TextFields and a DatePicker. The DatePicker by default uses the native date picker. For more advanced use cases, you can make use of material-ui-pickers which provides date and time controls that follow the Material Design Specifications. To use `material-ui-pickers` package  you need to install it using npm command as shown below:
 
@@ -2269,7 +2269,3 @@ Congratulations, you have come a long way to get started with the basics of usin
 Also, you lately wired up the application to use Auth0 for authentication and authorization. Continue to explore more of how Auth0 can help you build well-secured applications.
 
 Also, if you need help, do not hesitate to leave a message on the comments section down below. Have fun with it, thanks. 
-
-
-
-
